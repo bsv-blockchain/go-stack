@@ -1,6 +1,6 @@
 # go-stack
 
-BSV Go monorepo — SDK, wallet toolbox, overlay services, messaging, broadcast, and supporting infrastructure.
+BSV Go monorepo — SDK, wallet toolbox, overlay services, messaging, and supporting infrastructure.
 
 [![CI](https://github.com/bsv-blockchain/go-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/bsv-blockchain/go-stack/actions/workflows/ci.yml)
 
@@ -13,11 +13,10 @@ packages/overlays/   — Overlay services, discovery
 packages/messaging/  — Message box server, paymail
 packages/network/    — Chaintracks, broadcast client
 packages/helpers/    — Middleware, WoC API
-apps/                — ARC, Arcade, broadcast server, Merkle service
 conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 ```
 
-**20 modules** across 7 domains.
+**15 modules** across 6 domains. Apps (ARC, Arcade, merkle-service, go-broadcast) remain separate repos.
 
 ---
 
@@ -68,16 +67,6 @@ conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 | [go-bsv-middleware](packages/helpers/go-bsv-middleware) | `github.com/bsv-blockchain/go-bsv-middleware` |
 | [woc-api](packages/helpers/woc-api) | `github.com/teranode-group/woc-api` |
 
-### Apps — `apps/`
-
-| Module | Path |
-|--------|------|
-| [arc](apps/arc) | `github.com/bitcoin-sv/arc` |
-| [arcade](apps/arcade) | `github.com/bsv-blockchain/arcade` |
-| [arcade-refactor](apps/arcade-refactor) | `github.com/bsv-blockchain/arcade` *(refactor branch)* |
-| [go-broadcast](apps/go-broadcast) | `github.com/mrz1836/go-broadcast` |
-| [merkle-service](apps/merkle-service) | `github.com/bsv-blockchain/merkle-service` |
-
 ---
 
 ## Development
@@ -103,7 +92,6 @@ go test ./...
 ```sh
 go build ./packages/sdk/...
 go build ./packages/wallet/...
-go build ./apps/...
 ```
 
 ### Working with individual modules

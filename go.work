@@ -1,11 +1,6 @@
 go 1.26.0
 
 use (
-	./apps/arc
-	./apps/arcade
-	./apps/arcade-refactor
-	./apps/go-broadcast
-	./apps/merkle-service
 	./packages/helpers/go-bsv-middleware
 	./packages/helpers/woc-api
 	./packages/messaging/go-message-box-server
