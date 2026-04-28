@@ -8,15 +8,15 @@ BSV Go monorepo — SDK, wallet toolbox, overlay services, messaging, and suppor
 
 ```
 packages/sdk/        — Core SDK, transaction building, script templates
-packages/wallet/     — Wallet toolbox, 402-pay, UHRP storage
-packages/overlays/   — Overlay services, discovery
+packages/wallet/     — Wallet toolbox, 402-pay
+packages/overlays/   — Overlay services, discovery, UHRP storage
 packages/messaging/  — Message box server, paymail
-packages/network/    — Chaintracks, broadcast client
-packages/helpers/    — Middleware, WoC API
+packages/network/    — Chaintracks, broadcast client, broadcast
+packages/middleware/ — BSV auth middleware
 conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 ```
 
-**15 modules** across 6 domains. Apps (ARC, Arcade, merkle-service, go-broadcast) remain separate repos.
+**14 modules** across 6 domains. Apps (ARC, Arcade, merkle-service, go-broadcast-app) remain separate repos.
 
 ---
 
@@ -27,7 +27,6 @@ conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 | Module | Path |
 |--------|------|
 | [go-sdk](packages/sdk/go-sdk) | `github.com/bsv-blockchain/go-sdk` |
-| [go-bt](packages/sdk/go-bt) | `github.com/bsv-blockchain/go-bt/v2` |
 | [go-subtree](packages/sdk/go-subtree) | `github.com/bsv-blockchain/go-subtree` |
 | [go-script-templates](packages/sdk/go-script-templates) | `github.com/bsv-blockchain/go-script-templates` |
 
@@ -37,7 +36,9 @@ conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 |--------|------|
 | [go-wallet-toolbox](packages/wallet/go-wallet-toolbox) | `github.com/bsv-blockchain/go-wallet-toolbox` |
 | [go-402-pay](packages/wallet/go-402-pay) | `github.com/bsv-blockchain/go-402-pay` |
-| [go-uhrp-storage-server](packages/wallet/go-uhrp-storage-server) | `github.com/bsv-blockchain/go-uhrp-storage-server` |
+| [go-402-pay/echo](packages/wallet/go-402-pay/echo) | `github.com/bsv-blockchain/go-402-pay/echo` |
+| [go-402-pay/fiber](packages/wallet/go-402-pay/fiber) | `github.com/bsv-blockchain/go-402-pay/fiber` |
+| [go-402-pay/gin](packages/wallet/go-402-pay/gin) | `github.com/bsv-blockchain/go-402-pay/gin` |
 
 ### Overlays — `packages/overlays/`
 
@@ -45,6 +46,7 @@ conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 |--------|------|
 | [go-overlay-services](packages/overlays/go-overlay-services) | `github.com/bsv-blockchain/go-overlay-services` |
 | [go-overlay-discovery-services](packages/overlays/go-overlay-discovery-services) | `github.com/bsv-blockchain/go-overlay-discovery-services` |
+| [go-uhrp-storage-server](packages/overlays/go-uhrp-storage-server) | `github.com/bsv-blockchain/go-uhrp-storage-server` |
 
 ### Messaging — `packages/messaging/`
 
@@ -59,13 +61,13 @@ conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 |--------|------|
 | [go-chaintracks](packages/network/go-chaintracks) | `github.com/bsv-blockchain/go-chaintracks` |
 | [go-broadcast-client](packages/network/go-broadcast-client) | `github.com/bitcoin-sv/go-broadcast-client` |
+| [go-broadcast](packages/network/go-broadcast) | `github.com/mrz1836/go-broadcast` |
 
-### Helpers — `packages/helpers/`
+### Middleware — `packages/middleware/`
 
 | Module | Path |
 |--------|------|
-| [go-bsv-middleware](packages/helpers/go-bsv-middleware) | `github.com/bsv-blockchain/go-bsv-middleware` |
-| [woc-api](packages/helpers/woc-api) | `github.com/teranode-group/woc-api` |
+| [go-bsv-middleware](packages/middleware/go-bsv-middleware) | `github.com/bsv-blockchain/go-bsv-middleware` |
 
 ---
 
@@ -110,7 +112,7 @@ go test ./...
 Dependencies flow inward toward the SDK:
 
 ```
-Apps / Overlays / Messaging
+Overlays / Messaging / Middleware
          |
        Wallet
          |
@@ -119,7 +121,7 @@ Apps / Overlays / Messaging
         SDK
 ```
 
-Helpers are used by any domain. Conformance tests all domains against shared vector sets.
+Middleware is used by any domain. Conformance tests all domains against shared vector sets.
 
 ---
 

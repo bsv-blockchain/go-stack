@@ -1,15 +1,15 @@
 go 1.26.0
 
 use (
-	./packages/helpers/go-bsv-middleware
-	./packages/helpers/woc-api
 	./packages/messaging/go-message-box-server
 	./packages/messaging/go-paymail
+	./packages/middleware/go-bsv-middleware
+	./packages/network/go-broadcast
 	./packages/network/go-broadcast-client
 	./packages/network/go-chaintracks
 	./packages/overlays/go-overlay-discovery-services
 	./packages/overlays/go-overlay-services
-	./packages/sdk/go-bt
+	./packages/overlays/go-uhrp-storage-server
 	./packages/sdk/go-script-templates
 	./packages/sdk/go-sdk
 	./packages/sdk/go-subtree
@@ -17,7 +17,6 @@ use (
 	./packages/wallet/go-402-pay/echo
 	./packages/wallet/go-402-pay/fiber
 	./packages/wallet/go-402-pay/gin
-	./packages/wallet/go-uhrp-storage-server
 	./packages/wallet/go-wallet-toolbox
 	./packages/wallet/go-wallet-toolbox/examples/complex_wallet_examples/certifier_server_example
 	./packages/wallet/go-wallet-toolbox/examples/complex_wallet_examples/create_faucet_server

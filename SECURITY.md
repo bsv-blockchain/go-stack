@@ -4,10 +4,9 @@
 
 | Package tier | Supported |
 |-------------|-----------|
-| Tier 0 (SDK primitives — go-sdk, go-bt, go-subtree) | Latest release |
+| Tier 0 (SDK primitives — go-sdk, go-subtree, go-script-templates) | Latest release |
 | Tier 1 (Wallet, Overlay, Messaging, Network) | Latest release |
-| Tier 2 (Apps — ARC, Arcade, broadcast, Merkle) | Latest release |
-| Tier 3 (Helpers, examples) | Best-effort |
+| Tier 2 (Middleware, examples) | Best-effort |
 
 ## Reporting a Vulnerability
 
