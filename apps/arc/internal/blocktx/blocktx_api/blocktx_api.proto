@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+option go_package = ".;blocktx_api";
+
+package blocktx_api;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+service BlockTxAPI {
+  // Health returns the health of the API.
+  rpc Health (google.protobuf.Empty) returns (HealthResponse) {}
+
+  // ClearBlocks clears block data
+  rpc ClearBlocks(ClearData) returns (RowsAffectedResponse) {}
+
+  // ClearRegisteredTransactions clears registered transactions
+  rpc ClearRegisteredTransactions(ClearData) returns (RowsAffectedResponse) {}
+
+  // VerifyMerkleRoots verifies the merkle roots existance in blocktx db and returns unverified block heights
+  rpc VerifyMerkleRoots(MerkleRootsVerificationRequest) returns (MerkleRootVerificationResponse) {}
+
+  // RegisterTransaction registers a transaction in blocktx
+  rpc RegisterTransaction (Transaction) returns (google.protobuf.Empty) {}
+
+  // RegisterTransactions registers multiple transactions in blocktx
+  rpc RegisterTransactions (Transactions) returns (google.protobuf.Empty) {}
+
+  // CurrentBlockHeight returns current block height
+  rpc CurrentBlockHeight (google.protobuf.Empty) returns (CurrentBlockHeightResponse) {}
+
+  // LatestBlocks returns specific number of latest blocks from longest chain
+  rpc LatestBlocks (NumOfLatestBlocks) returns (LatestBlocksResponse) {}
+
+  // AnyTransactionsMined returns true if any of the transactions is mined
+  rpc AnyTransactionsMined(Transactions) returns (AnyTransactionsMinedResponse) {}
+}
+
+message IsMined {
+  bytes hash = 1;
+  bool mined = 2;
+}
+
+message NumOfLatestBlocks {
+  uint64 blocks = 1;
+}
+
+message LatestBlocksResponse {
+  repeated Block blocks = 1;
+  repeated BlockGap block_gaps = 2;
+}
+
+message AnyTransactionsMinedResponse {
+  repeated IsMined transactions = 1;
+}
+
+// swagger:model HealthResponse
+message HealthResponse {
+  bool ok = 1;
+  string details = 2;
+  google.protobuf.Timestamp timestamp = 3;
+  string nats = 4;
+}
+
+// Statuses have a difference between them in case
+// it's necessary to add more values in between.
+enum Status {
+	UNKNOWN = 0; // This value is unused for now, but it's required by protobuf to have enum field with value 0
+	LONGEST = 10;
+	STALE = 20;
+	ORPHANED = 30;
+}
+
+// swagger:model Block {
+message Block {
+  bytes hash = 1; // Little endian
+  bytes previous_hash = 2; // Little endian
+  bytes merkle_root = 3; // Little endian
+  uint64 height = 4;
+  bool processed = 5;
+  Status status = 6;
+  string chainwork = 7;
+  google.protobuf.Timestamp processed_at = 8;
+  google.protobuf.Timestamp timestamp = 9;
+}
+
+// swagger:model BlockGap {
+message BlockGap {
+  bytes hash = 1; // Little endian
+  uint64 height = 2;
+}
+
+// swagger:model Transactions
+message Transactions {
+  repeated Transaction transactions = 1;
+}
+
+message TransactionBlock {
+  bytes block_hash = 1; // Little endian
+  uint64 block_height = 2;
+  bytes transaction_hash = 3; // Little endian
+  string merklePath = 4;
+  Status block_status = 5;
+  google.protobuf.Timestamp timestamp = 6;
+}
+
+message TransactionBlocks {
+  repeated TransactionBlock transaction_blocks = 1;
+}
+
+// swagger:model Transaction
+message Transaction {
+  bytes hash = 1; // Little endian
+}
+
+// swagger:model ClearData
+message ClearData {
+  int32 retentionDays = 1;
+}
+
+// swagger:model RowsAffectedResponse
+message RowsAffectedResponse {
+  int64 rows = 1;
+}
+
+// swagger:model CurrentBlockHeightResponse
+message CurrentBlockHeightResponse {
+  uint64 currentBlockHeight = 1;
+}
+
+message DelUnfinishedBlockProcessingRequest {
+  string processed_by = 1;
+}
+
+message MerkleRootVerificationRequest {
+	string merkle_root = 1;
+	uint64 block_height = 2;
+}
+
+message MerkleRootsVerificationRequest {
+	repeated MerkleRootVerificationRequest merkle_roots = 1;
+}
+
+message MerkleRootVerificationResponse {
+	repeated uint64 unverified_block_heights = 1;
+}

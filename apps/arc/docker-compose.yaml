@@ -1,0 +1,260 @@
+
+services:
+  node1:
+    container_name: node1
+    image: bitcoinsv/bitcoin-sv:1.1.0
+    ports:
+      - "18332:18332"
+    expose:
+      - "18332"
+      - "18333"
+      - "28332"
+    healthcheck:
+      test: [ "CMD", "/entrypoint.sh", "bitcoin-cli", "getinfo" ]
+    volumes:
+      - ./test/config/bitcoin.conf:/data/bitcoin.conf
+    command: [ "/entrypoint.sh", "bitcoind", "-connect=node2:18333" ]
+
+  node2:
+    container_name: node2
+    image: bitcoinsv/bitcoin-sv:1.1.0
+    expose:
+      - "18332"
+      - "18333"
+    healthcheck:
+      test: [ "CMD", "/entrypoint.sh", "bitcoin-cli", "getinfo" ]
+    volumes:
+      - ./test/config/bitcoin.conf:/data/bitcoin.conf
+    command: [ "/entrypoint.sh", "bitcoind", "-connect=node1:18333" ]
+
+  db:
+    image: postgres:15.4
+    restart: always
+    environment:
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DATABASE}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d blocktx", "-U arcuser" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+    expose:
+      - "5432"
+
+  migrate-blocktx:
+    container_name: migrate-blocktx
+    image: migrate/migrate:v4.16.2
+    entrypoint:
+      [
+        "migrate",
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://${PG_USERNAME}:${PG_PASSWORD}@db:5432/${PG_DATABASE}?sslmode=disable&x-migrations-table=blocktx",
+      ]
+    command: [ "up" ]
+    volumes:
+      - ./internal/blocktx/store/postgresql/migrations:/migrations
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  migrate-metamorph:
+    container_name: migrate-metamorph
+    image: migrate/migrate:v4.16.2
+    entrypoint:
+      [
+        "migrate",
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://${PG_USERNAME}:${PG_PASSWORD}@db:5432/${PG_DATABASE}?sslmode=disable&x-migrations-table=metamorph",
+      ]
+    command: [ "up" ]
+    volumes:
+      - ./internal/metamorph/store/postgresql/migrations:/migrations
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  migrate-callbacker:
+    container_name: migrate-callbacker
+    image: migrate/migrate:v4.16.2
+    entrypoint:
+      [
+        "migrate",
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://${PG_USERNAME}:${PG_PASSWORD}@db:5432/${PG_DATABASE}?sslmode=disable&x-migrations-table=callbacker",
+      ]
+    command: [ "up" ]
+    volumes:
+      - ./internal/callbacker/store/postgresql/migrations:/migrations
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  nats-1:
+    image: nats:2.10.18-alpine3.20
+    container_name: nats-server-1
+    restart: on-failure
+    ports:
+      - "4222:4222"
+    hostname: nats-server
+    volumes:
+      - ./test/config/nats-server-host-1.conf:/etc/nats/nats-server.conf
+    healthcheck:
+      test: wget http://localhost:8222/healthz -q -S -O -
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  nats-2:
+    image: nats:2.10.18-alpine3.20
+    container_name: nats-server-2
+    restart: on-failure
+    ports:
+      - "4223:4222"
+    hostname: nats-server
+    volumes:
+      - ./test/config/nats-server-host-2.conf:/etc/nats/nats-server.conf
+    healthcheck:
+      test: wget http://localhost:8222/healthz -q -S -O -
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cache:
+    image: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+
+  blocktx:
+    image: test-arc
+    expose:
+      - "8011"
+    volumes:
+      - ./test/config/config.yaml:/service/config.yaml
+      - ./test/config/config_common.yaml:/service/config_common.yaml
+    command: [ "./arc", "-blocktx=true", "-config=./config.yaml,./config_common.yaml" ]
+    environment:
+      - ARC_TRACING_ENABLED
+    depends_on:
+      nats-1:
+        condition: service_healthy
+      nats-2:
+        condition: service_healthy
+      node1:
+        condition: service_healthy
+      node2:
+        condition: service_healthy
+      migrate-blocktx:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [ "CMD", "/bin/grpc_health_probe", "-addr=:8011", "-service=liveness", "-rpc-timeout=5s" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  callbacker:
+    image: test-arc
+    expose:
+      - "8021"
+    command: [ "./arc", "-callbacker=true", "-config=./config.yaml,./config_common.yaml" ]
+    environment:
+      - ARC_TRACING_ENABLED
+    volumes:
+      - ./test/config/config.yaml:/service/config.yaml
+      - ./test/config/config_common.yaml:/service/config_common.yaml
+    depends_on:
+      nats-1:
+        condition: service_healthy
+      nats-2:
+        condition: service_healthy
+      blocktx:
+        condition: service_started
+      migrate-callbacker:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [ "CMD", "/bin/grpc_health_probe", "-addr=:8021", "-service=liveness", "-rpc-timeout=5s" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  metamorph:
+    image: test-arc
+    expose:
+      - "8001"
+    command: [ "./arc", "-metamorph=true", "-config=./config.yaml,./config_common.yaml" ]
+    environment:
+      - ARC_TRACING_ENABLED
+    volumes:
+      - ./test/config/config.yaml:/service/config.yaml
+      - ./test/config/config_common.yaml:/service/config_common.yaml
+    depends_on:
+      blocktx:
+        condition: service_healthy
+      callbacker:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      migrate-metamorph:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [ "CMD", "/bin/grpc_health_probe", "-addr=:8001", "-service=liveness", "-rpc-timeout=5s" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  api:
+    image: test-arc
+    ports:
+      - "8011:8011"
+      - "9090:9090"
+      - "9999:9999"
+      - "2112:2112"
+    expose:
+      - "9090"
+      - "2112"
+      - "8033"
+    command: [ "./arc", "-api=true", "-config=./config.yaml,./config_common.yaml" ]
+    environment:
+      - ARC_TRACING_ENABLED
+    volumes:
+      - ./test/config/config.yaml:/service/config.yaml
+      - ./test/config/config_common.yaml:/service/config_common.yaml
+    depends_on:
+      metamorph:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "/bin/grpc_health_probe", "-addr=:8033", "-service=readiness", "-rpc-timeout=5s" ]
+      interval: 6s
+      timeout: 5s
+      retries: 3
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.68.0
+    profiles: [ "tracing" ]
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+
+  tests:
+    image: test-arc
+    command: [ "./e2e_test.test" , "-test.v" , "-test.failfast" ]
+    depends_on:
+      - api

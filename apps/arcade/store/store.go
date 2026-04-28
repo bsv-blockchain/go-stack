@@ -1,0 +1,75 @@
+package store
+
+import (
+	"context"
+	"errors"
+	"time"
+
+	"github.com/bsv-blockchain/arcade/models"
+)
+
+// ErrNotFound is returned when a requested record does not exist.
+var ErrNotFound = errors.New("not found")
+
+// Store handles all persistence operations for transactions and submissions
+type Store interface {
+	// GetOrInsertStatus inserts a new transaction status or returns the existing one if it already exists.
+	// Returns the status, a boolean indicating if it was newly inserted (true) or already existed (false), and any error.
+	// This enables idempotent transaction submission - duplicate submissions return the existing status
+	// and can still register new callbacks.
+	GetOrInsertStatus(ctx context.Context, status *models.TransactionStatus) (existing *models.TransactionStatus, inserted bool, err error)
+
+	// UpdateStatus updates an existing transaction status (used for P2P, blocks, etc.)
+	UpdateStatus(ctx context.Context, status *models.TransactionStatus) error
+
+	// GetStatus retrieves the status for a transaction
+	GetStatus(ctx context.Context, txid string) (*models.TransactionStatus, error)
+
+	// GetStatusesSince retrieves all transactions updated since a given timestamp
+	GetStatusesSince(ctx context.Context, since time.Time) ([]*models.TransactionStatus, error)
+
+	// SetStatusByBlockHash updates all transactions with the given block hash to a new status.
+	// Returns the txids that were updated. For unmined statuses (SEEN_ON_NETWORK),
+	// block fields are cleared. For IMMUTABLE, block fields are preserved.
+	SetStatusByBlockHash(ctx context.Context, blockHash string, newStatus models.Status) ([]string, error)
+
+	// InsertMerklePath stores a merkle path for a transaction in a specific block.
+	// The path is stored in binary format.
+	InsertMerklePath(ctx context.Context, txid, blockHash string, blockHeight uint64, merklePath []byte) error
+
+	// SetMinedByBlockHash joins merkle_paths to set transactions as MINED for a canonical block.
+	// Returns full status objects for all affected transactions.
+	SetMinedByBlockHash(ctx context.Context, blockHash string) ([]*models.TransactionStatus, error)
+
+	// InsertSubmission creates a new submission record
+	InsertSubmission(ctx context.Context, sub *models.Submission) error
+
+	// GetSubmissionsByTxID retrieves all active subscriptions for a transaction
+	GetSubmissionsByTxID(ctx context.Context, txid string) ([]*models.Submission, error)
+
+	// GetSubmissionsByToken retrieves all submissions for a callback token
+	GetSubmissionsByToken(ctx context.Context, callbackToken string) ([]*models.Submission, error)
+
+	// UpdateDeliveryStatus updates the delivery tracking for a submission
+	UpdateDeliveryStatus(ctx context.Context, submissionID string, lastStatus models.Status, retryCount int, nextRetry *time.Time) error
+
+	// Block tracking for catch-up and reorg handling
+
+	// IsBlockOnChain checks if a block is processed AND on the canonical chain
+	IsBlockOnChain(ctx context.Context, blockHash string) (bool, error)
+
+	// MarkBlockProcessed records a block as processed with its chain status
+	MarkBlockProcessed(ctx context.Context, blockHash string, blockHeight uint64, onChain bool) error
+
+	// HasAnyProcessedBlocks checks if there are any blocks in the processed_blocks table
+	HasAnyProcessedBlocks(ctx context.Context) (bool, error)
+
+	// GetOnChainBlockAtHeight returns the block hash at the given height that is on_chain (for reorg detection)
+	GetOnChainBlockAtHeight(ctx context.Context, height uint64) (blockHash string, found bool, err error)
+
+	// MarkBlockOffChain marks a block as off-chain (orphaned due to reorg)
+	MarkBlockOffChain(ctx context.Context, blockHash string) error
+
+	// Close closes the database connection
+	Close() error
+}

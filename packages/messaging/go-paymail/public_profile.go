@@ -1,0 +1,88 @@
+package paymail
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"strings"
+)
+
+var (
+	// ErrPublicProfileMissingAlias is returned when alias is missing
+	ErrPublicProfileMissingAlias = errors.New("missing alias")
+	// ErrPublicProfileMissingDomain is returned when domain is missing
+	ErrPublicProfileMissingDomain = errors.New("missing domain")
+	// ErrPublicProfileInvalidURL is returned when URL is invalid
+	ErrPublicProfileInvalidURL = errors.New("invalid url")
+	// ErrPublicProfileBadResponse is returned when paymail provider returns bad response
+	ErrPublicProfileBadResponse = errors.New("bad response from paymail provider")
+)
+
+/*
+Default:
+{
+    "avatar": "https://<domain><image>",
+    "name": "<name>"
+}
+*/
+
+// PublicProfileResponse is the result returned from GetPublicProfile()
+type PublicProfileResponse struct {
+	StandardResponse
+	PublicProfilePayload
+}
+
+// PublicProfilePayload is the payload from the response
+type PublicProfilePayload struct {
+	Avatar string `json:"avatar"` // A URL that returns a 180x180 image. It can accept an optional parameter `s` to return an image of width and height `s`. The image should be JPEG, PNG, or GIF.
+	Name   string `json:"name"`   // A string up to 100 characters long. (name or nickname)
+}
+
+// GetPublicProfile will return a valid public profile
+//
+// Specs: https://github.com/bitcoin-sv-specs/brfc-paymail/pull/7/files
+func (c *Client) GetPublicProfile(publicProfileURL, alias, domain string) (response *PublicProfileResponse, err error) {
+	// Require a valid url
+	if len(publicProfileURL) == 0 || !strings.Contains(publicProfileURL, "https://") {
+		err = fmt.Errorf("url %s: %w", publicProfileURL, ErrPublicProfileInvalidURL)
+		return response, err
+	}
+
+	// Basic requirements for request
+	if len(alias) == 0 {
+		err = ErrPublicProfileMissingAlias
+		return response, err
+	} else if len(domain) == 0 {
+		err = ErrPublicProfileMissingDomain
+		return response, err
+	}
+
+	// Set the base url and path, assuming the url is from the prior GetCapabilities() request
+	// https://<host-discovery-target>/public-profile/{alias}@{domain.tld}
+	reqURL := replaceAliasDomain(publicProfileURL, alias, domain)
+
+	// Fire the GET request
+	var resp StandardResponse
+	if resp, err = c.getRequest(reqURL); err != nil {
+		return response, err
+	}
+
+	// Start the response
+	response = &PublicProfileResponse{StandardResponse: resp}
+
+	// Test the status code (200 or 304 is valid)
+	if response.StatusCode != http.StatusOK && response.StatusCode != http.StatusNotModified {
+		serverError := &ServerError{}
+		if err = json.Unmarshal(resp.Body, serverError); err != nil {
+			return response, err
+		}
+		err = fmt.Errorf("code %d, message: %s: %w", response.StatusCode, serverError.Message, ErrPublicProfileBadResponse)
+		return response, err
+	}
+
+	// Decode the body of the response
+	err = json.Unmarshal(resp.Body, &response)
+
+	return response, err
+}

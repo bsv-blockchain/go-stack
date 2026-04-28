@@ -1,0 +1,99 @@
+components:
+  requestBodies:
+    SubmitTransactionBody:
+      content:
+        application/octet-stream:
+          schema:
+            type: object
+            properties:
+              Transaction:
+                type: string
+                format: binary
+                description: 'Serialized transaction data (e.g., a binary format such as Protobuf or other)'
+            required:
+              - Transaction
+
+    RequestSyncResponseBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              version:
+                type: integer
+                description: 'The version number of the GASP protocol'
+              since:
+                type: number
+                format: double
+                description: 'Timestamp or sequence number from which to start synchronization'
+              limit:
+                type: integer
+                format: uint32
+                default: 0
+                description: 'Maximum number of items to return'
+            required:
+              - version
+              - since
+              - limit
+
+    RequestForeignGASPNodeBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - graphID
+              - txid
+              - outputIndex
+            properties:
+              graphID:
+                type: string
+                description: The graph ID in the format of "txid.outputIndex"
+                example: "0000000000000000000000000000000000000000000000000000000000000000.1"
+              txid:
+                type: string
+                description: The transaction ID
+                example: "0000000000000000000000000000000000000000000000000000000000000000"
+              outputIndex:
+                type: integer
+                description: The output index
+                format: uint32
+                example: 1
+
+    LookupQuestionBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              service:
+                type: string
+                description: 'Service name to query'
+              query:
+                type: object
+                description: 'Query parameters specific to the service'
+                additionalProperties: true
+            required:
+              - service
+              - query
+
+    ArcIngestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              txid:
+                type: string
+                description: 'Transaction ID in hexadecimal format'
+              merklePath:
+                type: string
+                description: 'Merkle path in hexadecimal format'
+              blockHeight:
+                type: integer
+                format: uint32
+                description: 'Block height where the transaction was included'
+            required:
+              - txid
+              - merklePath
+              - blockHeight

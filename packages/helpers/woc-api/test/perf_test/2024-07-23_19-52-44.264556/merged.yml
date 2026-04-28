@@ -1,0 +1,27 @@
+---
+execution:
+- concurrency: 10
+  executor: locust
+  hold-for: 50s
+  ramp-up: 1s
+  scenario: get-requests
+  throughput: 1000
+modules:
+  locust:
+    cmdline: null
+reporting:
+- module: final-stats
+- module: console
+- data-source: sample-labels
+  filename: reports-junit-format.xml
+  module: junit-xml
+scenarios:
+  get-requests:
+    requests:
+    - headers:
+        Accept: application/json
+        Authorization: mainnet_2975d2afeb0b46f9e249f035949e700a
+      method: GET
+      url: https://api-ovh.whatsonchain.com/v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance
+    timeout: 5s
+

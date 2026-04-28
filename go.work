@@ -1,0 +1,30 @@
+go 1.26.0
+
+use (
+	./apps/arc
+	./apps/arcade
+	./apps/arcade-refactor
+	./apps/go-broadcast
+	./apps/merkle-service
+	./packages/helpers/go-bsv-middleware
+	./packages/helpers/woc-api
+	./packages/messaging/go-message-box-server
+	./packages/messaging/go-paymail
+	./packages/network/go-broadcast-client
+	./packages/network/go-chaintracks
+	./packages/overlays/go-overlay-discovery-services
+	./packages/overlays/go-overlay-services
+	./packages/sdk/go-bt
+	./packages/sdk/go-script-templates
+	./packages/sdk/go-sdk
+	./packages/sdk/go-subtree
+	./packages/wallet/go-402-pay
+	./packages/wallet/go-402-pay/echo
+	./packages/wallet/go-402-pay/fiber
+	./packages/wallet/go-402-pay/gin
+	./packages/wallet/go-uhrp-storage-server
+	./packages/wallet/go-wallet-toolbox
+	./packages/wallet/go-wallet-toolbox/examples/complex_wallet_examples/certifier_server_example
+	./packages/wallet/go-wallet-toolbox/examples/complex_wallet_examples/create_faucet_server
+	./packages/wallet/go-wallet-toolbox/manual_tests
+)

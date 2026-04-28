@@ -1,0 +1,7 @@
+[2024-07-23 19:59:45,431] Farzans-MacBook-Pro/INFO/locust.main: Run time limit set to 10 seconds
+[2024-07-23 19:59:45,431] Farzans-MacBook-Pro/INFO/locust.main: Starting Locust 2.29.1
+[2024-07-23 19:59:45,432] Farzans-MacBook-Pro/WARNING/locust.runners: Your selected spawn rate is very high (>100), and this is known to sometimes cause issues. Do you really need to ramp up that fast?
+[2024-07-23 19:59:45,432] Farzans-MacBook-Pro/INFO/locust.runners: Ramping to 1000 users at a rate of 1000.00 per second
+[2024-07-23 19:59:45,478] Farzans-MacBook-Pro/INFO/locust.runners: All users spawned: {"GeneratedSwarm": 1000} (1000 total users)
+[2024-07-23 19:59:55,258] Farzans-MacBook-Pro/INFO/locust.main: --run-time limit reached, shutting down
+[2024-07-23 20:00:00,242] Farzans-MacBook-Pro/INFO/locust.main: Shutting down (exit code 1)

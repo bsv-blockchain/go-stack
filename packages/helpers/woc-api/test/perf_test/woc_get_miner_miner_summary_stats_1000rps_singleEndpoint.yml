@@ -1,0 +1,25 @@
+execution:
+  - executor: locust
+    concurrency: 1000  # Number of users
+    hold-for: 1m  # Duration of the test
+    ramp-up: 30s  # Time to reach full load
+    scenario: get-miner-summary-stats
+
+scenarios:
+  get-miner-summary-stats:
+    requests:
+      - url: https://api.whatsonchain.com/v1/bsv/main/miner/summary/stats?days=90
+        method: GET
+        headers:
+          Accept: "application/json"
+
+reporting:
+  - module: final-stats
+  - module: console
+  - module: junit-xml
+    filename: reports-junit-format.xml
+    data-source: sample-labels
+
+modules:
+  locust:
+    cmdline:

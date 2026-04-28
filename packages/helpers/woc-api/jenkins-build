@@ -1,0 +1,114 @@
+pipeline {
+    agent any
+
+    tools {
+        go "go 1.23"
+    }
+
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout()
+        buildDiscarder logRotator(
+            artifactDaysToKeepStr: '',
+            artifactNumToKeepStr: '10',
+            daysToKeepStr: '',
+            numToKeepStr: '10'
+        )
+    }
+    stages {
+        stage('Preparation') {
+            steps {
+                echo "Preparing pipeline... "
+                sh 'printenv'
+                echo "${WORKSPACE}"
+            }
+        }
+
+        stage('Checkout Project') {
+            steps {
+                checkout(
+                    [$class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    extensions: [[$class: 'CleanBeforeCheckout']],
+                    userRemoteConfigs: [
+                       [credentialsId: 'JenkinsDeployKey',
+                        url: scm.userRemoteConfigs[0].url]
+                    ]
+                ])
+
+                script {
+                    env.PROG_NAME = sh(returnStdout: true, script: '''awk -F'"' '/^const progname =/ {print $2}' main.go''').trim()
+                    env.GIT_COMMIT_SHORT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    env.FILE_NAME = "${PROG_NAME}_${env.GIT_COMMIT_SHORT}_${BUILD_NUMBER}"
+                }
+            }
+        }
+
+        stage('Go Build') {
+            environment {
+                GO114MODULE='on'
+                GOPRIVATE='github.com/teranode-group'
+                DEBUG='0'
+                CGO_ENABLED='0'
+                GOOS='linux'
+                GOARCH='amd64'
+            }
+            steps {
+                echo "Building ${FILE_NAME}... "
+                sh'''#!/bin/bash
+                    echo ${DEBUG}
+                    echo ${CGO_ENABLED}
+                    go version
+                    mkdir -p build/linux
+                    mkdir -p build_tar/${PROG_NAME}
+                    ls -lrtah
+                    if [[ ${DEBUG} == "1" ]]; then
+                        echo "debug build..."
+                        go build --trimpath\
+                            -o build/linux/${FILE_NAME}\
+                            -ldflags="-X main.commit=${GIT_COMMIT_SHORT} -X main.version=MANUAL"\
+                            -gcflags "all=-N -l"
+                    else
+                        go build --trimpath\
+                        -o build/linux/${FILE_NAME}\
+                        -ldflags="-s -w -X main.commit=${GIT_COMMIT_SHORT} -X main.version=MANUAL"
+                    fi
+                    cp settings_local.conf build/linux/
+                    cd build/linux/
+                    tar cvfz ../../build_tar/${PROG_NAME}/${FILE_NAME}.tar.gz .
+                '''
+                echo "${PROG_NAME}: Built ${FILE_NAME}"
+            }
+        }
+
+        stage('Go Archive') {
+            steps {
+                archiveArtifacts artifacts: "build_tar/${PROG_NAME}/*.tar.gz",
+                defaultExcludes: true,
+                followSymlinks: false
+                echo "${FILE_NAME}.tar.gz: Archived"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "SUCCESS!"
+            slackSend channel: '#woc-deployment',
+            color: 'good',
+            message: "SUCCESS: Build of ${env.GIT_COMMIT_SHORT} ${BUILD_URL}",
+            tokenCredentialId: 'slack-notification-token'
+        }
+        failure {
+            echo "FAILED!"
+            slackSend channel: '#woc-deployment',
+            color: 'danger',
+            message: "FAILED: Build of ${env.GIT_COMMIT_SHORT} ${BUILD_URL}",
+            tokenCredentialId: 'slack-notification-token'
+        }
+        always {
+            echo "cleaning your workspace to prevent unecessary storage..."
+            cleanWs()
+        }
+    }
+}

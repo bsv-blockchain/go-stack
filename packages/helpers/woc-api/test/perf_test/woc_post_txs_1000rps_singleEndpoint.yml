@@ -1,0 +1,28 @@
+execution:
+- executor: locust
+  throughput: 10000
+  hold-for: 2s
+  scenario: post-requests
+
+scenarios:
+  post-requests:
+    timeout: 5
+    requests:
+      - url: https://api-ovh.whatsonchain.com/v1/bsv/main/txs
+        method: POST
+        headers:
+          Accept: "Content-Type: application/json"
+          Authorization: mainnet_2975d2afeb0b46f9e249f035949e700a
+        body:
+           txids: ["e551763c5bc8bf2f5ccaf3715cb03c6d8da50c4856bffe8acbf473cf40ae6210","356d60b52e7054a260c6bb127bc8b90d100a9ade882167974e6b354a0dcd2b0c"]
+ 
+reporting:
+  - module: final-stats
+  - module: console
+  - module: junit-xml
+    filename: reports-junit-format.xml
+    data-source: sample-labels
+
+modules:
+  locust:
+    cmdline:

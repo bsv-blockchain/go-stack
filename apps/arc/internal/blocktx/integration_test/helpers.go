@@ -1,0 +1,92 @@
+package integrationtest
+
+import (
+	"context"
+	"database/sql"
+	"log/slog"
+	"os"
+	"testing"
+
+	"github.com/bitcoin-sv/arc/internal/blocktx"
+	"github.com/bitcoin-sv/arc/internal/blocktx/bcnet"
+	"github.com/bitcoin-sv/arc/internal/blocktx/bcnet/blocktx_p2p"
+	"github.com/bitcoin-sv/arc/internal/blocktx/blocktx_api"
+	"github.com/bitcoin-sv/arc/internal/blocktx/store/postgresql"
+	testutils "github.com/bitcoin-sv/arc/pkg/test_utils"
+	"github.com/stretchr/testify/require"
+)
+
+func setupSut(t *testing.T, dbInfo string) (*blocktx.Processor, *blocktx_p2p.MsgHandler, *postgresql.PostgreSQL, chan []byte, chan *blocktx_api.TransactionBlocks) {
+	t.Helper()
+
+	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
+
+	blockProcessCh := make(chan *bcnet.BlockMessagePeer, 10)
+
+	minedTxsCh := make(chan *blocktx_api.TransactionBlocks, 10)
+	registerTxChannel := make(chan []byte, 10)
+
+	store, err := postgresql.New(dbInfo, 10, 80)
+	require.NoError(t, err)
+
+	p2pMsgHandler := blocktx_p2p.NewMsgHandler(logger, nil, blockProcessCh)
+	processor, err := blocktx.NewProcessor(
+		logger,
+		store,
+		nil,
+		blockProcessCh,
+		blocktx.WithMinedTxsChan(minedTxsCh),
+		blocktx.WithRegisterTxsChan(registerTxChannel),
+		blocktx.WithRegisterTxsBatchSize(1), // process transaction immediately
+	)
+	require.NoError(t, err)
+
+	return processor, p2pMsgHandler, store, registerTxChannel, minedTxsCh
+}
+
+func getTxBlockItems(txBlocksCh chan *blocktx_api.TransactionBlocks) []*blocktx_api.TransactionBlock {
+	txBlocks := make([]*blocktx_api.TransactionBlock, 0)
+
+	for {
+		select {
+		case tx := <-txBlocksCh:
+			txBlocks = append(txBlocks, tx.TransactionBlocks...)
+		default:
+			return txBlocks
+		}
+	}
+}
+
+func pruneTables(t *testing.T, db *sql.DB) {
+	t.Helper()
+
+	_, err := db.Exec("DELETE FROM blocktx.blocks WHERE hash IS NOT NULL")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func verifyBlock(t *testing.T, store *postgresql.PostgreSQL, hashStr string, height uint64, status blocktx_api.Status) {
+	t.Helper()
+	hash := testutils.RevChainhash(t, hashStr)
+	block, err := store.GetBlock(context.Background(), hash)
+	require.NoError(t, err)
+	require.Equal(t, height, block.Height)
+	require.Equal(t, status, block.Status)
+}
+
+func verifyTxs(t *testing.T, expectedTxs []*blocktx_api.TransactionBlock, publishedTxs []*blocktx_api.TransactionBlock) {
+	t.Helper()
+
+	strippedTxs := make([]*blocktx_api.TransactionBlock, len(publishedTxs))
+	for i, tx := range publishedTxs {
+		strippedTxs[i] = &blocktx_api.TransactionBlock{
+			BlockHash:       tx.BlockHash,
+			BlockHeight:     tx.BlockHeight,
+			TransactionHash: tx.TransactionHash,
+			BlockStatus:     tx.BlockStatus,
+		}
+	}
+
+	require.ElementsMatch(t, expectedTxs, strippedTxs)
+}

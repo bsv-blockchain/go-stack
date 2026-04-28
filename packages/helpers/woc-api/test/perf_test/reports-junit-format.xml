@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="sample_labels" package_name="bzt">
+    <testcase classname="https://a.blazemeter.com/app/?public-token=m1oTVF5LQINxurH1xmqR0YHPbEcFT6tmpewrpzRwrRxsyfuDwy#reports/r-ext-669ffda080bc3122319695/summary" name="/v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance">
+      <system-out>BlazeMeter report link: https://a.blazemeter.com/app/?public-token=m1oTVF5LQINxurH1xmqR0YHPbEcFT6tmpewrpzRwrRxsyfuDwy#reports/r-ext-669ffda080bc3122319695/summary
+</system-out>
+      <error message="Too Many Requests for url: /v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance" type="Error">Too Many Requests for url: /v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance
+(status code is 429)
+(total errors of this type: 18)</error>
+      <error message="HTTPSConnectionPool(host='api-ovh.whatsonchain.com', port=443): Read timed out. (read timeout=5.0)" type="Error">HTTPSConnectionPool(host='api-ovh.whatsonchain.com', port=443): Read timed out. (read timeout=5.0)
+(status code is 500)
+(total errors of this type: 1970)</error>
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,126 @@
+package config
+
+// Config represents the complete sync configuration
+type Config struct {
+	Version        int             `yaml:"version"`                   // Config version (1)
+	Name           string          `yaml:"name,omitempty"`            // Optional config name
+	ID             string          `yaml:"id,omitempty"`              // Optional config ID
+	FileLists      []FileList      `yaml:"file_lists,omitempty"`      // Reusable file lists
+	DirectoryLists []DirectoryList `yaml:"directory_lists,omitempty"` // Reusable directory lists
+	Groups         []Group         `yaml:"groups"`                    // List of sync groups
+}
+
+// SourceConfig defines the source repository settings
+type SourceConfig struct {
+	Repo          string `yaml:"repo"`                      // Format: org/repo
+	Branch        string `yaml:"branch"`                    // Default: master
+	BlobSizeLimit string `yaml:"blob_size_limit,omitempty"` // Max blob size for partial clone (e.g., "10m"), "0" to disable
+	SecurityEmail string `yaml:"security_email,omitempty"`  // Security contact email address (for transformation)
+	SupportEmail  string `yaml:"support_email,omitempty"`   // Support/contact email address (for transformation)
+}
+
+// GlobalConfig contains global settings applied across all targets
+// These settings are merged with target-specific settings rather than overridden
+type GlobalConfig struct {
+	PRLabels        []string `yaml:"pr_labels,omitempty"`         // Global PR labels to apply to all PRs
+	PRAssignees     []string `yaml:"pr_assignees,omitempty"`      // Global GitHub usernames to assign to all PRs
+	PRReviewers     []string `yaml:"pr_reviewers,omitempty"`      // Global GitHub usernames to request reviews from
+	PRTeamReviewers []string `yaml:"pr_team_reviewers,omitempty"` // Global GitHub team slugs to request reviews from
+}
+
+// DefaultConfig contains default settings applied to all targets
+type DefaultConfig struct {
+	BranchPrefix    string   `yaml:"branch_prefix,omitempty"`     // Default: chore/sync-files
+	PRLabels        []string `yaml:"pr_labels,omitempty"`         // Default: ["automated-sync"]
+	PRAssignees     []string `yaml:"pr_assignees,omitempty"`      // GitHub usernames to assign to PRs
+	PRReviewers     []string `yaml:"pr_reviewers,omitempty"`      // GitHub usernames to request reviews from
+	PRTeamReviewers []string `yaml:"pr_team_reviewers,omitempty"` // GitHub team slugs to request reviews from
+}
+
+// TargetConfig defines a target repository and its file mappings
+type TargetConfig struct {
+	Repo              string             `yaml:"repo"`                          // Format: org/repo
+	Branch            string             `yaml:"branch,omitempty"`              // Target branch for PR base (defaults to repo's default branch)
+	BlobSizeLimit     string             `yaml:"blob_size_limit,omitempty"`     // Override source blob size limit for partial clone
+	Files             []FileMapping      `yaml:"files,omitempty"`               // Files to sync
+	Directories       []DirectoryMapping `yaml:"directories,omitempty"`         // Directories to sync
+	FileListRefs      []string           `yaml:"file_list_refs,omitempty"`      // References to file lists by ID
+	DirectoryListRefs []string           `yaml:"directory_list_refs,omitempty"` // References to directory lists by ID
+	Transform         Transform          `yaml:"transform,omitempty"`           // Optional transformations
+	SecurityEmail     string             `yaml:"security_email,omitempty"`      // Override security contact email (defaults to source security_email)
+	SupportEmail      string             `yaml:"support_email,omitempty"`       // Override support contact email (defaults to source support_email)
+	PRLabels          []string           `yaml:"pr_labels,omitempty"`           // Override default PR labels
+	PRAssignees       []string           `yaml:"pr_assignees,omitempty"`        // Override default PR assignees
+	PRReviewers       []string           `yaml:"pr_reviewers,omitempty"`        // Override default PR reviewers
+	PRTeamReviewers   []string           `yaml:"pr_team_reviewers,omitempty"`   // Override default PR team reviewers
+}
+
+// FileMapping defines source to destination file mapping
+type FileMapping struct {
+	Src    string `yaml:"src"`              // Source file path
+	Dest   string `yaml:"dest"`             // Destination file path
+	Delete bool   `yaml:"delete,omitempty"` // Delete the destination file instead of syncing
+}
+
+// DirectoryMapping defines source to destination directory mapping
+type DirectoryMapping struct {
+	Src               string        `yaml:"src"`                          // Source directory path
+	Dest              string        `yaml:"dest"`                         // Destination directory path
+	Exclude           []string      `yaml:"exclude,omitempty"`            // Glob patterns to exclude
+	IncludeOnly       []string      `yaml:"include_only,omitempty"`       // Glob patterns to include (excludes everything else)
+	Transform         Transform     `yaml:"transform,omitempty"`          // Apply to all files
+	PreserveStructure *bool         `yaml:"preserve_structure,omitempty"` // Keep nested structure (default: true)
+	IncludeHidden     *bool         `yaml:"include_hidden,omitempty"`     // Include hidden files (default: true)
+	Module            *ModuleConfig `yaml:"module,omitempty"`             // Module-aware sync settings
+	Delete            bool          `yaml:"delete,omitempty"`             // Delete the destination directory instead of syncing
+}
+
+// Transform defines transformation settings
+type Transform struct {
+	RepoName  bool              `yaml:"repo_name,omitempty"` // Replace repository names
+	Variables map[string]string `yaml:"variables,omitempty"` // Template variables
+}
+
+// Group represents a sync group with its own source and targets
+type Group struct {
+	Name        string         `yaml:"name"`                  // Friendly name
+	ID          string         `yaml:"id"`                    // Unique identifier
+	Description string         `yaml:"description,omitempty"` // Optional description
+	Priority    int            `yaml:"priority,omitempty"`    // Execution order (default: 0)
+	DependsOn   []string       `yaml:"depends_on,omitempty"`  // Group IDs this group depends on
+	Enabled     *bool          `yaml:"enabled,omitempty"`     // Toggle on/off (default: true)
+	Source      SourceConfig   `yaml:"source"`                // Source repository
+	Global      GlobalConfig   `yaml:"global,omitempty"`      // Group-level globals
+	Defaults    DefaultConfig  `yaml:"defaults,omitempty"`    // Group-level defaults
+	Targets     []TargetConfig `yaml:"targets"`               // Target repositories
+}
+
+// ModuleConfig defines module-aware sync settings
+type ModuleConfig struct {
+	Type       string `yaml:"type,omitempty"`        // Module type: "go" (future: "npm", "python")
+	Version    string `yaml:"version"`               // Version constraint (exact, latest, or semver)
+	CheckTags  *bool  `yaml:"check_tags,omitempty"`  // Use git tags for versions (default: true)
+	UpdateRefs bool   `yaml:"update_refs,omitempty"` // Update go.mod references
+}
+
+// FileList represents a reusable list of file mappings
+type FileList struct {
+	ID          string        `yaml:"id"`                    // Unique identifier for this list
+	Name        string        `yaml:"name"`                  // Friendly name for the list
+	Description string        `yaml:"description,omitempty"` // Optional description of the list contents
+	Files       []FileMapping `yaml:"files"`                 // File mappings in this list
+}
+
+// DirectoryList represents a reusable list of directory mappings
+type DirectoryList struct {
+	ID          string             `yaml:"id"`                    // Unique identifier for this list
+	Name        string             `yaml:"name"`                  // Friendly name for the list
+	Description string             `yaml:"description,omitempty"` // Optional description of the list contents
+	Directories []DirectoryMapping `yaml:"directories"`           // Directory mappings in this list
+}
+
+// boolPtr is a helper function to create a pointer to a boolean value.
+// This is used for optional boolean fields with default values.
+func boolPtr(b bool) *bool {
+	return &b
+}

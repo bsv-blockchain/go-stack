@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+build/
+results/
+*.key
+.DS_Store
+cov.out
+cov_short.out
+gosec-report.json
+.scannerwork
+gotest.out
+*.env
+report.xml
+broadcaster-cli.yaml
+coverage_report.html
+coverage_report_short.html

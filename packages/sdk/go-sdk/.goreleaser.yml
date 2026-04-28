@@ -1,0 +1,23 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - golangci-lint run
+
+snapshot:
+  name_template: "{{ .Tag }}"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^.github:'
+      - '^test:'
+
+builds:
+  - skip: true
+
+release:
+  # prerelease: true
+  name_template: "Release v{{.Version}}"

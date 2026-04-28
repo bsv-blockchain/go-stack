@@ -1,0 +1,260 @@
+components:
+  schemas:
+    AdmittanceInstructions:
+      type: object
+      properties:
+        outputsToAdmit:
+          type: array
+          items:
+            type: integer
+            format: uint32
+        coinsToRetain:
+          type: array
+          items:
+            type: integer
+            format: uint32
+        coinsRemoved:
+          type: array
+          items:
+            type: integer
+            format: uint32
+        ancillaryTxIDs:
+          type: array
+          items:
+            type: string
+      required:
+        - outputsToAdmit
+        - coinsToRetain
+        - coinsRemoved
+        - ancillaryTxIDs
+
+    STEAK:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/AdmittanceInstructions"
+
+    SubmitTransaction:
+      type: object
+      properties:
+        STEAK:
+          $ref: "#/components/schemas/STEAK"
+      required:
+        - STEAK
+
+    ServiceMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+        shortDescription:
+          type: string
+        iconURL:
+          type: string
+        version:
+          type: string
+        informationURL:
+          type: string
+      required:
+        - name
+        - shortDescription
+        - iconURL
+        - version
+        - informationURL
+
+    Metadata:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ServiceMetadata"
+
+    TopicManagerDocumentation:
+      type: object
+      properties:
+        documentation:
+          type: string
+          description: Markdown-formatted documentation for the topic manager
+      required:
+        - documentation
+
+    LookupServiceDocumentation:
+      type: object
+      properties:
+        documentation:
+          type: string
+          description: Markdown-formatted documentation for the lookup service
+      required:
+        - documentation
+
+    OutputListItem:
+      type: object
+      properties:
+        beef:
+          type: string
+          format: byte
+        outputIndex:
+          type: integer
+          format: uint32
+      required:
+        - beef
+        - outputIndex
+
+    LookupAnswer:
+      type: object
+      properties:
+        type:
+          type: string
+        outputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/OutputListItem"
+        result:
+          type: string
+      required:
+        - type
+        - outputs
+        - result
+
+    GASPNode:
+      type: object
+      description: A GASP node representation from the overlay engine
+      properties:
+        graphID:
+          type: string
+          description: The graph ID of the GASP node
+        rawTx:
+          type: string
+          description: The raw transaction of the GASP node
+        outputIndex:
+          type: integer
+          format: uint32
+          description: The output index of the GASP node
+        proof:
+          type: string
+          description: The proof of the GASP node
+        txMetadata:
+          type: string
+          description: The metadata of the GASP node
+        outputMetadata:
+          type: string
+          description: The metadata of the GASP node
+        inputs:
+          type: object
+          description: The inputs of the GASP node
+      required:
+        - graphID
+        - rawTx
+        - outputIndex
+        - proof
+        - txMetadata
+        - outputMetadata
+        - inputs
+
+    UTXOItem:
+      type: object
+      properties:
+        txid:
+          type: string
+          description: 'Transaction ID in hexadecimal format'
+        outputIndex:
+          type: integer
+          description: 'Output index number'
+        score:
+          type: number
+          format: double
+          description: 'Sort score of the UTXO, used for prioritization in synchronization'
+      required:
+        - txid
+        - outputIndex
+        - score
+
+    RequestSyncRes:
+      type: object
+      properties:
+        UTXOList:
+          type: array
+          items:
+            $ref: "#/components/schemas/UTXOItem"
+        since:
+          type: number
+          format: double
+          description: 'Timestamp or sequence number from which synchronization data was generated'
+      required:
+        - UTXOList
+        - since
+
+    ArcIngest:
+      type: object
+      properties:
+        status:
+          type: string
+          example: 'success'
+        message:
+          type: string
+          example: 'Transaction with ID:0000000000000000000000000000000000000000000000000000000000000000 successfully ingested.'
+      required:
+        - status
+        - message
+
+  responses:
+    SubmitTransactionResponse:
+      description: |
+        Overlay engine successfully processed the submitted transaction octet-stream with the specified topic headers.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubmitTransaction'
+
+    MetadataResponse:
+      description: |
+        A list of services with their metadata.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Metadata'
+
+    LookupServiceProviderDocumentationResponse:
+      description: |
+        Returns the documentation for the specified lookup service
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LookupServiceDocumentation'
+
+    TopicManagerDocumentationResponse:
+      description: |
+        Returns the documentation for the specified topic manager
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TopicManagerDocumentation'
+
+    RequestForeignGASPNodeResponse:
+      description: |
+        Overlay engine successfully provided the requested foreign GASP node.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GASPNode'
+
+    RequestSyncResResponse:
+      description: |
+        Response containing synchronization data for the requested topic.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RequestSyncRes'
+
+    LookupQuestionResponse:
+      description: |
+        Overlay engine successfully processed the lookup question and returned an answer.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LookupAnswer'
+
+    ArcIngestResponse:
+      description: |
+        Merkle proof successfully processed and transaction status updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArcIngest'

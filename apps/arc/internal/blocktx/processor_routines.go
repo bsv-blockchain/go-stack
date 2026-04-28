@@ -1,0 +1,96 @@
+package blocktx
+
+import (
+	"errors"
+	"log/slog"
+
+	"github.com/bitcoin-sv/arc/internal/blocktx/bcnet/blocktx_p2p"
+)
+
+var (
+	ErrGetBlockGapsFailed = errors.New("failed to get block gaps")
+	ErrNoPeers            = errors.New("no peers available")
+)
+
+func CheckBlockGaps(p *Processor) error {
+	const (
+		hoursPerDay   = 24
+		blocksPerHour = 6
+	)
+	heightRange := p.dataRetentionDays*hoursPerDay*blocksPerHour - 10
+	if heightRange <= 0 {
+		return nil
+	}
+
+	blockHeightGaps, err := p.store.GetBlockGaps(p.ctx, heightRange)
+	if err != nil {
+		return errors.Join(ErrGetBlockGapsFailed, err)
+	}
+	p.logger.Info("Block gaps", slog.Int("count", len(blockHeightGaps)))
+
+	p.resetBlockGaps()
+
+	if len(blockHeightGaps) == 0 {
+		return nil
+	}
+
+	for _, block := range blockHeightGaps {
+		p.blockGapsMap.Store(block.Hash, block.Height)
+	}
+
+	return nil
+}
+
+func FillGaps(p *Processor) error {
+	i := p.peerIndex.Load()
+	defer p.peerIndex.Store(i + 1)
+	peers := p.pm.GetPeers()
+
+	if len(peers) == 0 {
+		return ErrNoPeers
+	}
+
+	i = i % int64(len(peers))
+
+	peer := peers[i]
+	blockHeightGaps := p.GetBlockGaps()
+
+	if len(blockHeightGaps) == 0 {
+		return nil
+	}
+
+	for i, block := range blockHeightGaps {
+		if i >= maxRequestBlocks {
+			continue
+		}
+
+		p.logger.Info("adding request for missing block to request channel",
+			slog.String("hash", block.Hash.String()),
+			slog.Uint64("height", block.Height),
+			slog.String("peer", peer.String()),
+		)
+
+		select {
+		case p.blockRequestCh <- blocktx_p2p.BlockRequest{
+			Hash: block.Hash,
+			Peer: peer,
+		}:
+		default:
+		}
+	}
+
+	return nil
+}
+
+func UnorphanRecentWrongOrphans(p *Processor) error {
+	rows, err := p.store.UnorphanRecentWrongOrphans(p.ctx)
+	if err != nil {
+		p.logger.Error("failed to unorphan recent wrong orphans", slog.String("err", err.Error()))
+		return err
+	}
+	for _, b := range rows {
+		p.logger.Info("Successfully unorphaned block", slog.Uint64("height", b.Height), slog.String("hash", string(b.Hash)))
+	}
+
+	return nil
+}

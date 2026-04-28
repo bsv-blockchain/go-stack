@@ -1,0 +1,286 @@
+[2024-07-23 19:59:43,399 INFO root] Taurus CLI Tool v1.16.32
+[2024-07-23 19:59:43,399 DEBUG root] Build: 14632 Tue Jun 25 09:00:22 UTC 2024
+[2024-07-23 19:59:43,399 DEBUG root] Extended git info:  e4da36d4 Release 1.16.32 changelog
+[2024-07-23 19:59:43,399 DEBUG root] Command-line options: {'log': '/var/folders/x2/v5y1jr0j7xdcfzb104mfjv7m0000gn/T/bzt_lpnxwcjy.log', 'option': None, 'quiet': None, 'verbose': None, 'no_system_configs': None, 'aliases': ['report']}
+[2024-07-23 19:59:43,399 DEBUG root] Python: CPython 3.9.6
+[2024-07-23 19:59:43,399 DEBUG root] OS: uname_result(system='Darwin', node='Farzans-MacBook-Pro.local', release='22.5.0', version='Darwin Kernel Version 22.5.0: Mon Apr 24 20:52:24 PDT 2023; root:xnu-8796.121.2~5/RELEASE_ARM64_T6000', machine='arm64')
+[2024-07-23 19:59:43,399 DEBUG root] Path to interpreter: /Library/Developer/CommandLineTools/usr/bin/python3
+[2024-07-23 19:59:43,399 DEBUG root] Path to packages: ['/Users/farz/Library/Python/3.9/bin', '/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python39.zip', '/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9', '/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/lib-dynload', '/Users/farz/Library/Python/3.9/lib/python/site-packages', '/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/site-packages']
+[2024-07-23 19:59:43,400 DEBUG root] Default python: None
+[2024-07-23 19:59:43,400 DEBUG root] Default python3: /opt/homebrew/bin/python3
+[2024-07-23 19:59:43,400 DEBUG root] Using personal config: /Users/farz/.bzt-rc
+[2024-07-23 19:59:43,400 INFO root] Starting with configs: ['/Users/farz/.bzt-rc', 'woc_get_addressbalance_1000rps_singleEndpoint.yml']
+[2024-07-23 19:59:43,400 INFO Engine] Configuring...
+[2024-07-23 19:59:43,407 DEBUG Engine] Base configs list: ['/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/resources/10-base-config.yml']
+[2024-07-23 19:59:43,407 DEBUG Engine.Configuration] Configs: ['/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/resources/10-base-config.yml']
+[2024-07-23 19:59:43,407 DEBUG Engine.Configuration] Reading /Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/resources/10-base-config.yml as YAML
+[2024-07-23 19:59:43,417 DEBUG Engine] User configs list: ['/Users/farz/.bzt-rc', 'woc_get_addressbalance_1000rps_singleEndpoint.yml']
+[2024-07-23 19:59:43,417 DEBUG Engine.Configuration] Configs: ['/Users/farz/.bzt-rc', 'woc_get_addressbalance_1000rps_singleEndpoint.yml']
+[2024-07-23 19:59:43,418 DEBUG Engine.Configuration] Reading /Users/farz/.bzt-rc as YAML
+[2024-07-23 19:59:43,419 DEBUG Engine.Configuration] Reading woc_get_addressbalance_1000rps_singleEndpoint.yml as YAML
+[2024-07-23 19:59:43,421 DEBUG Engine.Configuration] Configs: ['/Users/farz/.bzt-rc', 'woc_get_addressbalance_1000rps_singleEndpoint.yml']
+[2024-07-23 19:59:43,421 DEBUG Engine.Configuration] Reading /Users/farz/.bzt-rc as YAML
+[2024-07-23 19:59:43,423 DEBUG Engine.Configuration] Reading woc_get_addressbalance_1000rps_singleEndpoint.yml as YAML
+[2024-07-23 19:59:43,424 INFO HTTPClient] Proxy settings not set
+[2024-07-23 19:59:43,425 DEBUG Engine] Requesting updates info: https://gettaurus.org/updates/?version=1.16.32&installID=macos-623fdca801d8
+[2024-07-23 19:59:43,425 DEBUG HTTPClient] Making HTTP request GET https://gettaurus.org/updates/?version=1.16.32&installID=macos-623fdca801d8
+[2024-07-23 19:59:43,425 INFO Engine] Artifacts dir: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242
+[2024-07-23 19:59:43,425 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective
+[2024-07-23 19:59:43,426 DEBUG Engine.Configuration] Dumping YAML config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.yml
+[2024-07-23 19:59:43,433 DEBUG urllib3.connectionpool] Starting new HTTPS connection (1): gettaurus.org:443
+[2024-07-23 19:59:43,433 DEBUG Engine.Configuration] Dumping JSON config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.json
+[2024-07-23 19:59:43,434 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/merged.yml
+[2024-07-23 19:59:43,434 DEBUG Engine.Configuration] Dumping YAML config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/merged.yml
+[2024-07-23 19:59:43,435 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/merged.json
+[2024-07-23 19:59:43,435 DEBUG Engine.Configuration] Dumping JSON config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/merged.json
+[2024-07-23 19:59:43,435 DEBUG Engine] Add existing artifact (move=False): /Users/farz/.bzt-rc
+[2024-07-23 19:59:43,435 DEBUG Engine] Copying /Users/farz/.bzt-rc to /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/.bzt-rc
+[2024-07-23 19:59:43,435 DEBUG Engine] Add existing artifact (move=False): woc_get_addressbalance_1000rps_singleEndpoint.yml
+[2024-07-23 19:59:43,435 DEBUG Engine] Copying woc_get_addressbalance_1000rps_singleEndpoint.yml to /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/woc_get_addressbalance_1000rps_singleEndpoint.yml
+[2024-07-23 19:59:43,436 DEBUG Engine] Set PYTHONPATH to :
+	CURRENT: '' +
+	TEMP: '/Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/python-packages/3.9.6' +
+	USER: '/Users/farz/.bzt/python-packages/3.9.6'
+[2024-07-23 19:59:43,436 DEBUG Engine] Content of user packages dir: ['flask', 'gevent-24.2.1.dist-info', '_brotli.cpython-39-darwin.so', 'msgpack', 'markupsafe', 'zope.interface-6.4.post2-py3.9-nspkg.pth', 'flask_cors', 'bin', 'Flask_Cors-4.0.1.dist-info', 'requests-2.32.3.dist-info', 'werkzeug-3.0.3.dist-info', 'jinja2-3.1.4.dist-info', 'geventhttpclient', 'jinja2', 'locust', 'gevent', 'include', 'itsdangerous-2.2.0.dist-info', 'idna', 'importlib_metadata', 'werkzeug', 'click', 'zipp', 'urllib3-2.2.2.dist-info', 'configargparse.py', 'pyzmq-26.0.3.dist-info', 'blinker-1.8.2.dist-info', 'msgpack-1.0.8.dist-info', 'psutil-6.0.0.dist-info', 'charset_normalizer', 'requests', 'tomli', 'certifi', 'distutils-precedence.pth', 'importlib_metadata-8.1.0.dist-info', 'charset_normalizer-3.3.2.dist-info', 'Brotli-1.1.0.dist-info', 'certifi-2024.7.4.dist-info', 'brotli.py', 'idna-3.7.dist-info', 'flask-3.0.3.dist-info', 'zipp-3.19.2.dist-info', 'MarkupSafe-2.1.5.dist-info', 'urllib3', 'greenlet-3.0.3.dist-info', 'tomli-2.0.1.dist-info', 'setuptools-71.1.0.dist-info', 'blinker', 'ConfigArgParse-1.7.dist-info', 'setuptools', 'pkg_resources', 'typing_extensions-4.12.2.dist-info', '_distutils_hack', 'zope.interface-6.4.post2.dist-info', 'greenlet', 'itsdangerous', 'psutil', 'locust-2.29.1.dist-info', 'zmq', 'zope.event-5.0-py3.11-nspkg.pth', 'geventhttpclient-2.3.1.dist-info', 'zope', 'typing_extensions.py', 'click-8.1.7.dist-info', 'Flask_Login-0.6.3.dist-info', 'flask_login', 'zope.event-5.0.dist-info']
+[2024-07-23 19:59:43,436 DEBUG Engine] OS env: OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+[2024-07-23 19:59:43,436 DEBUG Engine] OS env: TAURUS_ARTIFACTS_DIR=/Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242
+[2024-07-23 19:59:43,436 DEBUG root] Closing log handler: /var/folders/x2/v5y1jr0j7xdcfzb104mfjv7m0000gn/T/bzt_lpnxwcjy.log
+[2024-07-23 19:59:43,436 DEBUG root] Switched writing logs to /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/bzt.log
+[2024-07-23 19:59:43,436 DEBUG root] Linting config
+[2024-07-23 19:59:43,437 INFO Engine] Preparing...
+[2024-07-23 19:59:43,437 DEBUG Engine] Module config: consolidator {'class': 'bzt.modules.aggregator.ConsolidatingAggregator'}
+[2024-07-23 19:59:43,438 DEBUG root] Importing module: bzt.modules.aggregator
+[2024-07-23 19:59:43,551 DEBUG root] Loading class: 'ConsolidatingAggregator' from <module 'bzt.modules.aggregator' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/aggregator.py'>
+[2024-07-23 19:59:43,551 DEBUG Engine.consolidator] Buffer scaling setup: percentile 95.0 from [0.0, 50.0, 90.0, 95.0, 99.0, 99.9, 100.0] selected
+[2024-07-23 19:59:43,551 DEBUG Engine] Module config: monitoring {'class': 'bzt.modules.monitoring.Monitoring'}
+[2024-07-23 19:59:43,551 DEBUG root] Importing module: bzt.modules.monitoring
+[2024-07-23 19:59:43,553 DEBUG root] Loading class: 'Monitoring' from <module 'bzt.modules.monitoring' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/monitoring.py'>
+[2024-07-23 19:59:43,553 WARNING Engine.monitoring.LocalClient.LocalMonitorFactory] Unable to detect cgroups version. File /etc/mtab not found
+[2024-07-23 19:59:43,553 INFO Engine.monitoring.LocalClient] Using StandardLocalMonitor for engine health monitoring
+[2024-07-23 19:59:43,553 DEBUG Engine] Module config: local {'class': 'bzt.modules.provisioning.Local'}
+[2024-07-23 19:59:43,553 DEBUG root] Importing module: bzt.modules.provisioning
+[2024-07-23 19:59:43,553 DEBUG root] Loading class: 'Local' from <module 'bzt.modules.provisioning' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/provisioning.py'>
+[2024-07-23 19:59:43,553 DEBUG Engine] Module config: locust {'class': 'bzt.modules._locustio.LocustIOExecutor', 'cmdline': None}
+[2024-07-23 19:59:43,553 DEBUG root] Importing module: bzt.modules._locustio
+[2024-07-23 19:59:43,561 DEBUG pyvirtualdisplay] version=3.0
+[2024-07-23 19:59:43,561 DEBUG root] Loading class: 'LocustIOExecutor' from <module 'bzt.modules._locustio' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/_locustio.py'>
+[2024-07-23 19:59:43,562 DEBUG Engine.local] Preparing executor: locust/4362316048
+[2024-07-23 19:59:43,562 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/locust.out
+[2024-07-23 19:59:43,562 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/locust.err
+[2024-07-23 19:59:43,562 DEBUG Engine.locust.Locust] Checking Locust.
+[2024-07-23 19:59:43,562 DEBUG root] Executing shell: ['/Library/Developer/CommandLineTools/usr/bin/python3', '-m', 'pip', '--version'] at .
+[2024-07-23 19:59:43,733 DEBUG root] Executing shell: ['/Library/Developer/CommandLineTools/usr/bin/python3', '-m', 'pip', 'list'] at .
+[2024-07-23 19:59:43,972 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/generated_locust.py
+[2024-07-23 19:59:43,972 DEBUG Engine.LocustIOScriptBuilder] Generating Python script for LocustIO
+[2024-07-23 19:59:43,972 DEBUG Engine] Add existing artifact (move=False): /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/generated_locust.py
+[2024-07-23 19:59:43,972 DEBUG Engine] No need to copy /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/generated_locust.py
+[2024-07-23 19:59:43,972 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/kpi.jtl
+[2024-07-23 19:59:43,972 DEBUG Engine] Module config: final-stats {'class': 'bzt.modules.reporting.FinalStatus'}
+[2024-07-23 19:59:43,972 DEBUG root] Importing module: bzt.modules.reporting
+[2024-07-23 19:59:43,980 DEBUG root] Loading class: 'FinalStatus' from <module 'bzt.modules.reporting' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/reporting.py'>
+[2024-07-23 19:59:43,980 DEBUG Engine] Module config: console {'class': 'bzt.modules.console.ConsoleStatusReporter'}
+[2024-07-23 19:59:43,980 DEBUG root] Importing module: bzt.modules.console
+[2024-07-23 19:59:43,980 DEBUG root] Loading class: 'ConsoleStatusReporter' from <module 'bzt.modules.console' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/console.py'>
+[2024-07-23 19:59:43,980 WARNING Engine] Module 'console' can be only used once, will merge all new instances into single
+[2024-07-23 19:59:43,980 DEBUG Engine] Module config: junit-xml {'class': 'bzt.modules.reporting.JUnitXMLReporter'}
+[2024-07-23 19:59:43,980 DEBUG root] Importing module: bzt.modules.reporting
+[2024-07-23 19:59:43,981 DEBUG root] Loading class: 'JUnitXMLReporter' from <module 'bzt.modules.reporting' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/reporting.py'>
+[2024-07-23 19:59:43,981 DEBUG Engine] Module config: blazemeter {'class': 'bzt.modules.blazemeter.BlazeMeterUploader'}
+[2024-07-23 19:59:43,981 DEBUG root] Importing module: bzt.modules.blazemeter
+[2024-07-23 19:59:43,981 DEBUG root] Loading class: 'BlazeMeterUploader' from <module 'bzt.modules.blazemeter' from '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/modules/blazemeter/__init__.py'>
+[2024-07-23 19:59:43,983 WARNING Engine.blazemeter] No BlazeMeter API key provided, will upload anonymously
+[2024-07-23 19:59:43,983 DEBUG Engine.blazemeter] Installing http client
+[2024-07-23 19:59:43,983 DEBUG User] Request: GET https://a.blazemeter.com/api/v4/web/version None
+[2024-07-23 19:59:43,983 DEBUG HTTPClient] Making HTTP request GET https://a.blazemeter.com/api/v4/web/version
+[2024-07-23 19:59:43,984 DEBUG urllib3.connectionpool] Starting new HTTPS connection (1): a.blazemeter.com:443
+[2024-07-23 19:59:44,366 DEBUG urllib3.connectionpool] https://a.blazemeter.com:443 "GET /api/v4/web/version HTTP/1.1" 200 282
+[2024-07-23 19:59:44,366 DEBUG User] Response [200]: {
+    "api_version": 4,
+    "error": null,
+    "result": "BACKEND-CI/release-2024-07-16 7 release-2024-07-16 1adf7f54db1484fcca86f8dd6b473ca737664e59 Mon Jul 22 11:38:33 2024 +0200 1adf7f54db1484fcca86f8dd6b473ca737664e59\n",
+    "request_id": "669ffda0573
+[2024-07-23 19:59:44,367 INFO Engine.blazemeter] Sending of engine metrics to happysocks is disabled. modules.blazemeter.happysocks-address setting was not provided
+[2024-07-23 19:59:44,368 DEBUG Engine.Configuration] Dumping YAML config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.yml
+[2024-07-23 19:59:44,379 DEBUG Engine.Configuration] Dumping JSON config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.json
+[2024-07-23 19:59:44,379 INFO Engine] Starting...
+[2024-07-23 19:59:44,379 DEBUG Engine] Startup <bzt.modules.monitoring.Monitoring object at 0x10403aac0>
+[2024-07-23 19:59:44,379 DEBUG Engine] Startup <bzt.modules.aggregator.ConsolidatingAggregator object at 0x10403aa60>
+[2024-07-23 19:59:44,380 DEBUG Engine] Startup <bzt.modules.reporting.FinalStatus object at 0x1050eefd0>
+[2024-07-23 19:59:44,380 DEBUG Engine] Startup <bzt.modules.console.ConsoleStatusReporter object at 0x1050f6f10>
+[2024-07-23 19:59:44,380 INFO Engine.console] Waiting for results...
+[2024-07-23 19:59:44,380 DEBUG Engine] Startup <bzt.modules.reporting.FinalStatus object at 0x10511de80>
+[2024-07-23 19:59:44,380 DEBUG Engine] Startup <bzt.modules.reporting.JUnitXMLReporter object at 0x10516bb80>
+[2024-07-23 19:59:44,380 DEBUG Engine] Startup <bzt.modules.blazemeter.blazemeter_reporter.BlazeMeterUploader object at 0x105610160>
+[2024-07-23 19:59:44,380 INFO Engine.blazemeter] Initiating data feeding...
+[2024-07-23 19:59:44,380 DEBUG User] Request: POST https://a.blazemeter.com/api/v4/sessions b'{"concurrency": 1000, "duration": 1}'
+[2024-07-23 19:59:44,380 DEBUG HTTPClient] Making HTTP request POST https://a.blazemeter.com/api/v4/sessions
+[2024-07-23 19:59:44,776 DEBUG urllib3.connectionpool] https://a.blazemeter.com:443 "POST /api/v4/sessions HTTP/1.1" 201 4458
+[2024-07-23 19:59:44,777 DEBUG User] Response [201]: {
+    "api_version": 4,
+    "error": null,
+    "result": {
+        "warning": "Your external test, involving 1000 users for 1 minutes, exceeds our anonymous plan limits, which allows for a maximum of 10 users and 5 minutes.",
+        "session": {
+         
+[2024-07-23 19:59:44,777 WARNING User] Your external test, involving 1000 users for 1 minutes, exceeds our anonymous plan limits, which allows for a maximum of 10 users and 5 minutes.
+[2024-07-23 19:59:44,778 INFO Engine.blazemeter] Started data feeding: https://a.blazemeter.com/app/?public-token=m1oTVF5LQINxurH1xmqR0YHPbEcFT6tmpewrpzRwrRxsyfuDwy#reports/r-ext-669ffda080bc3122319695/summary
+[2024-07-23 19:59:44,934 DEBUG Engine] Startup <bzt.modules.provisioning.Local object at 0x1040145b0>
+[2024-07-23 19:59:44,934 DEBUG Engine.local] Delay setup for locust/get-requests: 0(start-at) + 0(delay) = 0
+[2024-07-23 19:59:44,935 DEBUG Engine.Configuration] Dumping YAML config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.yml
+[2024-07-23 19:59:44,942 DEBUG Engine.Configuration] Dumping JSON config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.json
+[2024-07-23 19:59:44,943 DEBUG root] Leveling down log file verbosity to INFO, use -v option to have DEBUG messages enabled
+[2024-07-23 19:59:44,943 DEBUG root] Leveled up log file verbosity
+[2024-07-23 19:59:44,943 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/locust.log
+[2024-07-23 19:59:44,943 DEBUG Engine] New artifact filename: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/GRACEFUL
+[2024-07-23 19:59:44,943 DEBUG root] Executing shell: ['/Library/Developer/CommandLineTools/usr/bin/python3', '/Users/farz/Library/Python/3.9/lib/python/site-packages/bzt/resources/locustio-taurus-wrapper.py', '-f', '/Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/generated_locust.py', '--logfile=/Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/locust.log', '--headless', '--only-summary', '--users=1000', '--spawn-rate=1000.000000', '--run-time=10', '--stop-timeout=10'] at /Users/farz/woc-api/test/perf_test
+[2024-07-23 19:59:44,946 DEBUG Engine.local] Starting execution: locust/get-requests, rest of available slots: 9223372036854775806
+[2024-07-23 19:59:44,946 DEBUG root] Leveling down log file verbosity to INFO, use -v option to have DEBUG messages enabled
+[2024-07-23 19:59:45,161 INFO Engine.console] Waiting for finish...
+[2024-07-23 19:59:48,893 WARNING Engine] Failed to check for updates, server returned 5xx.
+[2024-07-23 19:59:48,987 INFO Engine.locust.JTLReader] Changed data analysis delay to 3s
+[2024-07-23 19:59:51,005 INFO Engine.locust.JTLReader] Changed data analysis delay to 5s
+[2024-07-23 19:59:54,014 INFO Engine.locust.JTLReader] Changed data analysis delay to 7s
+[2024-07-23 19:59:57,039 INFO Engine.locust.JTLReader] Changed data analysis delay to 9s
+[2024-07-23 20:00:00,032 INFO Engine.locust.JTLReader] Changed data analysis delay to 10s
+[2024-07-23 20:00:01,020 WARNING Engine.locust] Locust exited with non-zero code: 1
+[2024-07-23 20:00:01,063 WARNING Engine] Please wait for graceful shutdown...
+[2024-07-23 20:00:01,066 DEBUG root] Leveled up log file verbosity
+[2024-07-23 20:00:01,066 INFO Engine] Shutting down...
+[2024-07-23 20:00:01,068 DEBUG Engine] Current stop reason: None
+[2024-07-23 20:00:01,069 DEBUG Engine.local] Shutdown locust/get-requests
+[2024-07-23 20:00:02,076 DEBUG Engine.console] Restoring logging streams, [<StreamHandler (INFO)>]/{<StreamHandler (INFO)>: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>}
+[2024-07-23 20:00:02,080 DEBUG Engine.Configuration] Dumping YAML config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.yml
+[2024-07-23 20:00:02,106 DEBUG Engine.Configuration] Dumping JSON config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.json
+[2024-07-23 20:00:02,107 INFO Engine] Post-processing...
+[2024-07-23 20:00:02,107 DEBUG Engine.local] Post-process locust/get-requests
+[2024-07-23 20:00:02,107 DEBUG Engine.locust.JTLReader] Buffer len: 10; Known errors count: 2
+[2024-07-23 20:00:02,107 DEBUG Engine.locust.JTLReader] Aggregating: 1721761191, 10 in buffer
+[2024-07-23 20:00:02,113 DEBUG aggregator] Growing HDR from 6000.0 to 7000.0
+[2024-07-23 20:00:02,121 DEBUG aggregator] Growing HDR from 6000.0 to 7000.0
+[2024-07-23 20:00:02,121 DEBUG aggregator] Growing HDR from 6000.0 to 7000.0
+[2024-07-23 20:00:02,121 DEBUG aggregator] Growing HDR from 6000.0 to 7000.0
+[2024-07-23 20:00:02,122 DEBUG Engine.locust.JTLReader] Aggregating: 1721761192, 9 in buffer
+[2024-07-23 20:00:02,129 DEBUG Engine.locust.JTLReader] Aggregating: 1721761193, 8 in buffer
+[2024-07-23 20:00:02,130 DEBUG Engine.locust.JTLReader] Aggregating: 1721761194, 7 in buffer
+[2024-07-23 20:00:02,131 DEBUG Engine.locust.JTLReader] Aggregating: 1721761195, 6 in buffer
+[2024-07-23 20:00:02,132 DEBUG Engine.locust.JTLReader] Aggregating: 1721761196, 5 in buffer
+[2024-07-23 20:00:02,137 DEBUG Engine.locust.JTLReader] Aggregating: 1721761197, 4 in buffer
+[2024-07-23 20:00:02,144 DEBUG Engine.locust.JTLReader] Aggregating: 1721761198, 3 in buffer
+[2024-07-23 20:00:02,147 DEBUG Engine.locust.JTLReader] Aggregating: 1721761199, 2 in buffer
+[2024-07-23 20:00:02,148 DEBUG Engine.locust.JTLReader] Aggregating: 1721761200, 1 in buffer
+[2024-07-23 20:00:02,148 DEBUG Engine.locust.JTLReader] Buffer len: 0; Known errors count: 2
+[2024-07-23 20:00:02,148 DEBUG Engine.consolidator] Consolidator buffer[12]: dict_keys([1721761189, 1721761190, 1721761191, 1721761192, 1721761193, 1721761194, 1721761195, 1721761196, 1721761197, 1721761198, 1721761199, 1721761200])
+[2024-07-23 20:00:02,148 DEBUG Engine.consolidator] Merging into 1721761189
+[2024-07-23 20:00:02,149 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,170 DEBUG Engine.consolidator] Processed datapoint: 1721761189/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,170 DEBUG Engine.consolidator] Merging into 1721761190
+[2024-07-23 20:00:02,170 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,170 DEBUG aggregator] Growing HDR from 5000.0 to 6000.0
+[2024-07-23 20:00:02,170 DEBUG aggregator] Growing HDR from 5000.0 to 6000.0
+[2024-07-23 20:00:02,189 DEBUG Engine.consolidator] Processed datapoint: 1721761190/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,189 DEBUG Engine.consolidator] Merging into 1721761191
+[2024-07-23 20:00:02,189 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,189 DEBUG aggregator] Growing HDR from 6000.0 to 7000.0
+[2024-07-23 20:00:02,189 DEBUG aggregator] Growing HDR from 6000.0 to 7000.0
+[2024-07-23 20:00:02,211 DEBUG Engine.consolidator] Processed datapoint: 1721761191/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,211 DEBUG Engine.consolidator] Merging into 1721761192
+[2024-07-23 20:00:02,211 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,233 DEBUG Engine.consolidator] Processed datapoint: 1721761192/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,233 DEBUG Engine.consolidator] Merging into 1721761193
+[2024-07-23 20:00:02,233 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,253 DEBUG Engine.consolidator] Processed datapoint: 1721761193/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,253 DEBUG Engine.consolidator] Merging into 1721761194
+[2024-07-23 20:00:02,253 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,274 DEBUG Engine.consolidator] Processed datapoint: 1721761194/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,274 DEBUG Engine.consolidator] Merging into 1721761195
+[2024-07-23 20:00:02,274 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,294 DEBUG Engine.consolidator] Processed datapoint: 1721761195/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,294 DEBUG Engine.consolidator] Merging into 1721761196
+[2024-07-23 20:00:02,294 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,316 DEBUG Engine.consolidator] Processed datapoint: 1721761196/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,316 DEBUG Engine.consolidator] Merging into 1721761197
+[2024-07-23 20:00:02,316 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,338 DEBUG Engine.consolidator] Processed datapoint: 1721761197/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,338 DEBUG Engine.consolidator] Merging into 1721761198
+[2024-07-23 20:00:02,338 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,360 DEBUG Engine.consolidator] Processed datapoint: 1721761198/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,360 DEBUG Engine.consolidator] Merging into 1721761199
+[2024-07-23 20:00:02,360 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,382 DEBUG Engine.consolidator] Processed datapoint: 1721761199/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,382 DEBUG Engine.consolidator] Merging into 1721761200
+[2024-07-23 20:00:02,382 DEBUG Engine.consolidator] Bypassing consolidation because of single result
+[2024-07-23 20:00:02,403 DEBUG Engine.consolidator] Processed datapoint: 1721761200/ConsolidatingAggregator@4362316384
+[2024-07-23 20:00:02,403 INFO Engine.final-stats] Test duration: 0:00:18
+[2024-07-23 20:00:02,403 INFO Engine.final-stats] Samples count: 2159, 92.08% failures
+[2024-07-23 20:00:02,403 INFO Engine.final-stats] Average times: total 5.518, latency 0.000, connect 0.000
+[2024-07-23 20:00:02,403 INFO Engine.final-stats] Percentiles:
++---------------+---------------+
+| Percentile, % | Resp. Time, s |
++---------------+---------------+
+|           0.0 |         0.539 |
+|          50.0 |          5.68 |
+|          90.0 |         6.584 |
+|          95.0 |         6.736 |
+|          99.0 |         6.824 |
+|          99.9 |          6.84 |
+|         100.0 |          6.84 |
++---------------+---------------+
+[2024-07-23 20:00:02,403 INFO Engine.final-stats] Request label stats:
++-----------------------------------------------------------------+--------+-------+--------+----------------------------------------------------------------------------------------------------+
+| label                                                           | status |  succ | avg_rt | error                                                                                              |
++-----------------------------------------------------------------+--------+-------+--------+----------------------------------------------------------------------------------------------------+
+| /v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance |  FAIL  | 7.92% |  5.518 | HTTPSConnectionPool(host='api-ovh.whatsonchain.com', port=443): Read timed out. (read timeout=5.0) |
+|                                                                 |        |       |        | Too Many Requests for url: /v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance         |
++-----------------------------------------------------------------+--------+-------+--------+----------------------------------------------------------------------------------------------------+
+[2024-07-23 20:00:02,403 DEBUG Engine.console] No logger_handler or orig_stream was detected
+[2024-07-23 20:00:02,403 INFO Engine.final-stats] Test duration: 0:00:18
+[2024-07-23 20:00:02,404 INFO Engine.final-stats] Samples count: 2159, 92.08% failures
+[2024-07-23 20:00:02,404 INFO Engine.final-stats] Average times: total 5.518, latency 0.000, connect 0.000
+[2024-07-23 20:00:02,404 INFO Engine.final-stats] Percentiles:
++---------------+---------------+
+| Percentile, % | Resp. Time, s |
++---------------+---------------+
+|           0.0 |         0.539 |
+|          50.0 |          5.68 |
+|          90.0 |         6.584 |
+|          95.0 |         6.736 |
+|          99.0 |         6.824 |
+|          99.9 |          6.84 |
+|         100.0 |          6.84 |
++---------------+---------------+
+[2024-07-23 20:00:02,404 INFO Engine.final-stats] Request label stats:
++-----------------------------------------------------------------+--------+-------+--------+----------------------------------------------------------------------------------------------------+
+| label                                                           | status |  succ | avg_rt | error                                                                                              |
++-----------------------------------------------------------------+--------+-------+--------+----------------------------------------------------------------------------------------------------+
+| /v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance |  FAIL  | 7.92% |  5.518 | HTTPSConnectionPool(host='api-ovh.whatsonchain.com', port=443): Read timed out. (read timeout=5.0) |
+|                                                                 |        |       |        | Too Many Requests for url: /v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance         |
++-----------------------------------------------------------------+--------+-------+--------+----------------------------------------------------------------------------------------------------+
+[2024-07-23 20:00:02,404 WARNING Engine.XUnitFileWriter] File reports-junit-format.xml already exists, it will be overwritten
+[2024-07-23 20:00:02,404 INFO Engine.XUnitFileWriter] Writing JUnit XML report into: reports-junit-format.xml
+[2024-07-23 20:00:02,405 DEBUG Engine.blazemeter] KPI bulk buffer len in post-proc: 15
+[2024-07-23 20:00:02,405 INFO Engine.blazemeter] Sending remaining KPI data to server...
+[2024-07-23 20:00:02,539 DEBUG root] Data submit is blocked, ignoring sending KPI
+[2024-07-23 20:00:02,540 DEBUG root] Data submit is blocked, ignoring uploading files
+[2024-07-23 20:00:02,540 DEBUG Engine.blazemeter] Set last check time to: 1721761183.98119
+[2024-07-23 20:00:02,540 INFO Engine.blazemeter] Ending data feeding...
+[2024-07-23 20:00:02,540 DEBUG User] Request: POST https://a.blazemeter.com/api/v4/sessions/r-ext-669ffda080bc3122319695/terminate-external {
+ "signature": "ci1leHQtNjY5ZmZkYTA4MGJjMzEyMjMxOTY5NToxNzIyOTcwNzg0OjNjY2RjOWZlODQ3MjA4OWY4YzRhMGM2Y2ZiNTEyOTQxYjg3MjEwOGNjMWVlOGE5NjgyMWZkODVjODQ4ZThjMmZkYzJjYmU2ODZlOWI4MmEyNjE5ZGZkNWFjOWU3N2Y4MWY5MGZhMjE3MzNiNjViYWUzNDVkOTQzMGE3NjFkMDc5",
+ "testId": 1
+[2024-07-23 20:00:02,540 DEBUG HTTPClient] Making HTTP request POST https://a.blazemeter.com/api/v4/sessions/r-ext-669ffda080bc3122319695/terminate-external
+[2024-07-23 20:00:03,136 DEBUG urllib3.connectionpool] https://a.blazemeter.com:443 "POST /api/v4/sessions/r-ext-669ffda080bc3122319695/terminate-external HTTP/1.1" 200 1599
+[2024-07-23 20:00:03,138 DEBUG User] Response [200]: {
+    "api_version": 4,
+    "error": null,
+    "result": {
+        "success": "Terminated",
+        "session": {
+            "id": "r-ext-669ffda080bc3122319695",
+            "name": "external",
+            "userId": 386483,
+            "publicToken": "m1o
+[2024-07-23 20:00:03,139 INFO Engine.blazemeter] Online report link: https://a.blazemeter.com/app/?public-token=m1oTVF5LQINxurH1xmqR0YHPbEcFT6tmpewrpzRwrRxsyfuDwy#reports/r-ext-669ffda080bc3122319695/summary
+[2024-07-23 20:00:03,142 DEBUG Engine.Configuration] Dumping YAML config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.yml
+[2024-07-23 20:00:03,170 DEBUG Engine.Configuration] Dumping JSON config into /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/effective.json
+[2024-07-23 20:00:03,171 INFO root] Artifacts dir: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242
+[2024-07-23 20:00:03,171 INFO root] Done performing with code: 0
+[2024-07-23 20:00:03,171 DEBUG root] Closing log handler: /Users/farz/woc-api/test/perf_test/2024-07-23_19-59-43.425242/bzt.log

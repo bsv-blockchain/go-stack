@@ -1,0 +1,10 @@
+.history/
+.vscode/
+build/
+.DS_Store
+*.bak
+*.tar.gz
+lastKnownAPIKeys.*
+pending_activity/
+data
+artifacts/

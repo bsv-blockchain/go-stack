@@ -1,0 +1,156 @@
+version: "2" # Required in v2: specifies config version
+
+# options for analysis running
+run:
+  # exit code when at least one issue was found, default is 1
+  issues-exit-code: 1
+
+  # include test files or not, default is true
+  tests: true
+
+  # Allow multiple parallel golangci-lint instances running.
+  # If false (default) - golangci-lint acquires file lock on start.
+  allow-parallel-runners: false
+
+# output configuration options
+output:
+  formats:
+    text:
+      path: stdout
+
+      # print linter name in the end of issue text, default is true
+      print-linter-name: true
+
+      # print lines of code with issue, default is true
+      print-issued-lines: true
+
+  # add a prefix to the output file references; default is no prefix
+  path-prefix: ""
+
+linters:
+  # v1: disable-all: true -> v2: default: none
+  # Disable all linters.
+  default: none
+
+  # Enable specific linters (same as v1)
+  enable:
+    - bodyclose
+    - copyloopvar
+    - dogsled
+    - errcheck
+    - errorlint
+    - exhaustive
+    - gosec
+    - govet
+    - ineffassign
+    - prealloc
+    - revive
+    - sqlclosecheck
+    - staticcheck
+    - unconvert
+    - unused
+    - wastedassign
+    - wrapcheck
+
+  settings:
+    revive:
+      rules:
+        - name: exported
+          exclude:
+            - '**/testabilities/**'
+            - '**/internal/**'
+
+  exclusions:
+    # Migrated from issues.exclude-generated → retained as "lax" to match old behavior
+    generated: lax
+
+    # Migrated from issues.exclude-rules
+    rules:
+      # Exclude some linters from running on test files
+      - linters:
+          - bodyclose
+          - errcheck
+          - gosec
+          - wrapcheck
+        path: _test\.go
+
+      - linters:
+          - bodyclose
+          - gosec
+          - wrapcheck
+        path: /testabilities/
+
+      - linters:
+          - bodyclose
+          - gosec
+          - wrapcheck
+        path: /fixtures/
+
+      # Exclude known linter message from vendored code
+      - linters:
+          - gosec
+        path: internal/hmac/
+        text: weak cryptographic primitive
+
+      # Exclude staticcheck message
+      - linters:
+          - staticcheck
+        text: 'SA1019:'
+
+      # Exclude lll issues for long go:generate lines
+      - linters:
+          - lll
+        source: '^//go:generate '
+
+      # Migrated from issues.exclude with default path fallback
+      - path: (.+)\.go$
+        text: Using the variable on range scope .* in function literal
+
+      - path: (.+)\.go$
+        text: should have a package comment
+
+    # Migrated from issues.exclude-files + issues.exclude-dirs
+    paths:
+      - .*\.my\.go$
+      - lib/bad.go
+      - .github
+      - .make
+      - dist
+      - pkg/internal/sdk
+      - third_party$
+      - builtin$
+      - examples$
+
+# issue settings
+issues:
+  # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
+  max-issues-per-linter: 0
+
+  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
+  max-same-issues: 0
+
+  # Show only new issues created after git revision `REV`
+  new-from-rev: ""
+
+# severity rules (unchanged in v2)
+severity:
+  # Set the default severity for issues
+  default: error
+
+  # Regular expression-based rules for adjusting severity
+  rules:
+    - linters:
+        - dupl
+      severity: info
+
+# New: v2 introduces formatters as a distinct section
+formatters:
+  exclusions:
+    # Matches `linters.exclusions.generated` to ignore generated code in formatters
+    generated: lax
+
+    # Migrated from issues.exclude-dirs — affects formatters specifically
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

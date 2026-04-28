@@ -1,0 +1,160 @@
+syntax = "proto3";
+
+option go_package = ".;metamorph_api";
+
+package metamorph_api;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Note: Values of the statuses have a difference between them in case
+// it's necessary to add another values in between. This will allow to
+// create new statuses without changing the values in the existing db.
+enum Status {
+  UNKNOWN = 0;
+  QUEUED = 10;
+  RECEIVED = 20;
+  STORED = 30;
+  ANNOUNCED_TO_NETWORK = 40;
+  REQUESTED_BY_NETWORK = 50;
+  SENT_TO_NETWORK = 60;
+  ACCEPTED_BY_NETWORK = 70;
+  SEEN_IN_ORPHAN_MEMPOOL = 80;
+  SEEN_ON_NETWORK = 90;
+  DOUBLE_SPEND_ATTEMPTED = 100;
+  REJECTED = 110;
+  MINED_IN_STALE_BLOCK = 115;
+  MINED = 120;
+}
+
+service MetaMorphAPI {
+  rpc Health (google.protobuf.Empty) returns (HealthResponse) {}
+  rpc PostTransactions (PostTransactionsRequest) returns (TransactionStatuses) {}
+  rpc GetTransaction (TransactionStatusRequest) returns (Transaction) {}
+  rpc GetTransactions (TransactionsStatusRequest) returns (Transactions) {}
+  rpc GetTransactionStatus (TransactionStatusRequest) returns (TransactionStatus) {}
+  rpc GetTransactionStatuses (TransactionsStatusRequest) returns (TransactionStatuses) {}
+  rpc UpdateInstances(UpdateInstancesRequest) returns (google.protobuf.Empty) {}
+  rpc ClearData (ClearDataRequest) returns (ClearDataResponse) {}
+}
+
+// swagger:model HealthResponse
+message HealthResponse {
+  google.protobuf.Timestamp timestamp = 1;
+  int32 mapSize = 2;
+  string PeersConnected = 3;
+  string PeersDisconnected = 4;
+  string nats = 5;
+}
+
+// swagger:model TransactionRequest
+message TransactionRequest {
+  int64 api_key_id = 1;
+  int64 standard_fee_id = 2;
+  int64 data_fee_id = 3;
+  string source_ip = 4;
+  string callback_url = 5;
+  string callback_token = 6;
+  bool callback_batch = 7;
+  bool merkle_proof = 8 [deprecated = true];
+  bytes raw_tx = 9;
+  Status wait_for_status = 10;
+  bool full_status_updates = 11;
+  string event_id = 13;
+}
+
+// swagger:model TransactionRequests
+message TransactionRequests {
+  repeated TransactionRequest Transactions = 1;
+  string event_id = 2;
+}
+
+// swagger:model PostTransactionRequest
+message PostTransactionRequest {
+  string callback_url = 1;
+  string callback_token = 2;
+  bool callback_batch = 3;
+  bytes raw_tx = 4;
+  Status wait_for_status = 5;
+  bool full_status_updates = 6;
+  string event_id = 7;
+}
+
+// swagger:model PostTransactionsRequest
+message PostTransactionsRequest {
+  repeated PostTransactionRequest Transactions = 1;
+  string event_id = 2;
+}
+
+// swagger:model Transaction
+message Transaction {
+  bool timed_out = 1;
+  google.protobuf.Timestamp stored_at = 2;
+  google.protobuf.Timestamp announced_at = 3;
+  google.protobuf.Timestamp mined_at = 4;
+  string txid = 5;
+  Status status = 6;
+  string reject_reason = 7;
+	repeated string competingTxs = 8;
+  uint64 block_height = 9;
+  string block_hash = 10;
+  bytes raw_tx = 11;
+}
+
+message callback {
+  string callback_url = 1;
+  string callback_token = 2;
+  bool allow_batch = 3;
+}
+
+// swagger:model TransactionStatus
+message TransactionStatus {
+  bool timed_out = 1;
+  google.protobuf.Timestamp stored_at = 2;
+  string txid = 3;
+  Status status = 4;
+  string reject_reason = 5;
+	repeated string competingTxs = 6;
+  uint64 block_height = 7;
+  string block_hash = 8;
+  string merkle_path = 9;
+  google.protobuf.Timestamp last_submitted = 10;
+  repeated callback callbacks = 11;
+}
+
+// swagger:model TransactionStatuses
+message TransactionStatuses {
+  repeated TransactionStatus Statuses = 1;
+  string event_id = 2;
+}
+
+// swagger:model TransactionRequest
+message TransactionStatusRequest {
+  string txid = 1;
+  string event_id = 2;
+}
+
+// swagger:model UpdateInstancesRequest
+message UpdateInstancesRequest {
+  repeated string instances = 1;
+}
+
+// swagger:model ClearDataRequest
+message ClearDataRequest {
+  int32 retentionDays = 1;
+}
+
+// swagger:model ClearDataResponse
+message ClearDataResponse {
+  int64 records_affected = 1;
+}
+
+// swagger:model TransactionsStatusRequest
+message TransactionsStatusRequest {
+  repeated string txIDs = 1;
+}
+
+// swagger:model Transactions
+message Transactions {
+  repeated Transaction transactions = 1;
+}

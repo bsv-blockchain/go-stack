@@ -1,0 +1,131 @@
+pipeline {
+    
+    agent any
+
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout()
+        buildDiscarder logRotator(
+            artifactDaysToKeepStr: '',
+            artifactNumToKeepStr: '8',
+            daysToKeepStr: '',
+            numToKeepStr: '8'
+        )
+    }
+
+    stages {
+
+        stage('Set Environment') {
+            steps {
+                script {
+                    PROG_NAME=getRepoNameFromUrl(scm.userRemoteConfigs[0].url)
+                }
+            }
+        }
+
+        stage('Preparation') {
+            steps {
+                echo "Preparing pipeline... "
+                //sh 'printenv'
+                echo "${WORKSPACE}"
+                script{
+                    def someVarSplit = TARGET_ENV.split(" ") 
+                    TARGET_ENV = someVarSplit[0]
+                    PRIVATE_IP_ENV = someVarSplit[1]
+                    echo "TARGET ENVIRONMENT: ${TARGET_ENV}"
+                    echo "PRIVATE IP of ENVIRONMENT: ${PRIVATE_IP_ENV}"
+                }
+            }  
+        }
+        
+        stage('Select Artifact to deploy') {
+            steps {
+                script {
+                    dir("${env.JENKINS_HOME}/jobs/${PROG_NAME}-build/builds") {
+                        String availableBuilds = sh(
+                        returnStdout: true,
+                        script: "find . -name \"*.tar.gz\" | grep ${PROG_NAME} | awk -F '/' '{ print \$2 }' | sort -nr"
+                        )
+                        BUILD_NUM = input(
+                            id: 'userInput',
+                            message: 'Choose a build Number',
+                            parameters: [
+                                [
+                                $class: 'ChoiceParameterDefinition',
+                                choices: availableBuilds,
+                                name: ''
+                                ]
+                            ]
+                        )
+                    echo "Selected Build Number ${BUILD_NUM}"
+                    }
+                }
+            }
+        }
+        stage('Go Deploy') {
+            environment {
+                //put your env variable here, for this specific stage only, example DEPLOY_TEST_ENV_VAR, etc
+                VERSION='blah'
+            }
+            steps {
+                echo "Copying build number ${BUILD_NUM}"
+                script {
+                    env.ARTIFACT_DIR = "${JENKINS_HOME}/jobs/${PROG_NAME}-build/builds/${BUILD_NUM}/archive/build_tar/${PROG_NAME}"
+                    env.FULL_FILE_NAME = sh(returnStdout: true, script: "ls ${ARTIFACT_DIR}").trim()
+                    env.FILE_NAME = sh(returnStdout: true, script: 'echo ${FULL_FILE_NAME%%.*}').trim()
+                    echo "${FILE_NAME}"
+                    dir("${WORKSPACE}"){
+                        sh '''cp "${ARTIFACT_DIR}/${FULL_FILE_NAME}" .'''
+                        echo "copying build ${BUILD_NUM} to remote ${PRIVATE_IP_ENV} ${TARGET_ENV} server..."
+                        sshagent(['automation']) {
+                            sh"""
+                            #!/bin/bash
+                            ssh taal@${PRIVATE_IP_ENV} mkdir -p ${PROG_NAME}
+                            scp ${FULL_FILE_NAME} taal@${PRIVATE_IP_ENV}://home/taal/${PROG_NAME}
+                            ssh taal@${PRIVATE_IP_ENV} bash -s <<ENDSSH
+                            cd ${PROG_NAME}
+                            tar -xzf ${FULL_FILE_NAME}
+                            ./link_latest.sh yes
+                            ENDSSH
+                            """.stripIndent()
+                        }   
+                    }
+                }    
+            }
+        }
+        
+        
+    }
+   
+    post {
+        success {
+            echo "SUCCESS!"
+            slackSend channel: '#woc-deployment',
+            color: 'good',
+            message: "SUCCESS: Deployment of ${env.FILE_NAME} on ${TARGET_ENV} server ${BUILD_URL}",
+            tokenCredentialId: 'slack-notification-token'
+        }
+        failure {
+            echo "FAILED!"
+            slackSend channel: '#woc-deployment',
+            color: 'danger',
+            message: "FAILED: Deployment of ${env.FILE_NAME} on ${TARGET_ENV} server ${BUILD_URL}",
+            tokenCredentialId: 'slack-notification-token'          
+        }
+        always {
+            echo "cleaning your workspace to prevent unecessary storage..."
+            cleanWs()
+        }
+    }
+}
+
+def getRepoNameFromUrl(gitUrl) {
+    // Splitting the URL by colon and then by slash to get the last part
+    def parts = gitUrl.split(':')
+    def repoPart = parts.size() > 1 ? parts[1] : parts[0]
+
+    // Removing the .git extension and extracting the repository name
+    def repoName = repoPart.replaceAll(/\.git$/, '').tokenize('/').last()
+
+    return repoName
+}

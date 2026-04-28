@@ -1,0 +1,37 @@
+{
+    "address": "mq7psuJ7Z9h1w4H3YtcCoHx7cPmhVM9UsV",
+    "tokens": [
+        {
+            "protocol": "STAS",
+            "redeemAddr": "0f1ae06bbf829aa4492346efb9acb2ae3ec96af6",
+            "symbol": "MFT5",
+            "image": "",
+            "balance": 5000,
+            "tokenBalance": 5000
+        },
+        {
+            "protocol": "STAS",
+            "redeemAddr": "61ba74e9487352664ea89765705acb9b41f49ca6",
+            "symbol": "TAALT",
+            "image": "https://www.taal.com/wp-content/themes/taal_v2/img/favicon/favicon-96x96.png",
+            "balance": 3000,
+            "tokenBalance": 0
+        },
+        {
+            "protocol": "STAS",
+            "redeemAddr": "5adebe59ef584f2b4a849ab706ae24cd70ffca33",
+            "symbol": "TOKEN-0",
+            "image": "./favicon.ico",
+            "balance": 6000,
+            "tokenBalance": 6000
+        },
+        {
+            "protocol": "STAS",
+            "redeemAddr": "5d79a9b1a1baf2edbb7480c7e39fbcff905fec80",
+            "symbol": "TOKEN-0",
+            "image": "./favicon.ico",
+            "balance": 2000,
+            "tokenBalance": 2000
+        }
+    ]
+}

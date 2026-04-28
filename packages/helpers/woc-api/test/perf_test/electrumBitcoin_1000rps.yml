@@ -1,0 +1,92 @@
+scenarios:
+  ########## USER 1 ##########
+  get-requests: #check setting here https://gettaurus.org/docs/locust/#Data-sources
+    timeout: 5s
+    # these are data-sources options for locust. See more info below.
+    data-sources:
+      - path: electrum_api_variables_20rps.csv
+        delimiter: ";"
+        quoted: false
+        loop: true
+        variable-names: apiKey
+        random-order: false
+    headers:
+      Accept: "Content-Type: application/json"
+      Authorization: "Bearer mainnet_aed60d39b52b6049d7f881e4028ae194"
+    requests:
+      - url: https://api.taal.com/api/v1/address/1HRADRLckTpFJJskkihZp16X6jR8JVRJcr/balance
+        label: "GET /v1/address/balance"
+      - url: https://api.taal.com/api/v1/address/1HZJ3kKqhsHgz7oyK52GG2QkzyrtPPwcvx/history
+        label: "GET /v1/address/history"
+      - url: https://api.taal.com/api/v1/address/1HZJ3kKqhsHgz7oyK52GG2QkzyrtPPwcvx/info
+        label: "GET /v1/address/info"
+      - url: https://api.taal.com/api/v1/address/hash/933e2ab80b99749dbf8c22904899e8279056ce38644f64ab7313b8372c865ffb/balance
+        label: "GET /v1/address/hash/balance/"
+      - url: https://api.taal.com/api/v1/address/hash/933e2ab80b99749dbf8c22904899e8279056ce38644f64ab7313b8372c865ffb/history
+        label: "GET /v1/address/hash/history"
+      - url: https://api.taal.com/api/v1/address/hash/933e2ab80b99749dbf8c22904899e8279056ce38644f64ab7313b8372c865ffb/unspent
+        label: "GET /v1/address/hash/unspent"
+      - url: https://api.taal.com/api/v1/address/1HRADRLckTpFJJskkihZp16X6jR8JVRJcr/unspent
+        label: "GET /v1/address/unspent"
+
+  
+
+  post-requests:
+    retrieve-resources: false
+    store-cache: false
+    store-cookie: false
+    timeout: 5s
+    # these are data-sources options for locust. See more info below.
+    data-sources:
+      - path: electrum_api_variables_20rps.csv
+        delimiter: ";"
+        quoted: false
+        loop: true
+        variable-names: apiKey
+        random-order: false
+    headers:
+      Accept: "Content-Type: application/json"
+      Authorization: "Bearer mainnet_aed60d39b52b6049d7f881e4028ae194"
+    requests:
+      - url: https://api.taal.com/api/v1/addresses/balance
+        label: "POST /v1/addresses/balance"
+        method: POST
+        body: '{ \"addresses\": [\"16ZBEb7pp6mx5EAGrdeKivztd5eRJFuvYP\", \"1KGHhLTQaPr4LErrvbAuGE62yPpDoRwrob\"] }'
+      - url: https://api.taal.com/api/v1/bitcoin
+        label: "POST /v1/addresses/bitcoin get txout"
+        method: POST
+        body: '{\"jsonrpc\": \"1.0\", \"id\":\"postmantest\", \"method\": \"gettxout\", \"params\": [\"5ae748b3493dee130e9de12dc394089e8c21a99ff91b3cf795c95dc776bc1723\", 0]}'
+      - url: https://api.taal.com/api/v1/bitcoin
+        label: "POST /v1/addresses/bitcoin get best block"
+        method: POST
+        body: '{\"jsonrpc\": \"1.0\", \"id\": \"postmantest\", \"method\": \"getbestblockhash\", \"params\": []}'
+      - url: https://api.taal.com/api/v1/bitcoin
+        label: "POST /v1/addresses/bitcoin get raw transaction"
+        method: POST
+        body: '{\"jsonrpc\": \"1.0\", \"id\": \"postmantest\", \"method\": \"getrawtransaction\", \"params\": [\"5ae748b3493dee130e9de12dc394089e8c21a99ff91b3cf795c95dc776bc1723\", true]}'
+ 
+execution:
+  - scenario: get-requests
+    concurrency: 200
+    hold-for: 2m
+    ramp-up: 10s
+    iterations: 10000
+    throughput: 2000
+  - scenario: post-requests
+    concurrency: 200
+    hold-for: 2m
+    ramp-up: 10s
+    iterations: 10000
+    throughput: 2000
+reporting:
+  - module: final-stats
+  - module: console
+  - module: junit-xml
+    filename: reports-junit-format.xml
+    data-source: sample-labels
+
+modules:
+  local:
+    capacity: 20
+  locust:
+    cmdline: --loglevel DEBUG

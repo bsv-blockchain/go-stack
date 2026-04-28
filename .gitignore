@@ -1,0 +1,30 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test output
+*.test
+*.out
+
+# Go workspace sum (generated, not committed)
+go.work.sum
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+bin/
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Claude Code internal tooling
+.claude/

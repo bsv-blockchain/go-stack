@@ -1,0 +1,25 @@
+execution:
+- executor: locust
+  throughput: 10000
+  hold-for: 2s
+  scenario: get-requests
+
+scenarios:
+  get-requests:
+    timeout: 5
+    requests:
+      - url: https://api-ovh.whatsonchain.com/v1/bsv/main/woc
+        method: GET
+        headers:
+          Accept: "Content-Type: application/json"
+          Authorization: mainnet_2975d2afeb0b46f9e249f035949e700a
+reporting:
+  - module: final-stats
+  - module: console
+  - module: junit-xml
+    filename: reports-junit-format.xml
+    data-source: sample-labels
+
+modules:
+  locust:
+    cmdline:   

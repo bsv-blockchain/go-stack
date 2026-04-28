@@ -1,0 +1,47 @@
+{
+    "address": "mq7psuJ7Z9h1w4H3YtcCoHx7cPmhVM9UsV",
+    "utxos": [
+        {
+            "redeemAddr": "0f1ae06bbf829aa4492346efb9acb2ae3ec96af6",
+            "symbol": "MFT5",
+            "txid": "1b7ea90dbba9592867d688db4599b7c3eb2d31dfe006a9357a02e8882e14acc2",
+            "index": 1,
+            "amount": 4000
+        },
+        {
+            "redeemAddr": "0f1ae06bbf829aa4492346efb9acb2ae3ec96af6",
+            "symbol": "MFT5",
+            "txid": "1b7ea90dbba9592867d688db4599b7c3eb2d31dfe006a9357a02e8882e14acc2",
+            "index": 0,
+            "amount": 1000
+        },
+        {
+            "redeemAddr": "5d79a9b1a1baf2edbb7480c7e39fbcff905fec80",
+            "symbol": "TOKEN-0",
+            "txid": "15f9b3aacc81623874fc3f1d742fb98de0e299947917ef1384dd84baad94c8d0",
+            "index": 0,
+            "amount": 2000
+        },
+        {
+            "redeemAddr": "5adebe59ef584f2b4a849ab706ae24cd70ffca33",
+            "symbol": "TOKEN-0",
+            "txid": "432ce552683fc7dbde6b7cee79448dadd02559d67cf8e77af1595d7dd9130b9e",
+            "index": 0,
+            "amount": 5000
+        },
+        {
+            "redeemAddr": "5adebe59ef584f2b4a849ab706ae24cd70ffca33",
+            "symbol": "TOKEN-0",
+            "txid": "193e388af53c31cc6a019fb850c879d88f6aa47dce0575c30f6184df53b58f9e",
+            "index": 0,
+            "amount": 1000
+        },
+        {
+            "redeemAddr": "61ba74e9487352664ea89765705acb9b41f49ca6",
+            "symbol": "TAALT",
+            "txid": "a378578dccf2980388a88f09c8d33b6ea813d97b1d077bd054b7c2922542080b",
+            "index": 1,
+            "amount": 3000
+        }
+    ]
+}

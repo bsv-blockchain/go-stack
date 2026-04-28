@@ -1,0 +1,149 @@
+name: Deploy WoC Go App via Bastion with Port Forwarding
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_env:
+        description: 'Target Environment'
+        required: true
+        default: 'OVH-mainnet-172.21.21.19'
+        type: choice
+        options:
+          - 'OVH-mainnet-172.21.21.19'
+          - 'HZ-mainnet-172.20.16.42'
+          - 'HZ-testnet-172.20.32.10'
+
+env:
+  target_user: taal
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.target_env }}
+    runs-on: ubuntu-latest
+
+    env:
+      SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/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'
+      GOOS: linux
+      GOARCH: amd64
+      GO114MODULE: 'on'
+      GOPRIVATE: 'github.com/teranode-group'
+      CGO_ENABLED: 0
+      DEBUG: 0
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.4'
+
+      - name: Preparation
+        id: config
+        run: |
+          echo "SELECTED TARGET ENVIRONMENT: ${{ github.event.inputs.target_env }}"
+          PRIVATE_IP_ENV=$(echo "${{ github.event.inputs.target_env }}" | cut -f3 -d-)
+          DC_ENV=$(echo "${{ github.event.inputs.target_env }}" | cut -f1 -d-)
+          echo "PRIVATE IP of TARGET ENVIRONMENT: ${PRIVATE_IP_ENV}"
+          echo "target_host=${PRIVATE_IP_ENV}" >> $GITHUB_OUTPUT
+          echo "DATA CENTER of TARGET ENVIRONMENT: ${DC_ENV}"
+          if [[ "${DC_ENV}" == "HZ" ]]; then
+            echo "HZ"
+            echo "bastion_host=135.181.73.177" >> $GITHUB_OUTPUT
+            echo "port=22" >> $GITHUB_OUTPUT          
+          else
+            echo "OVH"
+            echo "bastion_host=54.37.78.169" >> $GITHUB_OUTPUT
+            echo "port=8022" >> $GITHUB_OUTPUT
+          fi                
+
+      - name: Create SSH config
+        run: |
+          echo "BASTION_HOST: ${{ steps.config.outputs.bastion_host }}"
+          echo "TARGET_HOST: ${{ steps.config.outputs.target_host }}"
+          echo "TARGET_USER: ${{ env.target_user }}"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.WOC_SSH_KEY }}" > ~/.ssh/devops_id_ed25519
+          chmod 600 ~/.ssh/devops_id_ed25519
+          cat <<EOF > ~/.ssh/config
+          Host bastion
+              HostName ${{ steps.config.outputs.bastion_host }}
+              User ${{ env.target_user }}
+              IdentityFile ~/.ssh/devops_id_ed25519
+              StrictHostKeyChecking no
+              Port ${{ steps.config.outputs.port }}
+              ConnectTimeout 15
+
+          Host target
+              HostName ${{ steps.config.outputs.target_host }}
+              User ${{ env.target_user }}
+              IdentityFile ~/.ssh/devops_id_ed25519
+              ProxyJump bastion
+              StrictHostKeyChecking no
+              ConnectTimeout 15
+          EOF
+
+      - name: Go Configuration
+        run: |
+          git config --global --add url."git@github.com:".insteadOf "https://github.com/"
+          # Generate GITHUB_ENV Variables
+          PROG_NAME=$(awk -F'"' '/^const progname =/ {print $2}' main.go)
+          GITHUB_SHA_HASH=${{ github.sha }}
+          GIT_COMMIT_SHORT=${GITHUB_SHA_HASH:0:7}
+          FILE_NAME="${PROG_NAME}_${GIT_COMMIT_SHORT}_${{ github.run_number }}"
+          # Set GITHUB_ENV Variables
+          echo "PROG_NAME=${PROG_NAME}" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHORT=${GIT_COMMIT_SHORT}" >> $GITHUB_ENV
+          echo "FILE_NAME=${FILE_NAME}" >> $GITHUB_ENV
+
+      - name: Building
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.WOC_SSH_KEY }}"
+          echo "Building program name ${{ env.PROG_NAME }}"
+          echo "with short commit version ${{ env.GIT_COMMIT_SHORT }}"
+          echo "using file name ${{ env.FILE_NAME }} ..."
+          echo ${{ env.DEBUG }}
+          echo ${{ env.CGO_ENABLED }}
+          go version
+          mkdir -p build/linux
+          mkdir -p build_tar/${{ env.PROG_NAME }}
+          ls -lrtah
+          go build --trimpath -o build/linux/${{ env.FILE_NAME }} -ldflags="-s -w -X main.commit=${{ env.GIT_COMMIT_SHORT }} -X main.version=MANUAL"
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+      - name: Archive build
+        run: |
+          cp settings_local.conf build/linux/
+          cd build/linux/ 
+          tar cvfz ${{ env.FILE_NAME }}.tar.gz settings_local.conf ${{ env.FILE_NAME }}
+
+      - name: SCP Archive via Bastion
+        run: |
+          ssh -o "IdentitiesOnly=yes" target mkdir -p ${{ env.PROG_NAME }}
+          scp -o "IdentitiesOnly=yes"  build/linux/${{ env.FILE_NAME }}.tar.gz target://home/taal/${{ env.PROG_NAME }}
+          ssh -o "IdentitiesOnly=yes" target bash -s <<ENDSSH
+          cd ${{ env.PROG_NAME }}
+          tar -xzf ${{ env.FILE_NAME }}.tar.gz
+          ./link_latest.sh yes
+          ENDSSH
+
+      - name: Slack Notification on Failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": ":x: *Deployment Failed!* :boom:\n• *Repo:* '"${{ github.repository }}"'\n• *Build:* '"${{ env.GIT_COMMIT_SHORT }}"'\n• *Env:* '"${{ github.event.inputs.target_env }}"'\n• *Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs>"
+            }' \
+            ${{ env.SLACK_WEBHOOK_URL }}
+
+      - name: Slack Notification on Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": ":white_check_mark: *Deployment Succeeded!*\n• *Repo:* '"${{ github.repository }}"'\n• *Build:* '"${{ env.GIT_COMMIT_SHORT }}"'\n•  *Env:* '"${{ github.event.inputs.target_env }}"'\n• *Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs>"
+            }' \
+            ${{ env.SLACK_WEBHOOK_URL }}

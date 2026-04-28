@@ -1,0 +1,288 @@
+openapi: 3.0.4
+info:
+  version: 1.0.0
+  title: Overlay HTTP API
+  description: The overlay server API
+
+servers:
+  - url: http://localhost:3000/api/v1
+
+tags:
+  - name: admin
+    description: Admin API endpoints
+  - name: non-admin
+    description: Non Admin API endpoints
+
+paths:
+  /admin/syncAdvertisements:
+    post:
+      tags:
+        - admin
+      operationId: AdvertisementsSync
+      security:
+        - bearerAuth:
+            - admin
+      responses:
+        200:
+          $ref: '../paths/admin/responses.yaml#/components/responses/AdvertisementsSyncResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
+  /listLookupServiceProviders:
+    get:
+      tags:
+        - non-admin
+      operationId: ListLookupServiceProviders
+      security:
+        - bearerAuth:
+            - user
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/MetadataResponse'
+
+  /listTopicManagers:
+    get:
+      tags:
+        - non-admin
+      operationId: ListTopicManagers
+      security:
+        - bearerAuth:
+            - user
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/MetadataResponse'
+
+  /getDocumentationForLookupServiceProvider:
+    get:
+      tags:
+        - non-admin
+      operationId: GetLookupServiceProviderDocumentation
+      security:
+        - bearerAuth:
+            - user
+      parameters:
+        - in: query
+          name: lookupService
+          schema:
+            type: string
+          required: true
+          description: The name of the lookup service provider to retrieve documentation for
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/LookupServiceProviderDocumentationResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
+  /admin/startGASPSync:
+    post:
+      tags:
+        - admin
+      operationId: StartGASPSync
+      security:
+        - bearerAuth:
+            - admin
+      responses:
+        200:
+          $ref: '../paths/admin/responses.yaml#/components/responses/StartGASPSyncResponse'
+
+  /getDocumentationForTopicManager:
+    get:
+      tags:
+        - non-admin
+      operationId: GetTopicManagerDocumentation
+      security:
+        - bearerAuth:
+            - user
+      parameters:
+        - in: query
+          name: topicManager
+          schema:
+            type: string
+          required: true
+          description: The name of the topic manager to retrieve documentation for
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/TopicManagerDocumentationResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
+  /submit:
+    post:
+      tags:
+        - non-admin
+      operationId: SubmitTransaction
+      security:
+        - bearerAuth:
+            - user
+      parameters:
+        - in: header
+          name: x-topics
+          schema:
+            type: array
+            items:
+              type: string
+          required: true
+          explode: true
+          style: simple
+      requestBody:
+        required: true
+        $ref: '../paths/non_admin/request-bodies.yaml#/components/requestBodies/SubmitTransactionBody'
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/SubmitTransactionResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        409:
+          $ref: '#/components/responses/RequestTimeoutResponse'
+
+  /requestSyncResponse:
+    post:
+      tags:
+        - non-admin
+      operationId: RequestSyncResponse
+      security:
+        - bearerAuth:
+            - user
+      parameters:
+        - in: header
+          name: X-BSV-Topic
+          schema:
+            type: string
+          required: true
+          description: Topic identifier for the sync response request
+      requestBody:
+        required: true
+        $ref: '../paths/non_admin/request-bodies.yaml#/components/requestBodies/RequestSyncResponseBody'
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/RequestSyncResResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
+  /requestForeignGASPNode:
+    post:
+      tags:
+        - non-admin
+      operationId: RequestForeignGASPNode
+      security:
+        - bearerAuth:
+            - user
+      parameters:
+        - in: header
+          name: X-BSV-Topic
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        $ref: '../paths/non_admin/request-bodies.yaml#/components/requestBodies/RequestForeignGASPNodeBody'
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/RequestForeignGASPNodeResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
+  /lookup:
+    post:
+      tags:
+        - non-admin
+      operationId: LookupQuestion
+      security:
+        - bearerAuth:
+            - user
+      requestBody:
+        required: true
+        $ref: '../paths/non_admin/request-bodies.yaml#/components/requestBodies/LookupQuestionBody'
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/LookupQuestionResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
+  /arc-ingest:
+    post:
+      tags:
+        - non-admin
+      operationId: ArcIngest
+      security:
+        - bearerAuth:
+            - user
+      requestBody:
+        required: true
+        $ref: '../paths/non_admin/request-bodies.yaml#/components/requestBodies/ArcIngestBody'
+      responses:
+        200:
+          $ref: '../paths/non_admin/responses.yaml#/components/responses/ArcIngestResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        408:
+          $ref: '#/components/responses/RequestTimeoutResponse'
+        500:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error message
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  responses:
+    BadRequestResponse:
+      description: |
+        The server cannot process the request due to malformed syntax or invalid input.
+        This error is typically caused by client-side issues, such as missing required parameters,
+        invalid data formats, or incorrect request structures.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFoundResponse:
+      description: |
+        The requested resource could not be found. This error occurs when the client
+        requests an endpoint or resource that does not exist on the server or cannot be located.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalServerErrorResponse:
+      description: |
+        An unexpected condition was encountered on the server, causing the request to fail.
+        This error is typically caused by internal issues such as server misconfigurations,
+        database failures, or unhandled exceptions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    RequestTimeoutResponse:
+      description: |
+        The server did not receive a complete request within the time it was prepared to wait.
+        This error can occur if the client’s request takes too long to process or there is network latency.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

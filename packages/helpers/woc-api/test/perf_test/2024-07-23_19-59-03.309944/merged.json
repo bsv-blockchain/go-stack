@@ -1,0 +1,45 @@
+{
+ "execution": [
+  {
+   "executor": "locust",
+   "concurrency": 40,
+   "throughput": 100000,
+   "hold-for": 3,
+   "ramp-up": "0s",
+   "scenario": "get-requests"
+  }
+ ],
+ "scenarios": {
+  "get-requests": {
+   "timeout": "5s",
+   "requests": [
+    {
+     "url": "https://api-ovh.whatsonchain.com/v1/bsv/main/address/18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn/balance",
+     "method": "GET",
+     "headers": {
+      "Accept": "application/json",
+      "Authorization": "mainnet_2975d2afeb0b46f9e249f035949e700a"
+     }
+    }
+   ]
+  }
+ },
+ "reporting": [
+  {
+   "module": "final-stats"
+  },
+  {
+   "module": "console"
+  },
+  {
+   "module": "junit-xml",
+   "filename": "reports-junit-format.xml",
+   "data-source": "sample-labels"
+  }
+ ],
+ "modules": {
+  "locust": {
+   "cmdline": null
+  }
+ }
+}
