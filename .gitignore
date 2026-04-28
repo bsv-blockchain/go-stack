@@ -28,3 +28,7 @@ bin/
 
 # Claude Code internal tooling
 .claude/
+
+# Compiled binaries
+merkle-service
+server
