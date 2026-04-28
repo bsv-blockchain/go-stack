@@ -1,6 +1,0 @@
-[2024-07-23 19:46:23,448] Farzans-MacBook-Pro/INFO/locust.main: Run time limit set to 15 seconds
-[2024-07-23 19:46:23,448] Farzans-MacBook-Pro/INFO/locust.main: Starting Locust 2.29.1
-[2024-07-23 19:46:23,449] Farzans-MacBook-Pro/INFO/locust.runners: Ramping to 10 users at a rate of 2.00 per second
-[2024-07-23 19:46:27,465] Farzans-MacBook-Pro/INFO/locust.runners: All users spawned: {"GeneratedSwarm": 10} (10 total users)
-[2024-07-23 19:46:38,266] Farzans-MacBook-Pro/INFO/locust.main: --run-time limit reached, shutting down
-[2024-07-23 19:46:38,393] Farzans-MacBook-Pro/INFO/locust.main: Shutting down (exit code 0)
