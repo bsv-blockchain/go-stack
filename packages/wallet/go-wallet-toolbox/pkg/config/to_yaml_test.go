@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/bsv-blockchain/go-wallet-toolbox/internal/config"
+	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/config"
 )
 
 func TestToYAMLFile(t *testing.T) {

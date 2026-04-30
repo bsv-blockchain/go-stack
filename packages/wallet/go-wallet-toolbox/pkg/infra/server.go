@@ -10,7 +10,7 @@ import (
 	"github.com/bsv-blockchain/go-chaintracks/chaintracks"
 	"github.com/go-softwarelab/common/pkg/must"
 
-	"github.com/bsv-blockchain/go-wallet-toolbox/internal/config"
+	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/config"
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/logging"
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/monitor"
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/services"
