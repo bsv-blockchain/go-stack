@@ -13,9 +13,9 @@ require (
 // Security: upgrade vulnerable dependencies
 replace github.com/gofiber/fiber/v2 => github.com/gofiber/fiber/v2 v2.52.12
 
-replace github.com/opencontainers/runc => github.com/opencontainers/runc v1.4.0
+replace github.com/opencontainers/runc => github.com/opencontainers/runc v1.4.2
 
-replace go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.42.0
+replace go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.43.0
 
 require (
 	filippo.io/bigmod v0.1.1-0.20260103110540-f8a47775ebe5 // indirect
@@ -65,6 +65,7 @@ require (
 	github.com/dgraph-io/badger/v4 v4.9.1 // indirect
 	github.com/dgraph-io/ristretto/v2 v2.4.0 // indirect
 	github.com/dgryski/go-metro v0.0.0-20250106013310-edb8663e5e33 // indirect
+	github.com/docker/go-connections v0.7.0 // indirect
 	github.com/dolthub/maphash v0.1.0 // indirect
 	github.com/dolthub/swiss v0.2.1 // indirect
 	github.com/dunglas/httpsfv v1.1.0 // indirect
