@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
 	"github.com/stretchr/testify/require"
 )
 

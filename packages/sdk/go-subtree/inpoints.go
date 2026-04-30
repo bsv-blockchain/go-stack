@@ -8,8 +8,8 @@ import (
 	"math"
 	"slices"
 
-	"github.com/bsv-blockchain/go-bt/v2"
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
+	"github.com/bsv-blockchain/go-sdk/transaction"
 )
 
 // Inpoint represents an input point in a transaction, consisting of a parent transaction hash and an index.
@@ -42,7 +42,7 @@ func NewTxInpoints() TxInpoints {
 }
 
 // NewTxInpointsFromTx creates a new TxInpoints object from a given transaction.
-func NewTxInpointsFromTx(tx *bt.Tx) (TxInpoints, error) {
+func NewTxInpointsFromTx(tx *transaction.Transaction) (TxInpoints, error) {
 	p := NewTxInpoints()
 	p.addTx(tx)
 
@@ -50,10 +50,10 @@ func NewTxInpointsFromTx(tx *bt.Tx) (TxInpoints, error) {
 }
 
 // NewTxInpointsFromInputs creates a new TxInpoints object from a slice of transaction inputs.
-func NewTxInpointsFromInputs(inputs []*bt.Input) (TxInpoints, error) {
+func NewTxInpointsFromInputs(inputs []*transaction.TransactionInput) (TxInpoints, error) {
 	p := TxInpoints{}
 
-	tx := &bt.Tx{}
+	tx := &transaction.Transaction{}
 	tx.Inputs = inputs
 
 	p.addTx(tx)
@@ -175,17 +175,17 @@ func (p *TxInpoints) Serialize() ([]byte, error) {
 }
 
 // addTx adds a transaction to the TxInpoints object, extracting its inputs and updating the parent transaction hashes and indexes.
-func (p *TxInpoints) addTx(tx *bt.Tx) {
+func (p *TxInpoints) addTx(tx *transaction.Transaction) {
 	// Do not error out for transactions without inputs, seeded Teranodes will have txs without inputs
 	for _, input := range tx.Inputs {
-		hash := *input.PreviousTxIDChainHash()
+		hash := *input.SourceTXID
 
 		index := slices.Index(p.ParentTxHashes, hash)
 		if index != -1 {
-			p.Idxs[index] = append(p.Idxs[index], input.PreviousTxOutIndex)
+			p.Idxs[index] = append(p.Idxs[index], input.SourceTxOutIndex)
 		} else {
 			p.ParentTxHashes = append(p.ParentTxHashes, hash)
-			p.Idxs = append(p.Idxs, []uint32{input.PreviousTxOutIndex})
+			p.Idxs = append(p.Idxs, []uint32{input.SourceTxOutIndex})
 		}
 
 		p.nrInpoints++

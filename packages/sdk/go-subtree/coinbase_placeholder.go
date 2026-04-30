@@ -3,8 +3,8 @@
 package subtree
 
 import (
-	"github.com/bsv-blockchain/go-bt/v2"
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
+	"github.com/bsv-blockchain/go-sdk/transaction"
 )
 
 var (
@@ -35,8 +35,8 @@ var (
 	FrozenBytesTxHash = chainhash.Hash(FrozenBytesTxBytes)
 )
 
-func generateCoinbasePlaceholderTx() *bt.Tx {
-	tx := bt.NewTx()
+func generateCoinbasePlaceholderTx() *transaction.Transaction {
+	tx := transaction.NewTransaction()
 	tx.Version = 0xFFFFFFFF
 	tx.LockTime = 0xFFFFFFFF
 
@@ -44,10 +44,10 @@ func generateCoinbasePlaceholderTx() *bt.Tx {
 }
 
 // IsCoinbasePlaceHolderTx checks if the given transaction is a coinbase placeholder transaction.
-func IsCoinbasePlaceHolderTx(tx *bt.Tx) bool {
+func IsCoinbasePlaceHolderTx(tx *transaction.Transaction) bool {
 	coinbasePlaceholderTx := generateCoinbasePlaceholderTx()
 
-	coinbasePlaceholderTxHash := coinbasePlaceholderTx.TxIDChainHash()
+	coinbasePlaceholderTxHash := coinbasePlaceholderTx.TxID()
 
-	return tx.TxIDChainHash().IsEqual(coinbasePlaceholderTxHash)
+	return tx.TxID().IsEqual(coinbasePlaceholderTxHash)
 }

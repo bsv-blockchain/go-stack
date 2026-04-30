@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/bsv-blockchain/go-bt/v2"
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
+	"github.com/bsv-blockchain/go-sdk/transaction"
 )
 
 // Data represents the data associated with a subtree.
 type Data struct {
 	Subtree *Subtree
-	Txs     []*bt.Tx
+	Txs     []*transaction.Transaction
 }
 
 // NewSubtreeData creates a new Data object
@@ -22,7 +22,7 @@ type Data struct {
 func NewSubtreeData(subtree *Subtree) *Data {
 	return &Data{
 		Subtree: subtree,
-		Txs:     make([]*bt.Tx, subtree.Size()),
+		Txs:     make([]*transaction.Transaction, subtree.Size()),
 	}
 }
 
@@ -56,7 +56,7 @@ func (s *Data) RootHash() *chainhash.Hash {
 }
 
 // AddTx adds a transaction to the subtree data at the specified index.
-func (s *Data) AddTx(tx *bt.Tx, index int) error {
+func (s *Data) AddTx(tx *transaction.Transaction, index int) error {
 	if index == 0 && tx.IsCoinbase() && s.Subtree.Nodes[index].Hash.Equal(CoinbasePlaceholderHashValue) {
 		// we got the coinbase tx as the first tx, we need to add it as the first tx and stop further processing
 		s.Txs[index] = tx
@@ -65,7 +65,7 @@ func (s *Data) AddTx(tx *bt.Tx, index int) error {
 	}
 
 	// check whether this is set in the main subtree
-	if !s.Subtree.Nodes[index].Hash.Equal(*tx.TxIDChainHash()) {
+	if !s.Subtree.Nodes[index].Hash.Equal(*tx.TxID()) {
 		return ErrTxHashMismatch
 	}
 
@@ -100,7 +100,7 @@ func (s *Data) Serialize() ([]byte, error) {
 	buf := bytes.NewBuffer(bufBytes)
 
 	for i := txStartIndex; i < subtreeLen; i++ {
-		b := s.Txs[i].SerializeBytes()
+		b := s.Txs[i].Bytes()
 
 		_, err = buf.Write(b)
 		if err != nil {
@@ -139,7 +139,7 @@ func (s *Data) WriteTransactionsToWriter(w io.Writer, startIdx, endIdx int) erro
 		}
 
 		// Stream transaction directly to writer without intermediate allocation
-		if _, err := s.Txs[i].SerializeTo(w); err != nil {
+		if _, err := w.Write(s.Txs[i].Bytes()); err != nil {
 			return fmt.Errorf("%w at index %d: %w", ErrTransactionWrite, i, err)
 		}
 	}
@@ -158,13 +158,13 @@ func (s *Data) WriteTransactionsToWriter(w io.Writer, startIdx, endIdx int) erro
 //   - txs: Slice of transactions to write
 //
 // Returns an error if writing fails.
-func WriteTransactionChunk(w io.Writer, txs []*bt.Tx) error {
+func WriteTransactionChunk(w io.Writer, txs []*transaction.Transaction) error {
 	for _, tx := range txs {
 		if tx == nil {
 			continue // Skip nil transactions
 		}
 
-		txBytes := tx.SerializeBytes()
+		txBytes := tx.Bytes()
 		if _, err := w.Write(txBytes); err != nil {
 			return fmt.Errorf("%w: %w", ErrTransactionWrite, err)
 		}
@@ -187,12 +187,12 @@ func WriteTransactionChunk(w io.Writer, txs []*bt.Tx) error {
 //   - count: Number of transactions to read
 //
 // Returns a slice of transactions and any error encountered.
-func ReadTransactionChunk(r io.Reader, subtree *Subtree, startIdx, count int) ([]*bt.Tx, error) {
+func ReadTransactionChunk(r io.Reader, subtree *Subtree, startIdx, count int) ([]*transaction.Transaction, error) {
 	if subtree == nil || len(subtree.Nodes) == 0 {
 		return nil, ErrSubtreeNodesEmpty
 	}
 
-	txs := make([]*bt.Tx, 0, count)
+	txs := make([]*transaction.Transaction, 0, count)
 
 	for i := 0; i < count; i++ {
 		idx := startIdx + i
@@ -205,7 +205,7 @@ func ReadTransactionChunk(r io.Reader, subtree *Subtree, startIdx, count int) ([
 			continue
 		}
 
-		tx := &bt.Tx{}
+		tx := &transaction.Transaction{}
 		if _, err := tx.ReadFrom(r); err != nil {
 			if errors.Is(err, io.EOF) {
 				break
@@ -214,7 +214,7 @@ func ReadTransactionChunk(r io.Reader, subtree *Subtree, startIdx, count int) ([
 		}
 
 		// Validate tx hash matches expected
-		if !subtree.Nodes[idx].Hash.Equal(*tx.TxIDChainHash()) {
+		if !subtree.Nodes[idx].Hash.Equal(*tx.TxID()) {
 			return txs, ErrTxHashMismatch
 		}
 
@@ -247,7 +247,7 @@ func (s *Data) ReadTransactionsFromReader(r io.Reader, startIdx, endIdx int) (in
 			continue
 		}
 
-		tx := &bt.Tx{}
+		tx := &transaction.Transaction{}
 		if _, err := tx.ReadFrom(r); err != nil {
 			if errors.Is(err, io.EOF) {
 				break
@@ -256,7 +256,7 @@ func (s *Data) ReadTransactionsFromReader(r io.Reader, startIdx, endIdx int) (in
 		}
 
 		// Validate tx hash matches expected
-		if !s.Subtree.Nodes[i].Hash.Equal(*tx.TxIDChainHash()) {
+		if !s.Subtree.Nodes[i].Hash.Equal(*tx.TxID()) {
 			return txsRead, ErrTxHashMismatch
 		}
 
@@ -283,10 +283,10 @@ func (s *Data) serializeFromReader(buf io.Reader) error {
 	}
 
 	// initialize the txs array
-	s.Txs = make([]*bt.Tx, s.Subtree.Length())
+	s.Txs = make([]*transaction.Transaction, s.Subtree.Length())
 
 	for {
-		tx := &bt.Tx{}
+		tx := &transaction.Transaction{}
 
 		_, err = tx.ReadFrom(buf)
 		if err != nil {
@@ -308,7 +308,7 @@ func (s *Data) serializeFromReader(buf io.Reader) error {
 			return ErrTxIndexOutOfBounds
 		}
 
-		if !s.Subtree.Nodes[txIndex].Hash.Equal(*tx.TxIDChainHash()) {
+		if !s.Subtree.Nodes[txIndex].Hash.Equal(*tx.TxID()) {
 			return ErrTxHashMismatch
 		}
 
