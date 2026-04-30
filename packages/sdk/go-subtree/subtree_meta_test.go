@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/bsv-blockchain/go-bt/v2"
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
+	"github.com/bsv-blockchain/go-sdk/transaction"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -25,7 +25,7 @@ func TestNewSubtreeMeta(t *testing.T) {
 
 	t.Run("TestNewSubtreeMeta", func(t *testing.T) {
 		subtree, _ := NewTreeByLeafCount(4)
-		_ = subtree.AddNode(*tx1.TxIDChainHash(), 1, 1)
+		_ = subtree.AddNode(*tx1.TxID(), 1, 1)
 		subtreeMeta := NewSubtreeMeta(subtree)
 
 		assert.Len(t, subtreeMeta.TxInpoints, 4)
@@ -37,7 +37,7 @@ func TestNewSubtreeMeta(t *testing.T) {
 
 	t.Run("TestNewSubtreeMeta without subtree node", func(t *testing.T) {
 		subtree, _ := NewTreeByLeafCount(4)
-		_ = subtree.AddNode(*tx1.TxIDChainHash(), 1, 1)
+		_ = subtree.AddNode(*tx1.TxID(), 1, 1)
 		subtreeMeta := NewSubtreeMeta(subtree)
 
 		err := subtreeMeta.SetTxInpointsFromTx(tx1)
@@ -49,7 +49,7 @@ func TestNewSubtreeMeta(t *testing.T) {
 
 	t.Run("TestNewSubtreeMeta with 1 set", func(t *testing.T) {
 		subtree, _ := NewTreeByLeafCount(4)
-		_ = subtree.AddNode(*tx1.TxIDChainHash(), 1, 1)
+		_ = subtree.AddNode(*tx1.TxID(), 1, 1)
 		subtreeMeta := NewSubtreeMeta(subtree)
 
 		err := subtreeMeta.SetTxInpointsFromTx(tx1)
@@ -70,10 +70,10 @@ func TestNewSubtreeMeta(t *testing.T) {
 
 	t.Run("TestNewSubtreeMeta with all set", func(t *testing.T) {
 		subtree, _ := NewTreeByLeafCount(4)
-		require.NoError(t, subtree.AddNode(*tx1.TxIDChainHash(), 1, 1))
-		require.NoError(t, subtree.AddNode(*tx2.TxIDChainHash(), 2, 2))
-		require.NoError(t, subtree.AddNode(*tx3.TxIDChainHash(), 3, 3))
-		require.NoError(t, subtree.AddNode(*tx4.TxIDChainHash(), 4, 4))
+		require.NoError(t, subtree.AddNode(*tx1.TxID(), 1, 1))
+		require.NoError(t, subtree.AddNode(*tx2.TxID(), 2, 2))
+		require.NoError(t, subtree.AddNode(*tx3.TxID(), 3, 3))
+		require.NoError(t, subtree.AddNode(*tx4.TxID(), 4, 4))
 
 		subtreeMeta := NewSubtreeMeta(subtree)
 
@@ -105,7 +105,7 @@ func TestNewSubtreeMetaFromBytes(t *testing.T) {
 
 	t.Run("TestNewSubtreeMetaFromBytes", func(t *testing.T) {
 		subtree, _ := NewTreeByLeafCount(4)
-		require.NoError(t, subtree.AddNode(*tx1.TxIDChainHash(), 1, 1))
+		require.NoError(t, subtree.AddNode(*tx1.TxID(), 1, 1))
 
 		subtreeMeta := NewSubtreeMeta(subtree)
 		require.NoError(t, subtreeMeta.SetTxInpointsFromTx(tx1))
@@ -135,7 +135,7 @@ func TestNewSubtreeMetaFromBytes(t *testing.T) {
 
 	t.Run("TestNewSubtreeMetaFromReader", func(t *testing.T) {
 		subtree, _ := NewTreeByLeafCount(4)
-		_ = subtree.AddNode(*tx1.TxIDChainHash(), 1, 1)
+		_ = subtree.AddNode(*tx1.TxID(), 1, 1)
 		subtreeMeta := NewSubtreeMeta(subtree)
 		_ = subtreeMeta.SetTxInpointsFromTx(tx1)
 
@@ -166,7 +166,7 @@ func TestNewSubtreeMetaFromBytes(t *testing.T) {
 
 	t.Run("TestNewSubtreeMetaFromReader with large cap", func(t *testing.T) {
 		subtree, _ := NewTreeByLeafCount(32 * 1024)
-		_ = subtree.AddNode(*tx1.TxIDChainHash(), 1, 1)
+		_ = subtree.AddNode(*tx1.TxID(), 1, 1)
 
 		b, err := subtree.Serialize()
 		require.NoError(t, err)
@@ -221,7 +221,7 @@ func TestNewSubtreeMetaGetParentTxHashes(t *testing.T) {
 			require.NoError(t, err)
 
 			assert.Len(t, allParentTxHashes, 1)
-			assert.Equal(t, *txs[i].Inputs[0].PreviousTxIDChainHash(), allParentTxHashes[0])
+			assert.Equal(t, *txs[i].Inputs[0].SourceTXID, allParentTxHashes[0])
 		}
 	})
 
@@ -258,8 +258,8 @@ func TestMetaGetTxInpoints(t *testing.T) {
 			require.NoError(t, err)
 
 			assert.Len(t, inpoints, 1)
-			assert.Equal(t, *txs[i].Inputs[0].PreviousTxIDChainHash(), inpoints[0].Hash)
-			assert.Equal(t, txs[i].Inputs[0].PreviousTxOutIndex, inpoints[0].Index)
+			assert.Equal(t, *txs[i].Inputs[0].SourceTXID, inpoints[0].Hash)
+			assert.Equal(t, txs[i].Inputs[0].SourceTxOutIndex, inpoints[0].Index)
 		}
 	})
 }
@@ -276,8 +276,8 @@ func TestMetaSetTxInpoints(t *testing.T) {
 			require.NoError(t, err)
 
 			assert.Len(t, inpoints, 1)
-			assert.Equal(t, *txs[i].Inputs[0].PreviousTxIDChainHash(), inpoints[0].Hash)
-			assert.Equal(t, txs[i].Inputs[0].PreviousTxOutIndex, inpoints[0].Index)
+			assert.Equal(t, *txs[i].Inputs[0].SourceTXID, inpoints[0].Hash)
+			assert.Equal(t, txs[i].Inputs[0].SourceTxOutIndex, inpoints[0].Index)
 		}
 	})
 
@@ -286,7 +286,7 @@ func TestMetaSetTxInpoints(t *testing.T) {
 
 		// Test setting inpoints for a subtree node that does not exist
 		err := subtreeMeta.SetTxInpoints(2, TxInpoints{
-			ParentTxHashes: []chainhash.Hash{*txs[0].Inputs[0].PreviousTxIDChainHash()},
+			ParentTxHashes: []chainhash.Hash{*txs[0].Inputs[0].SourceTXID},
 			Idxs:           [][]uint32{{1, 2, 3}},
 			nrInpoints:     3,
 		})
@@ -296,16 +296,16 @@ func TestMetaSetTxInpoints(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.Len(t, inpoints, 3)
-		assert.Equal(t, *txs[0].Inputs[0].PreviousTxIDChainHash(), inpoints[0].Hash)
-		assert.Equal(t, *txs[0].Inputs[0].PreviousTxIDChainHash(), inpoints[0].Hash)
-		assert.Equal(t, *txs[0].Inputs[0].PreviousTxIDChainHash(), inpoints[0].Hash)
+		assert.Equal(t, *txs[0].Inputs[0].SourceTXID, inpoints[0].Hash)
+		assert.Equal(t, *txs[0].Inputs[0].SourceTXID, inpoints[0].Hash)
+		assert.Equal(t, *txs[0].Inputs[0].SourceTXID, inpoints[0].Hash)
 		assert.Equal(t, uint32(1), inpoints[0].Index)
 		assert.Equal(t, uint32(2), inpoints[1].Index)
 		assert.Equal(t, uint32(3), inpoints[2].Index)
 
 		// Test setting inpoints for a subtree node that does not exist
 		err = subtreeMeta.SetTxInpoints(5, TxInpoints{
-			ParentTxHashes: []chainhash.Hash{*txs[0].Inputs[0].PreviousTxIDChainHash()},
+			ParentTxHashes: []chainhash.Hash{*txs[0].Inputs[0].SourceTXID},
 			Idxs:           [][]uint32{{1, 2, 3}},
 			nrInpoints:     3,
 		})
@@ -314,7 +314,7 @@ func TestMetaSetTxInpoints(t *testing.T) {
 	})
 }
 
-func initMeta(t *testing.T) ([]*bt.Tx, *Subtree, *Meta) {
+func initMeta(t *testing.T) ([]*transaction.Transaction, *Subtree, *Meta) {
 	tx1 := tx.Clone()
 	tx1.Version = 1
 
@@ -328,10 +328,10 @@ func initMeta(t *testing.T) ([]*bt.Tx, *Subtree, *Meta) {
 	tx4.Version = 4
 
 	subtree, _ := NewTreeByLeafCount(4)
-	require.NoError(t, subtree.AddNode(*tx1.TxIDChainHash(), 1, 1))
-	require.NoError(t, subtree.AddNode(*tx2.TxIDChainHash(), 2, 2))
-	require.NoError(t, subtree.AddNode(*tx3.TxIDChainHash(), 3, 3))
-	require.NoError(t, subtree.AddNode(*tx4.TxIDChainHash(), 4, 4))
+	require.NoError(t, subtree.AddNode(*tx1.TxID(), 1, 1))
+	require.NoError(t, subtree.AddNode(*tx2.TxID(), 2, 2))
+	require.NoError(t, subtree.AddNode(*tx3.TxID(), 3, 3))
+	require.NoError(t, subtree.AddNode(*tx4.TxID(), 4, 4))
 
 	subtreeMeta := NewSubtreeMeta(subtree)
 
@@ -340,7 +340,7 @@ func initMeta(t *testing.T) ([]*bt.Tx, *Subtree, *Meta) {
 	require.NoError(t, subtreeMeta.SetTxInpointsFromTx(tx3))
 	require.NoError(t, subtreeMeta.SetTxInpointsFromTx(tx4))
 
-	return []*bt.Tx{tx1, tx2, tx3, tx4}, subtree, subtreeMeta
+	return []*transaction.Transaction{tx1, tx2, tx3, tx4}, subtree, subtreeMeta
 }
 
 func TestNewSubtreeMetaFromBytesErrors(t *testing.T) {
@@ -387,8 +387,8 @@ func TestMetaSerializeErrors(t *testing.T) {
 
 		subtree, err := NewTreeByLeafCount(4)
 		require.NoError(t, err)
-		require.NoError(t, subtree.AddNode(*tx1.TxIDChainHash(), 1, 1))
-		require.NoError(t, subtree.AddNode(*tx2.TxIDChainHash(), 2, 2))
+		require.NoError(t, subtree.AddNode(*tx1.TxID(), 1, 1))
+		require.NoError(t, subtree.AddNode(*tx2.TxID(), 2, 2))
 
 		meta := NewSubtreeMeta(subtree)
 

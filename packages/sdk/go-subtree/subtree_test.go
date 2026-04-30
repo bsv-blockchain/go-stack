@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -56,10 +56,10 @@ func TestRootHash(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
-		hash2, _ := chainhash.NewHashFromStr("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
-		hash3, _ := chainhash.NewHashFromStr("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
-		hash4, _ := chainhash.NewHashFromStr("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
+		hash1, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash2, _ := chainhash.NewHashFromHex("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
+		hash3, _ := chainhash.NewHashFromHex("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
+		hash4, _ := chainhash.NewHashFromHex("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
 		_ = st.AddNode(*hash1, 111, 0)
 		_ = st.AddNode(*hash2, 111, 0)
 		_ = st.AddNode(*hash3, 111, 0)
@@ -83,7 +83,7 @@ func TestRootHashWithReplaceRootNode(t *testing.T) {
 		st, err := NewTree(2)
 		require.NoError(t, err)
 
-		hash1, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash1, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
 
 		rootHash := st.RootHash()
 		assert.Nil(t, rootHash)
@@ -104,7 +104,7 @@ func TestRootHashWithReplaceRootNode(t *testing.T) {
 
 		_ = st.AddCoinbaseNode()
 
-		hash1, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash1, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
 
 		rootHash := st.RootHash()
 		assert.Equal(t, "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", rootHash.String())
@@ -123,10 +123,10 @@ func TestRootHashWithReplaceRootNode(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
-		hash2, _ := chainhash.NewHashFromStr("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
-		hash3, _ := chainhash.NewHashFromStr("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
-		hash4, _ := chainhash.NewHashFromStr("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
+		hash1, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash2, _ := chainhash.NewHashFromHex("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
+		hash3, _ := chainhash.NewHashFromHex("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
+		hash4, _ := chainhash.NewHashFromHex("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
 		_ = st.AddNode(*hash1, 111, 0)
 		_ = st.AddNode(*hash2, 111, 0)
 		_ = st.AddNode(*hash3, 111, 0)
@@ -150,10 +150,10 @@ func TestGetMap(t *testing.T) {
 		t.Errorf(expectedSizeFourMessage, st.Size())
 	}
 
-	hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-	hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-	hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-	hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+	hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+	hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+	hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+	hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 	_ = st.AddNode(*hash1, 111, 101)
 	_ = st.AddNode(*hash2, 112, 102)
 	_ = st.AddNode(*hash3, 113, 103)
@@ -183,7 +183,7 @@ func TestHasNode(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
 		_ = st.AddNode(*hash1, 111, 0)
 
 		exists := st.HasNode(*hash1)
@@ -198,7 +198,7 @@ func TestHasNode(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
 		exists := st.HasNode(*hash1)
 		assert.False(t, exists)
 	})
@@ -213,7 +213,7 @@ func TestGetNode(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
 		_ = st.AddNode(*hash1, 111, 0)
 
 		node, err := st.GetNode(*hash1)
@@ -230,7 +230,7 @@ func TestGetNode(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
 		node, err := st.GetNode(*hash1)
 		require.Error(t, err)
 		assert.Nil(t, node)
@@ -241,10 +241,10 @@ func TestDifference(t *testing.T) {
 	st1, err := NewTree(2)
 	require.NoError(t, err)
 
-	hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-	hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-	hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-	hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+	hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+	hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+	hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+	hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 	_ = st1.AddNode(*hash1, 111, 0)
 	_ = st1.AddNode(*hash2, 112, 0)
 	_ = st1.AddNode(*hash3, 113, 0)
@@ -275,10 +275,10 @@ func TestRootHashSimon(t *testing.T) {
 		t.Errorf(expectedSizeFourMessage, st.Size())
 	}
 
-	hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-	hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-	hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-	hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+	hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+	hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+	hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+	hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 	_ = st.AddNode(*hash1, 111, 0)
 	_ = st.AddNode(*hash2, 111, 0)
 	_ = st.AddNode(*hash3, 111, 0)
@@ -296,8 +296,8 @@ func TestTwoTransactions(t *testing.T) {
 		t.Errorf(expectedSizeFourMessage, st.Size())
 	}
 
-	hash1, _ := chainhash.NewHashFromStr("de2c2e8628ab837ceff3de0217083d9d5feb71f758a5d083ada0b33a36e1b30e")
-	hash2, _ := chainhash.NewHashFromStr("89878bfd69fba52876e5217faec126fc6a20b1845865d4038c12f03200793f48")
+	hash1, _ := chainhash.NewHashFromHex("de2c2e8628ab837ceff3de0217083d9d5feb71f758a5d083ada0b33a36e1b30e")
+	hash2, _ := chainhash.NewHashFromHex("89878bfd69fba52876e5217faec126fc6a20b1845865d4038c12f03200793f48")
 	_ = st.AddNode(*hash1, 111, 0)
 	_ = st.AddNode(*hash2, 111, 0)
 
@@ -324,7 +324,7 @@ func TestSubtreeGetMerkleProof(t *testing.T) {
 
 	var txHash *chainhash.Hash
 	for _, txID := range txIDs {
-		txHash, _ = chainhash.NewHashFromStr(txID)
+		txHash, _ = chainhash.NewHashFromHex(txID)
 		_ = st.AddNode(*txHash, 101, 0)
 	}
 
@@ -358,10 +358,10 @@ func TestSubtreeSerialize(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-		hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-		hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-		hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+		hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+		hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 		_ = st.AddNode(*hash1, 111, 0)
 		_ = st.AddNode(*hash2, 111, 0)
 		_ = st.AddNode(*hash3, 111, 0)
@@ -395,10 +395,10 @@ func TestSubtreeSerialize(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-		hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-		hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-		hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+		hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+		hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 		_ = st.AddNode(*hash1, 111, 0)
 		_ = st.AddNode(*hash2, 111, 0)
 		_ = st.AddNode(*hash3, 111, 0)
@@ -486,10 +486,10 @@ func TestSubtreeSerialize(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-		hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-		hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-		hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+		hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+		hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 		_ = st.AddNode(*hash1, 111, 0)
 		_ = st.AddNode(*hash2, 111, 0)
 		_ = st.AddNode(*hash3, 111, 0)
@@ -546,10 +546,10 @@ func TestDuplicate(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-		hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-		hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-		hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+		hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+		hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 		_ = st.AddNode(*hash1, 111, 0)
 		_ = st.AddNode(*hash2, 111, 0)
 		_ = st.AddNode(*hash3, 111, 0)
@@ -578,10 +578,10 @@ func TestDuplicate(t *testing.T) {
 			t.Errorf(expectedSizeFourMessage, st.Size())
 		}
 
-		hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-		hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-		hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-		hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+		hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+		hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+		hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+		hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 		_ = st.AddNode(*hash1, 111, 0)
 		_ = st.AddNode(*hash2, 111, 0)
 		_ = st.AddNode(*hash3, 111, 0)
@@ -596,15 +596,15 @@ func TestDuplicate(t *testing.T) {
 func TestSubtreeNodeIndex(t *testing.T) {
 	tx1 := tx.Clone()
 	tx1.Version = 1
-	hash1 := *tx1.TxIDChainHash()
+	hash1 := *tx1.TxID()
 
 	tx2 := tx.Clone()
 	tx2.Version = 2
-	hash2 := *tx2.TxIDChainHash()
+	hash2 := *tx2.TxID()
 
 	tx3 := tx.Clone()
 	tx3.Version = 3
-	hash3 := *tx3.TxIDChainHash()
+	hash3 := *tx3.TxID()
 
 	t.Run("existing node", func(t *testing.T) {
 		st, err := NewTree(4)
@@ -665,10 +665,10 @@ func getSubtreeBytes(t *testing.T) (*Subtree, []byte) {
 		t.Errorf(expectedSizeFourMessage, st.Size())
 	}
 
-	hash1, _ := chainhash.NewHashFromStr("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
-	hash2, _ := chainhash.NewHashFromStr("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
-	hash3, _ := chainhash.NewHashFromStr("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
-	hash4, _ := chainhash.NewHashFromStr("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
+	hash1, _ := chainhash.NewHashFromHex("8c14f0db3df150123e6f3dbbf30f8b955a8249b62ac1d1ff16284aefa3d06d87")
+	hash2, _ := chainhash.NewHashFromHex("fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4")
+	hash3, _ := chainhash.NewHashFromHex("6359f0868171b1d194cbee1af2f16ea598ae8fad666d9b012c8ed2b79a236ec4")
+	hash4, _ := chainhash.NewHashFromHex("e9a66845e05d5abc0ad04ec80f774a7e585c6e8db975962d069a522137b80c1d")
 	_ = st.AddNode(*hash1, 111, 0)
 	_ = st.AddNode(*hash2, 111, 0)
 	_ = st.AddNode(*hash3, 111, 0)
@@ -683,14 +683,14 @@ func getSubtreeBytes(t *testing.T) (*Subtree, []byte) {
 func TestBuildMerkleTreeStoreFromBytes(t *testing.T) {
 	t.Run("complete tree", func(t *testing.T) {
 		hashes := make([]*chainhash.Hash, 8)
-		hashes[0], _ = chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
-		hashes[1], _ = chainhash.NewHashFromStr("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
-		hashes[2], _ = chainhash.NewHashFromStr("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
-		hashes[3], _ = chainhash.NewHashFromStr("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
-		hashes[4], _ = chainhash.NewHashFromStr("87af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
-		hashes[5], _ = chainhash.NewHashFromStr("6ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
-		hashes[6], _ = chainhash.NewHashFromStr("2070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
-		hashes[7], _ = chainhash.NewHashFromStr("c3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
+		hashes[0], _ = chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hashes[1], _ = chainhash.NewHashFromHex("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
+		hashes[2], _ = chainhash.NewHashFromHex("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
+		hashes[3], _ = chainhash.NewHashFromHex("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
+		hashes[4], _ = chainhash.NewHashFromHex("87af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hashes[5], _ = chainhash.NewHashFromHex("6ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
+		hashes[6], _ = chainhash.NewHashFromHex("2070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
+		hashes[7], _ = chainhash.NewHashFromHex("c3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
 
 		subtree, err := NewTreeByLeafCount(8)
 		require.NoError(t, err)
@@ -735,7 +735,7 @@ func TestBuildMerkleTreeStoreFromBytes(t *testing.T) {
 
 		var txHash *chainhash.Hash
 		for _, txID := range txIDs {
-			txHash, _ = chainhash.NewHashFromStr(txID)
+			txHash, _ = chainhash.NewHashFromHex(txID)
 			_ = st.AddNode(*txHash, 101, 0)
 		}
 
@@ -767,11 +767,11 @@ func TestBuildMerkleTreeStoreFromBytes(t *testing.T) {
 
 	t.Run("incomplete tree 2", func(t *testing.T) {
 		hashes := make([]*chainhash.Hash, 5)
-		hashes[0], _ = chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
-		hashes[1], _ = chainhash.NewHashFromStr("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
-		hashes[2], _ = chainhash.NewHashFromStr("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
-		hashes[3], _ = chainhash.NewHashFromStr("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
-		hashes[4], _ = chainhash.NewHashFromStr("87af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hashes[0], _ = chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hashes[1], _ = chainhash.NewHashFromHex("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
+		hashes[2], _ = chainhash.NewHashFromHex("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
+		hashes[3], _ = chainhash.NewHashFromHex("d3cde0ab7142cc99acb31c5b5e1e941faed1c5cf5f8b63ed663972845d663487")
+		hashes[4], _ = chainhash.NewHashFromHex("87af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
 
 		subtree, err := NewTreeByLeafCount(8)
 		require.NoError(t, err)
@@ -815,7 +815,7 @@ func TestBuildMerkleTreeStoreFromBytes(t *testing.T) {
 //
 //	t.Run("fee hash 1", func(t *testing.T) {
 //		st := NewTree(1)
-//		hash1, _ := chainhash.NewHashFromStr("de2c2e8628ab837ceff3de0217083d9d5feb71f758a5d083ada0b33a36e1b30e")
+//		hash1, _ := chainhash.NewHashFromHex("de2c2e8628ab837ceff3de0217083d9d5feb71f758a5d083ada0b33a36e1b30e")
 //		_ = st.AddNode(hash1, 111, 0)
 //
 //		assert.Equal(t, "66e4e66648f366400333d922e2371ad132b37054d53410b2767876089707eb43", st.FeeHash.String())
@@ -823,8 +823,8 @@ func TestBuildMerkleTreeStoreFromBytes(t *testing.T) {
 //
 //	t.Run("fee hash 2", func(t *testing.T) {
 //		st := NewTree(1)
-//		hash1, _ := chainhash.NewHashFromStr("de2c2e8628ab837ceff3de0217083d9d5feb71f758a5d083ada0b33a36e1b30e")
-//		hash2, _ := chainhash.NewHashFromStr("89878bfd69fba52876e5217faec126fc6a20b1845865d4038c12f03200793f48")
+//		hash1, _ := chainhash.NewHashFromHex("de2c2e8628ab837ceff3de0217083d9d5feb71f758a5d083ada0b33a36e1b30e")
+//		hash2, _ := chainhash.NewHashFromHex("89878bfd69fba52876e5217faec126fc6a20b1845865d4038c12f03200793f48")
 //		_ = st.AddNode(hash1, 111, 0)
 //		_ = st.AddNode(hash2, 123, 0)
 //
@@ -837,7 +837,7 @@ func TestAddNode(t *testing.T) {
 		st, err := NewTree(1) // Creates a subtree that can hold 2 nodes
 		require.NoError(t, err)
 
-		hash, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
 		node := Node{
 			Hash:        *hash,
 			Fee:         1000,
@@ -858,14 +858,14 @@ func TestAddNode(t *testing.T) {
 		st, err := NewTree(1) // Creates a subtree that can hold 2 nodes
 		require.NoError(t, err)
 
-		hash1, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash1, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
 		node1 := Node{
 			Hash:        *hash1,
 			Fee:         1000,
 			SizeInBytes: 250,
 		}
 
-		hash2, _ := chainhash.NewHashFromStr("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
+		hash2, _ := chainhash.NewHashFromHex("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
 		node2 := Node{
 			Hash:        *hash2,
 			Fee:         2000,
@@ -889,9 +889,9 @@ func TestAddNode(t *testing.T) {
 		require.NoError(t, err)
 
 		// Add two nodes to fill the subtree
-		hash1, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash1, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
 		node1 := Node{Hash: *hash1, Fee: 1000, SizeInBytes: 250}
-		hash2, _ := chainhash.NewHashFromStr("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
+		hash2, _ := chainhash.NewHashFromHex("7ce05dda56bc523048186c0f0474eb21c92fe35de6d014bd016834637a3ed08d")
 		node2 := Node{Hash: *hash2, Fee: 2000, SizeInBytes: 500}
 
 		err = st.AddSubtreeNode(node1)
@@ -902,7 +902,7 @@ func TestAddNode(t *testing.T) {
 		require.True(t, st.IsComplete())
 
 		// Try to add a third node
-		hash3, _ := chainhash.NewHashFromStr("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
+		hash3, _ := chainhash.NewHashFromHex("3070fb937289e24720c827cbc24f3fce5c361cd7e174392a700a9f42051609e0")
 		node3 := Node{Hash: *hash3, Fee: 3000, SizeInBytes: 750}
 		err = st.AddSubtreeNode(node3)
 		require.Error(t, err)
@@ -933,7 +933,7 @@ func TestAddNode(t *testing.T) {
 		// Initialize node index
 		st.nodeIndex = make(map[chainhash.Hash]int)
 
-		hash, _ := chainhash.NewHashFromStr("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
+		hash, _ := chainhash.NewHashFromHex("97af9ad3583e2f83fc1e44e475e3a3ee31ec032449cc88b491479ef7d187c115")
 		node := Node{
 			Hash:        *hash,
 			Fee:         1000,
@@ -1028,11 +1028,11 @@ func TestDeserializeFromReaderErrors(t *testing.T) {
 func TestSubtree_ConflictingNodes(t *testing.T) {
 	tx1 := tx.Clone()
 	tx1.Version = 1
-	hash1 := *tx1.TxIDChainHash()
+	hash1 := *tx1.TxID()
 
 	tx2 := tx.Clone()
 	tx2.Version = 2
-	hash2 := *tx2.TxIDChainHash()
+	hash2 := *tx2.TxID()
 
 	st, err := NewTree(4)
 	require.NoError(t, err)
@@ -1068,7 +1068,7 @@ func BenchmarkSubtree_Deserialize(b *testing.B) {
 	subtree, _ := NewTreeByLeafCount(1024 * 1024)
 
 	for i := uint64(0); i < 1024*1024; i++ {
-		hash, _ := chainhash.NewHashFromStr(fmt.Sprintf("%x", i))
+		hash, _ := chainhash.NewHashFromHex(fmt.Sprintf("%x", i))
 		_ = subtree.AddNode(*hash, i, i)
 	}
 
@@ -1087,7 +1087,7 @@ func BenchmarkSubtree_DeserializeNodesFromReader(b *testing.B) {
 	subtree, _ := NewTreeByLeafCount(1024 * 1024)
 
 	for i := uint64(0); i < 1024*1024; i++ {
-		hash, _ := chainhash.NewHashFromStr(fmt.Sprintf("%x", i))
+		hash, _ := chainhash.NewHashFromHex(fmt.Sprintf("%x", i))
 		_ = subtree.AddNode(*hash, i, i)
 	}
 
@@ -1110,7 +1110,7 @@ func BenchmarkSubtree_DeserializeFromReader(b *testing.B) {
 	subtree, _ := NewTreeByLeafCount(1024 * 1024)
 
 	for i := uint64(0); i < 1024*1024; i++ {
-		hash, _ := chainhash.NewHashFromStr(fmt.Sprintf("%x", i))
+		hash, _ := chainhash.NewHashFromHex(fmt.Sprintf("%x", i))
 		_ = subtree.AddNode(*hash, i, i)
 	}
 
@@ -1155,9 +1155,9 @@ func TestGetMerkleProofOddLeaves(t *testing.T) {
 		require.NoError(t, err)
 
 		// Add 3 nodes (odd number)
-		hash1, _ := chainhash.NewHashFromStr("1111111111111111111111111111111111111111111111111111111111111111")
-		hash2, _ := chainhash.NewHashFromStr("2222222222222222222222222222222222222222222222222222222222222222")
-		hash3, _ := chainhash.NewHashFromStr("3333333333333333333333333333333333333333333333333333333333333333")
+		hash1, _ := chainhash.NewHashFromHex("1111111111111111111111111111111111111111111111111111111111111111")
+		hash2, _ := chainhash.NewHashFromHex("2222222222222222222222222222222222222222222222222222222222222222")
+		hash3, _ := chainhash.NewHashFromHex("3333333333333333333333333333333333333333333333333333333333333333")
 
 		err = tree.AddNode(*hash1, 100, 250)
 		require.NoError(t, err)
@@ -1182,10 +1182,10 @@ func TestGetMerkleProofOddLeaves(t *testing.T) {
 		require.NoError(t, err)
 
 		// Add 4 nodes
-		hash1, _ := chainhash.NewHashFromStr("1111111111111111111111111111111111111111111111111111111111111111")
-		hash2, _ := chainhash.NewHashFromStr("2222222222222222222222222222222222222222222222222222222222222222")
-		hash3, _ := chainhash.NewHashFromStr("3333333333333333333333333333333333333333333333333333333333333333")
-		hash4, _ := chainhash.NewHashFromStr("4444444444444444444444444444444444444444444444444444444444444444")
+		hash1, _ := chainhash.NewHashFromHex("1111111111111111111111111111111111111111111111111111111111111111")
+		hash2, _ := chainhash.NewHashFromHex("2222222222222222222222222222222222222222222222222222222222222222")
+		hash3, _ := chainhash.NewHashFromHex("3333333333333333333333333333333333333333333333333333333333333333")
+		hash4, _ := chainhash.NewHashFromHex("4444444444444444444444444444444444444444444444444444444444444444")
 
 		err = tree.AddNode(*hash1, 100, 250)
 		require.NoError(t, err)
@@ -1221,7 +1221,7 @@ func TestGetMerkleProofOddLeaves(t *testing.T) {
 
 		// Add 541 nodes (odd number)
 		for i := uint64(0); i < uint64(541); i++ {
-			hash, _ := chainhash.NewHashFromStr("0000000000000000000000000000000000000000000000000000000000000001")
+			hash, _ := chainhash.NewHashFromHex("0000000000000000000000000000000000000000000000000000000000000001")
 			err = tree.AddNode(*hash, i, i*100)
 			require.NoError(t, err)
 		}

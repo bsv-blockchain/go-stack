@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/bsv-blockchain/go-bt/v2"
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
+	"github.com/bsv-blockchain/go-sdk/transaction"
 	safe "github.com/bsv-blockchain/go-safe-conversion"
 )
 
@@ -124,10 +124,10 @@ func (s *Meta) GetTxInpoints(index int) ([]Inpoint, error) {
 //
 // Returns:
 //   - error: An error if the transaction is not found in the subtree or if there is an issue creating the TxInpoints
-func (s *Meta) SetTxInpointsFromTx(tx *bt.Tx) error {
-	index := s.Subtree.NodeIndex(*tx.TxIDChainHash())
+func (s *Meta) SetTxInpointsFromTx(tx *transaction.Transaction) error {
+	index := s.Subtree.NodeIndex(*tx.TxID())
 	if index == -1 {
-		return fmt.Errorf("[SetParentTxHashesFromTx][%s] %w", tx.TxID(), ErrNodeNotFound)
+		return fmt.Errorf("[SetParentTxHashesFromTx][%s] %w", tx.TxID().String(), ErrNodeNotFound)
 	}
 
 	p, err := NewTxInpointsFromTx(tx)

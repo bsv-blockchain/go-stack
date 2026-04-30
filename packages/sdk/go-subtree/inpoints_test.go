@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -68,7 +68,7 @@ func TestGetTxInpoints(t *testing.T) {
 	inpoints := p.GetTxInpoints()
 	assert.Len(t, inpoints, 1)
 	assert.Equal(t, uint32(5), inpoints[0].Index)
-	assert.Equal(t, *tx.Inputs[0].PreviousTxIDChainHash(), inpoints[0].Hash)
+	assert.Equal(t, *tx.Inputs[0].SourceTXID, inpoints[0].Hash)
 }
 
 func TestGetParentTxHashAtIndex(t *testing.T) {
@@ -80,7 +80,7 @@ func TestGetParentTxHashAtIndex(t *testing.T) {
 		hash, err := p.GetParentTxHashAtIndex(0)
 		require.NoError(t, err)
 
-		assert.Equal(t, *tx.Inputs[0].PreviousTxIDChainHash(), hash)
+		assert.Equal(t, *tx.Inputs[0].SourceTXID, hash)
 	})
 
 	t.Run("out of range", func(t *testing.T) {

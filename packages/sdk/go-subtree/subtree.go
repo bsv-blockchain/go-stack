@@ -10,9 +10,8 @@ import (
 	"math"
 	"sync"
 
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
 	safe "github.com/bsv-blockchain/go-safe-conversion"
-	txmap "github.com/bsv-blockchain/go-tx-map"
 )
 
 // Node represents a node in the subtree.
@@ -504,7 +503,7 @@ func (st *Subtree) GetMap() (TxMap, error) {
 		return nil, err
 	}
 
-	m := txmap.NewSwissMapUint64(lengthUint32)
+	m := newHashMap(lengthUint32)
 	for idx, node := range st.Nodes {
 		_ = m.Put(node.Hash, uint64(idx))
 	}

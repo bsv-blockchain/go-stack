@@ -6,7 +6,7 @@ import (
 	"math"
 	"sync"
 
-	"github.com/bsv-blockchain/go-bt/v2/chainhash"
+	"github.com/bsv-blockchain/go-sdk/chainhash"
 )
 
 // GetMerkleProofForCoinbase returns a merkle proof for the coinbase transaction
