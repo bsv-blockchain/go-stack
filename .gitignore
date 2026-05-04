@@ -32,3 +32,6 @@ bin/
 # Compiled binaries
 merkle-service
 server
+
+# manual-tests local build artifact
+packages/wallet/go-wallet-toolbox-manual-tests/go-wallet-toolbox-manual-tests
