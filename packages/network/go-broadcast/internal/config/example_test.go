@@ -10,7 +10,7 @@ import (
 
 func TestExampleConfigLoadsAndValidates(t *testing.T) {
 	// Test that our example configuration is valid
-	config, err := Load("../../examples/sync.yaml")
+	config, err := Load("../../examples/minimal.yaml")
 	require.NoError(t, err)
 	require.NotNil(t, config)
 
@@ -24,5 +24,5 @@ func TestExampleConfigLoadsAndValidates(t *testing.T) {
 	group := config.Groups[0]
 	assert.Equal(t, "org/template-repo", group.Source.Repo)
 	assert.Equal(t, "master", group.Source.Branch)
-	assert.Len(t, group.Targets, 3)
+	assert.Len(t, group.Targets, 1)
 }
