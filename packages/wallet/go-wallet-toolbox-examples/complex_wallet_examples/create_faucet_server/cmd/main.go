@@ -7,9 +7,9 @@ import (
 
 	"github.com/subosito/gotenv"
 
-	"github.com/bsv-blockchain/go-wallet-toolbox-faucet-server/internal/config"
-	"github.com/bsv-blockchain/go-wallet-toolbox-faucet-server/internal/create_storage"
-	"github.com/bsv-blockchain/go-wallet-toolbox-faucet-server/internal/server"
+	"github.com/bsv-blockchain/go-wallet-toolbox-examples/complex_wallet_examples/create_faucet_server/internal/config"
+	"github.com/bsv-blockchain/go-wallet-toolbox-examples/complex_wallet_examples/create_faucet_server/internal/create_storage"
+	"github.com/bsv-blockchain/go-wallet-toolbox-examples/complex_wallet_examples/create_faucet_server/internal/server"
 )
 
 func main() {

@@ -8,7 +8,7 @@ import (
 	sdk "github.com/bsv-blockchain/go-sdk/wallet"
 	"github.com/go-softwarelab/common/pkg/to"
 
-	"github.com/bsv-blockchain/go-wallet-toolbox-faucet-server/internal/constants"
+	"github.com/bsv-blockchain/go-wallet-toolbox-examples/complex_wallet_examples/create_faucet_server/internal/constants"
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/brc29"
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/defs"
 )

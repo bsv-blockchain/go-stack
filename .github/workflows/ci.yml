@@ -21,7 +21,12 @@ jobs:
         run: |
           awk '/^use \(/,/^\)/ { if ($1 ~ /^\.\//) print $1 }' go.work | while read -r mod; do
             echo "==> go build in $mod"
-            (cd "$mod" && go build ./...)
+            (
+              cd "$mod"
+              go list -f '{{if or .GoFiles .CgoFiles}}{{.ImportPath}}{{end}}' ./... \
+                | grep -Ev '/magefiles(/|$)' \
+                | xargs -r go build
+            )
           done
 
       - name: Test all workspace modules

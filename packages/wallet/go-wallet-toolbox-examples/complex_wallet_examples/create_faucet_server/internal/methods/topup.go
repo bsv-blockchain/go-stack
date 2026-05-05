@@ -12,7 +12,7 @@ import (
 	"github.com/bsv-blockchain/go-sdk/transaction/template/p2pkh"
 	sdk "github.com/bsv-blockchain/go-sdk/wallet"
 
-	"github.com/bsv-blockchain/go-wallet-toolbox-faucet-server/internal/constants"
+	"github.com/bsv-blockchain/go-wallet-toolbox-examples/complex_wallet_examples/create_faucet_server/internal/constants"
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/defs"
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/services"
 )

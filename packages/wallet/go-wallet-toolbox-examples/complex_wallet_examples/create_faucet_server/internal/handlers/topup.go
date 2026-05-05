@@ -7,7 +7,7 @@ import (
 	"github.com/bsv-blockchain/go-sdk/transaction"
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/bsv-blockchain/go-wallet-toolbox-faucet-server/internal/methods"
+	"github.com/bsv-blockchain/go-wallet-toolbox-examples/complex_wallet_examples/create_faucet_server/internal/methods"
 )
 
 type TopUpRequest struct {
