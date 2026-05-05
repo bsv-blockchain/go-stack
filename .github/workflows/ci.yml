@@ -17,11 +17,19 @@ jobs:
           go-version-file: packages/sdk/go-sdk/go.mod
           cache: true
 
-      - name: Build all packages
-        run: go build ./...
+      - name: Build all workspace modules
+        run: |
+          awk '/^use \(/,/^\)/ { if ($1 ~ /^\.\//) print $1 }' go.work | while read -r mod; do
+            echo "==> go build in $mod"
+            (cd "$mod" && go build ./...)
+          done
 
-      - name: Test all packages
-        run: go test ./...
+      - name: Test all workspace modules
+        run: |
+          awk '/^use \(/,/^\)/ { if ($1 ~ /^\.\//) print $1 }' go.work | while read -r mod; do
+            echo "==> go test in $mod"
+            (cd "$mod" && go test ./...)
+          done
 
   vet:
     runs-on: ubuntu-latest
@@ -33,5 +41,9 @@ jobs:
           go-version-file: packages/sdk/go-sdk/go.mod
           cache: true
 
-      - name: Vet all packages
-        run: go vet ./...
+      - name: Vet all workspace modules
+        run: |
+          awk '/^use \(/,/^\)/ { if ($1 ~ /^\.\//) print $1 }' go.work | while read -r mod; do
+            echo "==> go vet in $mod"
+            (cd "$mod" && go vet ./...)
+          done
