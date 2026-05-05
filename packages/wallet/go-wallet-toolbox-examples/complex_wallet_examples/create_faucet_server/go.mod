@@ -1,4 +1,4 @@
-module github.com/bsv-blockchain/go-wallet-toolbox-faucet-server
+module github.com/bsv-blockchain/go-wallet-toolbox-examples/complex_wallet_examples/create_faucet_server
 
 go 1.26.0
 
