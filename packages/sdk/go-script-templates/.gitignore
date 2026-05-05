@@ -34,9 +34,6 @@ dist
 coverage.txt
 coverage.out
 
-# Fuzz Tests
-testdata
-
 # Node modules
 node_modules/
 
