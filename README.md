@@ -75,7 +75,7 @@ conformance/         — Conformance runner (see GO_PLAN.md in ts-stack)
 
 ### Prerequisites
 
-- Go ≥ 1.22
+- Go 1.26.0
 
 ### Setup
 

@@ -14,7 +14,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version-file: packages/sdk/go-sdk/go.mod
+          go-version-file: go.work
           cache: true
 
       - name: Build all workspace modules
@@ -43,7 +43,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version-file: packages/sdk/go-sdk/go.mod
+          go-version-file: go.work
           cache: true
 
       - name: Vet all workspace modules
