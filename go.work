@@ -1,15 +1,15 @@
 go 1.26.0
 
 use (
-	./packages/messaging/go-message-box-server
+	./infra/go-chaintracks
+	./infra/go-message-box-server
+	./infra/go-uhrp-storage-server
 	./packages/messaging/go-paymail
 	./packages/middleware/go-bsv-middleware
 	./packages/network/go-broadcast
 	./packages/network/go-broadcast-client
-	./packages/network/go-chaintracks
 	./packages/overlays/go-overlay-discovery-services
 	./packages/overlays/go-overlay-services
-	./packages/overlays/go-uhrp-storage-server
 	./packages/sdk/go-script-templates
 	./packages/sdk/go-sdk
 	./packages/sdk/go-subtree
