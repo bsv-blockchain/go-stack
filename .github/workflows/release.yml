@@ -57,11 +57,15 @@ jobs:
         run: |
           set -euo pipefail
           cd "${{ steps.resolve.outputs.module_dir }}"
-          go test -race ./...
+          go list -f '{{if or .GoFiles .CgoFiles}}{{.ImportPath}}{{end}}' ./... \
+            | grep -Ev '/magefiles(/|$)' \
+            | xargs -r go test -race
 
       - name: Vet tagged module
         shell: bash
         run: |
           set -euo pipefail
           cd "${{ steps.resolve.outputs.module_dir }}"
-          go vet ./...
+          go list -f '{{if or .GoFiles .CgoFiles}}{{.ImportPath}}{{end}}' ./... \
+            | grep -Ev '/magefiles(/|$)' \
+            | xargs -r go vet
