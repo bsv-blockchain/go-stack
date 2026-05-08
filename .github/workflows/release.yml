@@ -1,0 +1,67 @@
+name: Module Release Validation
+
+on:
+  push:
+    tags:
+      - "packages/**/v*.*.*"
+
+jobs:
+  validate-tagged-module:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve module path from tag
+        id: resolve
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TAG="${GITHUB_REF_NAME}"
+          echo "Tag: ${TAG}"
+
+          if [[ ! "${TAG}" =~ ^packages/.+/v[0-9]+\.[0-9]+\.[0-9]+([-.].*)?$ ]]; then
+            echo "Invalid tag format: ${TAG}"
+            echo "Expected: packages/<domain>/<module>/vX.Y.Z"
+            exit 1
+          fi
+
+          MODULE_DIR="${TAG%/v*}"
+
+          if [[ ! -f "${MODULE_DIR}/go.mod" ]]; then
+            echo "Missing go.mod for tagged module: ${MODULE_DIR}"
+            exit 1
+          fi
+
+          echo "module_dir=${MODULE_DIR}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Go (from tagged module)
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ steps.resolve.outputs.module_dir }}/go.mod
+          cache: true
+          cache-dependency-path: ${{ steps.resolve.outputs.module_dir }}/go.sum
+
+      - name: Build tagged module
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${{ steps.resolve.outputs.module_dir }}"
+          go list -f '{{if or .GoFiles .CgoFiles}}{{.ImportPath}}{{end}}' ./... \
+            | grep -Ev '/magefiles(/|$)' \
+            | xargs -r go build
+
+      - name: Test tagged module
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${{ steps.resolve.outputs.module_dir }}"
+          go test -race ./...
+
+      - name: Vet tagged module
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${{ steps.resolve.outputs.module_dir }}"
+          go vet ./...

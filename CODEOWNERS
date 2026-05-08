@@ -28,12 +28,6 @@
 # ── Middleware ───────────────────────────────────────────────────────────────
 /packages/middleware/           @bsv-blockchain/middleware-leads
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
-/packages/helpers/              @bsv-blockchain/stack-architects
-
-# ── Apps ─────────────────────────────────────────────────────────────────────
-/apps/                          @bsv-blockchain/stack-architects
-
 # ── Infra (deployable services) ──────────────────────────────────────────────
 # Runnable services with Dockerfile + cmd/server. Mirrors ts-stack `infra/`.
 /infra/                                 @bsv-blockchain/stack-architects
@@ -43,10 +37,6 @@
 
 # ── Conformance & Specs ──────────────────────────────────────────────────────
 /conformance/                   @bsv-blockchain/stack-architects
-/specs/                         @bsv-blockchain/stack-architects
 
 # ── CI / Workflows ───────────────────────────────────────────────────────────
 /.github/                       @bsv-blockchain/stack-architects
-
-# ── Scripts ──────────────────────────────────────────────────────────────────
-/scripts/                       @bsv-blockchain/stack-architects
