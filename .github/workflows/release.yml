@@ -1,5 +1,8 @@
 name: Module Release Validation
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
@@ -28,6 +31,7 @@ jobs:
           fi
 
           MODULE_DIR="${TAG%/v*}"
+          VERSION="${TAG##*/}"
 
           if [[ ! -f "${MODULE_DIR}/go.mod" ]]; then
             echo "Missing go.mod for tagged module: ${MODULE_DIR}"
@@ -35,6 +39,7 @@ jobs:
           fi
 
           echo "module_dir=${MODULE_DIR}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Setup Go (from tagged module)
         uses: actions/setup-go@v5
@@ -42,6 +47,22 @@ jobs:
           go-version-file: ${{ steps.resolve.outputs.module_dir }}/go.mod
           cache: true
           cache-dependency-path: ${{ steps.resolve.outputs.module_dir }}/go.sum
+
+      - name: Resolve module import path
+        id: module
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          MODULE_DIR="${{ steps.resolve.outputs.module_dir }}"
+          MODULE_PATH="$(go list -m -f '{{.Path}}' -mod=readonly -C "${MODULE_DIR}")"
+
+          if [[ -z "${MODULE_PATH}" ]]; then
+            echo "Failed to resolve module path from ${MODULE_DIR}/go.mod"
+            exit 1
+          fi
+
+          echo "module_path=${MODULE_PATH}" >> "$GITHUB_OUTPUT"
 
       - name: Build tagged module
         shell: bash
@@ -69,3 +90,38 @@ jobs:
           go list -f '{{if or .GoFiles .CgoFiles}}{{.ImportPath}}{{end}}' ./... \
             | grep -Ev '/magefiles(/|$)' \
             | xargs -r go vet
+
+      - name: Create or publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TAG="${GITHUB_REF_NAME}"
+          MODULE_PATH="${{ steps.module.outputs.module_path }}"
+          VERSION="${{ steps.resolve.outputs.version }}"
+
+          if gh release view "${TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "Release already exists for ${TAG}; ensuring it is published"
+            gh release edit "${TAG}" --draft=false --repo "${GITHUB_REPOSITORY}"
+          else
+            echo "Creating release for ${TAG}"
+            gh release create "${TAG}" \
+              --title "${MODULE_PATH} ${VERSION}" \
+              --generate-notes \
+              --repo "${GITHUB_REPOSITORY}"
+          fi
+
+      - name: Syndicate module version to Go proxy
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          MODULE_PATH="${{ steps.module.outputs.module_path }}"
+          VERSION="${{ steps.resolve.outputs.version }}"
+          URL="https://proxy.golang.org/${MODULE_PATH}/@v/${VERSION}.info"
+
+          echo "Syndicating ${MODULE_PATH}@${VERSION} via ${URL}"
+          curl --fail --show-error --silent "${URL}" >/dev/null
+          echo "Syndication request accepted by Go proxy"
