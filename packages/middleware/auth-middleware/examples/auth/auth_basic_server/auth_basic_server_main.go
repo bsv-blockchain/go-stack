@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/examples/internal/example_wallet"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/middleware"
+	"github.com/bsv-blockchain/auth-middleware/examples/internal/example_wallet"
+	"github.com/bsv-blockchain/auth-middleware/pkg/middleware"
 )
 
 // EXAMPLE_CREDENTIAL - This is a test/example WIF for demonstration purposes only

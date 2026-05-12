@@ -8,7 +8,7 @@ import (
 
 	ec "github.com/bsv-blockchain/go-sdk/primitives/ec"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/authctx"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/authctx"
 )
 
 // ShouldGetIdentity returns the identity from the context.

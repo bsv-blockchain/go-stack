@@ -6,22 +6,22 @@ See [`PLAN_GO.md`](https://github.com/bsv-blockchain/mbga/blob/main/PLAN_GO.md) 
 
 ## Layout
 
-- `runner/` — Go conformance runner (in flight)
-- `vendor/vectors/` — Shared test vectors fetched from ts-stack `conformance-vectors` CI artifact (gitignored)
-- `reports/` — Conformance run reports (gitignored)
+- `runner/` - Go conformance runner ported from the legacy ts-stack runner
+- `vendor/vectors/` - Shared test vectors fetched from ts-stack `conformance-vectors` CI artifact (gitignored)
+- `reports/` - Conformance run reports (gitignored)
 
 ## Running conformance tests
 
 ```sh
-# 1. Fetch the latest ts-stack conformance corpus (one-time per branch)
-scripts/fetch-vectors.sh
+# 1. Place the latest ts-stack conformance corpus under conformance/vendor/vectors
+#    (for example from the ts-stack conformance-vectors CI artifact).
 
 # 2. Run the Go runner
 cd conformance/runner
 go run . --vectors ../vendor/vectors --report ../reports/go-results.json --verbose
 ```
 
-CLI contract (binding across all language runners — see [ts-stack VECTOR-FORMAT.md](https://github.com/bsv-blockchain/ts-stack/blob/main/conformance/VECTOR-FORMAT.md)):
+CLI contract (binding across all language runners - see [ts-stack VECTOR-FORMAT.md](https://github.com/bsv-blockchain/ts-stack/blob/main/conformance/VECTOR-FORMAT.md)):
 
 | Flag | Effect |
 |------|--------|
@@ -40,7 +40,7 @@ CLI contract (binding across all language runners — see [ts-stack VECTOR-FORMA
 
 | Domain | Vectors (ts-stack) | Go runner |
 |--------|-------------------|-----------|
-| SDK (crypto, script, tx) | published | porting from legacy go runner (195/216 baseline) |
+| SDK (crypto, script, tx) | published | legacy runner ported |
 | Wallet (BRC-100) | published | planned |
 | Wallet (BRC-29) | published | planned |
 | Messaging (BRC-31) | published | planned |

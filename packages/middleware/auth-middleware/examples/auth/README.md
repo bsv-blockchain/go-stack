@@ -4,7 +4,7 @@ This directory contains examples demonstrating how to use the BSV authentication
 
 ## Overview
 
-The examples showcase different authentication scenarios using the `go-bsv-middleware` library:
+The examples showcase different authentication scenarios using the `auth-middleware` library:
 
 1. [Auth-Enabled HTTP Server (Standalone)](./auth_basic_server/auth_basic_server.md)
 2. [Basic Authenticated Request (Server + Client in one process)](./auth_basic/auth_basic.md)
@@ -12,7 +12,7 @@ The examples showcase different authentication scenarios using the `go-bsv-middl
 ## Requirements
 
 - Go 1.25 or higher
-- The `go-bsv-middleware` package and its dependencies
+- The `auth-middleware` package and its dependencies
 
 ## Run examples
 

@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities/testusers"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/middleware"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities/testusers"
+	"github.com/bsv-blockchain/auth-middleware/pkg/middleware"
 )
 
 type RequestAssertion interface {

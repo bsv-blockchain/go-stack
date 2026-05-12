@@ -8,7 +8,7 @@ import (
 	"github.com/go-softwarelab/common/pkg/slogx"
 	"github.com/go-softwarelab/common/pkg/to"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities/testusers"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities/testusers"
 )
 
 type ClientFixtureOptions struct {

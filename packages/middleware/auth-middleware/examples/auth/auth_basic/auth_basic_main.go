@@ -11,8 +11,8 @@ import (
 
 	clients "github.com/bsv-blockchain/go-sdk/auth/clients/authhttp"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/examples/internal/example_wallet"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/middleware"
+	"github.com/bsv-blockchain/auth-middleware/examples/internal/example_wallet"
+	"github.com/bsv-blockchain/auth-middleware/pkg/middleware"
 )
 
 // EXAMPLE_CREDENTIALS - These are test/example credentials for demonstration purposes only

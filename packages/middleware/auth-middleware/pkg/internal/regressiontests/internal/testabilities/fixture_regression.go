@@ -16,9 +16,9 @@ import (
 	"github.com/testcontainers/testcontainers-go/log"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/regressiontests/internal/typescript"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testmode"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/regressiontests/internal/typescript"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testmode"
 )
 
 // serverMinPort is the lowest port number that we want to use for regression tests go server.

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/middleware"
+	"github.com/bsv-blockchain/auth-middleware/pkg/middleware"
 	sdk "github.com/bsv-blockchain/go-sdk/wallet"
 
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/logging"

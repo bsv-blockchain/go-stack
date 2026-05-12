@@ -15,9 +15,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/testcontainers/testcontainers-go"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/regressiontests/internal/testabilities"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities/testusers"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testmode"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/regressiontests/internal/testabilities"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities/testusers"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testmode"
 )
 
 func TestAuthMiddlewareAuthenticatesTypescriptClient(t *testing.T) {

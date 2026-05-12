@@ -6,8 +6,8 @@ import (
 	"github.com/bsv-blockchain/go-sdk/wallet"
 	"github.com/go-softwarelab/common/pkg/slogx"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/regressiontests/internal/typescript"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities/testusers"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/regressiontests/internal/typescript"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities/testusers"
 )
 
 type ClientFixture interface {

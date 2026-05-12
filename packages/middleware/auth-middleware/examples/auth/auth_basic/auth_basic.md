@@ -11,12 +11,12 @@ The flow:
 4. Perform a request to the server and print the raw HTTP response to stdout.
 5. Gracefully shut down the server.
 
-This showcases BRC-103/104 mutual authentication using the go-bsv-middleware and go-sdk libraries.
+This showcases BRC-103/104 mutual authentication using the auth-middleware and go-sdk libraries.
 
 ## Code Walkthrough
 
 ### Components
-- Auth middleware: github.com/bsv-blockchain/go-bsv-middleware
+- Auth middleware: github.com/bsv-blockchain/auth-middleware
 - Example wallet (for demo only)
 - Authenticated HTTP client: clients.AuthFetch from go-sdk
 

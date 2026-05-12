@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package typescript;
 
-option go_package = "github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/regressiontests/internal/typescriptnew;typescript";
+option go_package = "github.com/bsv-blockchain/auth-middleware/pkg/internal/regressiontests/internal/typescriptnew;typescript";
 
 service AuthFetch {
   rpc fetch (FetchRequest) returns (FetchResponse);

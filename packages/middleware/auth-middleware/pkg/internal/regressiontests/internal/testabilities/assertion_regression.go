@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities"
 )
 
 type (

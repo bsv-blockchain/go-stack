@@ -1,0 +1,1284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BSV Wallet V7 Go Migration Plan</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7f4;
+      --surface: #ffffff;
+      --surface-2: #eef3ef;
+      --ink: #17211d;
+      --muted: #61706a;
+      --line: #d7dfda;
+      --green: #15734a;
+      --green-2: #dff1e8;
+      --blue: #245e9f;
+      --blue-2: #e4eef9;
+      --amber: #9a6514;
+      --amber-2: #f5ead4;
+      --red: #a7372f;
+      --red-2: #f7e2df;
+      --code: #111b17;
+      --code-line: #2a3b34;
+      --shadow: 0 18px 50px rgba(24, 42, 35, 0.12);
+      --radius: 8px;
+      --nav-width: 280px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        linear-gradient(120deg, rgba(21, 115, 74, 0.08), transparent 32rem),
+        linear-gradient(250deg, rgba(36, 94, 159, 0.1), transparent 28rem),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--nav-width) minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      background: rgba(255, 255, 255, 0.86);
+      border-right: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-mark {
+      display: inline-grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: var(--radius);
+      background: var(--green);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .search-wrap {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 10px 12px 10px 34px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      outline: none;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(21, 115, 74, 0.16);
+    }
+
+    .search-wrap span {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .nav-title {
+      margin: 18px 0 8px;
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav-list a {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-list a:hover,
+    .nav-list a.active {
+      background: var(--surface-2);
+      color: var(--ink);
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      align-items: end;
+      padding: 44px clamp(20px, 5vw, 72px) 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-inner {
+      max-width: 1180px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 4px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .hero h2 {
+      max-width: 920px;
+      margin: 0;
+      font-size: clamp(2.3rem, 6vw, 5.7rem);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 780px;
+      margin: 22px 0 32px;
+      color: #40504a;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      min-height: 112px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.55rem;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .section {
+      padding: 52px clamp(20px, 5vw, 72px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    .section-head h3 {
+      margin: 0;
+      font-size: clamp(1.6rem, 3vw, 2.35rem);
+      line-height: 1.1;
+    }
+
+    .section-head p {
+      max-width: 640px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .status-grid,
+    .schema-grid,
+    .tests-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .status-card,
+    .schema-card,
+    .test-card,
+    .note,
+    .phase,
+    .query-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 8px 28px rgba(24, 42, 35, 0.06);
+    }
+
+    .status-card,
+    .schema-card,
+    .test-card,
+    .note {
+      padding: 18px;
+    }
+
+    .status-card h4,
+    .schema-card h4,
+    .test-card h4,
+    .note h4,
+    .query-card h4 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .status-card p,
+    .schema-card p,
+    .test-card p,
+    .note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--blue-2);
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .tag.green {
+      background: var(--green-2);
+      color: var(--green);
+    }
+
+    .tag.amber {
+      background: var(--amber-2);
+      color: var(--amber);
+    }
+
+    .schema-columns {
+      columns: 2;
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: #354740;
+      font-size: 0.86rem;
+    }
+
+    .schema-columns li {
+      break-inside: avoid;
+      margin-bottom: 5px;
+    }
+
+    .diagram {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 10px;
+      align-items: stretch;
+      margin: 24px 0;
+    }
+
+    .diagram-node {
+      display: grid;
+      align-content: center;
+      min-height: 132px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .diagram-node strong {
+      display: block;
+      font-size: 1.08rem;
+    }
+
+    .diagram-node span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 1.5rem;
+    }
+
+    .phase-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      overflow: hidden;
+    }
+
+    .phase-index {
+      display: grid;
+      place-items: center;
+      background: var(--surface-2);
+      color: var(--green);
+      font-size: 1.4rem;
+      font-weight: 900;
+    }
+
+    .phase-body {
+      padding: 18px;
+    }
+
+    .phase h4 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+    }
+
+    .phase p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .code-block {
+      position: relative;
+      margin: 12px 0 0;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--code);
+      color: #d6efe2;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 5px 8px;
+      cursor: pointer;
+      font-size: 0.76rem;
+    }
+
+    .query-card {
+      overflow: hidden;
+    }
+
+    .query-card h4 {
+      padding: 18px 18px 0;
+    }
+
+    .query-card p {
+      margin: 6px 18px 0;
+      color: var(--muted);
+    }
+
+    .fsm {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .state {
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: #33473f;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .state.good {
+      border-color: rgba(21, 115, 74, 0.24);
+      background: var(--green-2);
+      color: var(--green);
+    }
+
+    .state.warn {
+      border-color: rgba(154, 101, 20, 0.24);
+      background: var(--amber-2);
+      color: var(--amber);
+    }
+
+    .state.bad {
+      border-color: rgba(167, 55, 47, 0.24);
+      background: var(--red-2);
+      color: var(--red);
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-item {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .check-item input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--green);
+    }
+
+    .check-item strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .check-item span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .progress {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), #2d8aa0);
+      transition: width 180ms ease;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .footer {
+      padding: 28px clamp(20px, 5vw, 72px);
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .hidden-by-search {
+      display: none !important;
+    }
+
+    mark {
+      background: #fff1a8;
+      color: inherit;
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 1040px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        display: block;
+        padding: 16px;
+      }
+
+      .nav-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 36px;
+      }
+
+      .hero-grid,
+      .status-grid,
+      .schema-grid,
+      .tests-grid,
+      .two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .diagram {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .nav-list,
+      .hero-grid,
+      .status-grid,
+      .schema-grid,
+      .tests-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: grid;
+      }
+
+      .phase {
+        grid-template-columns: 1fr;
+      }
+
+      .phase-index {
+        min-height: 48px;
+      }
+
+      .schema-columns {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">V7</div>
+        <h1>BSV Wallet UTXO &amp; Transaction Lifecycle</h1>
+        <p>Go implementation migration plan for developers.</p>
+      </div>
+
+      <label class="search-wrap">
+        <span>/</span>
+        <input id="pageSearch" type="search" placeholder="Filter sections">
+      </label>
+
+      <div class="nav-title">Plan</div>
+      <ul class="nav-list" id="navList">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#current">Current Schema</a></li>
+        <li><a href="#target">Target Schema</a></li>
+        <li><a href="#migration">Migration</a></li>
+        <li><a href="#spendability">Spendability</a></li>
+        <li><a href="#tests">Conformance</a></li>
+        <li><a href="#rollout">Rollout</a></li>
+      </ul>
+
+      <div class="nav-title">Implementation State</div>
+      <div class="progress" aria-label="Checklist completion">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p id="progressText" style="margin: 8px 0 0; color: var(--muted); font-size: 0.82rem;">0 of 12 items complete</p>
+    </aside>
+
+    <main class="main">
+      <section class="hero searchable" id="overview" data-title="Overview">
+        <div class="hero-inner">
+          <div class="eyebrow">
+            <span class="pill">Version 7.0</span>
+            <span class="pill">Draft</span>
+            <span class="pill">Date: 2026-05-11</span>
+            <span class="pill">Target: current go-wallet-toolbox main branch</span>
+          </div>
+          <h2>Developer plan for the V7 Go wallet schema migration</h2>
+          <p class="hero-copy">
+            This standalone implementation guide lays out the move from the current Go schema to a cleaner V7 model:
+            canonical network transaction state in one table, per-user actions in another, and a single optimized
+            outputs table that preserves the hot spendable-output query path.
+          </p>
+          <div class="hero-grid">
+            <div class="metric">
+              <strong>1</strong>
+              <span>canonical transaction row per txid for proof, broadcast, and processing state.</span>
+            </div>
+            <div class="metric">
+              <strong>N</strong>
+              <span>per-user action rows for labels, descriptions, notifications, and visibility.</span>
+            </div>
+            <div class="metric">
+              <strong>0</strong>
+              <span>joins on the common spendable outputs query after migration.</span>
+            </div>
+            <div class="metric">
+              <strong>30d</strong>
+              <span>recommended rollback window before dropping legacy tables.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section searchable" id="current" data-title="Current Schema">
+        <div class="section-inner">
+          <div class="section-head">
+            <h3>Current Go Schema</h3>
+            <p>The migration starts from the schema that exists today. V7 is intentionally scoped to this Go implementation and does not depend on earlier V2-V6 drafts.</p>
+          </div>
+          <div class="status-grid">
+            <article class="status-card">
+              <span class="tag">Per-user</span>
+              <h4>transactions</h4>
+              <p>Currently holds the user-facing lifecycle: status, description, labels, satoshis delta, references, and notification fields.</p>
+            </article>
+            <article class="status-card">
+              <span class="tag amber">Shared state</span>
+              <h4>known_txs</h4>
+              <p>Closest existing canonical transaction record. Stores txid processing, proofs, broadcast attempts, idempotency keys, and raw transactions.</p>
+            </article>
+            <article class="status-card">
+              <span class="tag green">Hot path</span>
+              <h4>outputs + user_utxos</h4>
+              <p>Outputs hold raw output data while user_utxos acts as the fast per-user index for spendable-output queries.</p>
+            </article>
+          </div>
+          <div class="diagram" aria-label="Current schema flow">
+            <div class="diagram-node">
+              <strong>transactions</strong>
+              <span>User lifecycle and display metadata</span>
+            </div>
+            <div class="arrow">-&gt;</div>
+            <div class="diagram-node">
+              <strong>known_txs</strong>
+              <span>Network processing, proof, broadcast state</span>
+            </div>
+            <div class="arrow">-&gt;</div>
+            <div class="diagram-node">
+              <strong>outputs + user_utxos</strong>
+              <span>Raw outputs plus user-specific spendable index</span>
+            </div>
+          </div>
+          <div class="note">
+            <h4>Tables that remain conceptually unchanged</h4>
+            <p>output_baskets, output_tags, output_tags_map, tx_labels, tx_labels_map, and related supporting tables continue to exist. V7 changes where transaction labels point: tx_labels_map targets actionId instead of the old transactionId.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section searchable" id="target" data-title="Target Schema">
+        <div class="section-inner">
+          <div class="section-head">
+            <h3>V7 Target Schema</h3>
+            <p>The target model separates global txid truth from per-user action state while keeping the output lookup path denormalized for speed.</p>
+          </div>
+
+          <div class="schema-grid">
+            <article class="schema-card">
+              <span class="tag amber">Canonical</span>
+              <h4>transactions</h4>
+              <p>Single source of truth for everything about a transaction on the network.</p>
+              <ul class="schema-columns">
+                <li>transactionId PK</li>
+                <li>txid UNIQUE</li>
+                <li>processing</li>
+                <li>processing_changed_at</li>
+                <li>next_action_at</li>
+                <li>attempts</li>
+                <li>rebroadcast_cycles</li>
+                <li>was_broadcast</li>
+                <li>idempotency_key</li>
+                <li>batch</li>
+                <li>raw_tx</li>
+                <li>input_beef</li>
+                <li>height</li>
+                <li>merkle_index</li>
+                <li>merkle_path</li>
+                <li>merkle_root</li>
+                <li>block_hash</li>
+                <li>is_coinbase</li>
+                <li>last_provider</li>
+                <li>last_provider_status</li>
+                <li>frozen_reason</li>
+                <li>row_version</li>
+                <li>created_at</li>
+                <li>updated_at</li>
+              </ul>
+            </article>
+
+            <article class="schema-card">
+              <span class="tag">Per-user</span>
+              <h4>actions</h4>
+              <p>Migrated from the current transactions table. Holds user-specific display, notification, and lifecycle preferences.</p>
+              <ul class="schema-columns">
+                <li>actionId PK</li>
+                <li>userId</li>
+                <li>transactionId FK</li>
+                <li>reference</li>
+                <li>description</li>
+                <li>is_outgoing</li>
+                <li>satoshis_delta</li>
+                <li>user_nosend</li>
+                <li>hidden</li>
+                <li>user_aborted</li>
+                <li>notify_json</li>
+                <li>row_version</li>
+                <li>created_at</li>
+                <li>updated_at</li>
+              </ul>
+              <p style="margin-top: 12px;"><strong>Constraint:</strong> UNIQUE (userId, transactionId)</p>
+            </article>
+
+            <article class="schema-card">
+              <span class="tag green">Optimized</span>
+              <h4>outputs</h4>
+              <p>Single table for raw output data plus the per-user spendable index. Rare shared outputs are duplicated by user_id.</p>
+              <ul class="schema-columns">
+                <li>txid</li>
+                <li>vout</li>
+                <li>user_id</li>
+                <li>amount</li>
+                <li>locking_script</li>
+                <li>spendable</li>
+                <li>basketId</li>
+                <li>label</li>
+                <li>description</li>
+                <li>is_coinbase</li>
+                <li>matures_at_height</li>
+                <li>spent_by</li>
+                <li>created_at</li>
+                <li>updated_at</li>
+              </ul>
+              <p style="margin-top: 12px;"><strong>Constraint:</strong> UNIQUE (txid, vout, user_id)</p>
+            </article>
+          </div>
+
+          <div class="diagram" aria-label="Target schema relationship">
+            <div class="diagram-node">
+              <strong>transactions</strong>
+              <span>One canonical row per txid</span>
+            </div>
+            <div class="arrow">-&gt;</div>
+            <div class="diagram-node">
+              <strong>actions</strong>
+              <span>One row per user + transaction</span>
+            </div>
+            <div class="arrow">-&gt;</div>
+            <div class="diagram-node">
+              <strong>outputs</strong>
+              <span>One fast per-user output row, duplicated only when shared</span>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="query-card">
+              <h4>Hot spendable-output query</h4>
+              <p>This remains a single-table index scan. No joins are introduced on the common wallet path.</p>
+              <div class="code-block">
+                <button class="copy-btn" data-copy>Copy</button>
+                <pre><code>SELECT * FROM outputs
+WHERE user_id = ?
+  AND spendable = true
+  AND basketId = default_basket
+ORDER BY satoshis DESC
+LIMIT 100;</code></pre>
+              </div>
+            </div>
+
+            <div class="note">
+              <h4>Supporting tables</h4>
+              <p>chain_tip stores the current chain height singleton. tx_audit records event history at transactionId and actionId scope. monitor_lease coordinates background monitoring work.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section searchable" id="migration" data-title="Migration">
+        <div class="section-inner">
+          <div class="section-head">
+            <h3>Migration Guide</h3>
+            <p>Run this once, non-destructively first, then cut over atomically after verification. Reads can continue until the brief final rename window.</p>
+          </div>
+
+          <div class="phase-list">
+            <article class="phase">
+              <div class="phase-index">01</div>
+              <div class="phase-body">
+                <h4>Create new tables</h4>
+                <p>Create actions, transactions_new, and outputs_new without touching current production tables.</p>
+                <div class="code-block">
+                  <button class="copy-btn" data-copy>Copy</button>
+                  <pre><code>CREATE TABLE actions ( ... full definition as in target actions ... );
+CREATE TABLE transactions_new ( ... full definition as in target transactions ... );
+CREATE TABLE outputs_new ( ... full definition as in target outputs ... );</code></pre>
+                </div>
+              </div>
+            </article>
+
+            <article class="phase">
+              <div class="phase-index">02</div>
+              <div class="phase-body">
+                <h4>Backfill actions from current transactions</h4>
+                <p>Preserve the per-user lifecycle and convert nosend status into user_nosend.</p>
+                <div class="code-block">
+                  <button class="copy-btn" data-copy>Copy</button>
+                  <pre><code>INSERT INTO actions (
+  userId, transactionId, reference, description, is_outgoing,
+  satoshis_delta, user_nosend, hidden, user_aborted,
+  notify_json, created_at, updated_at
+)
+SELECT
+  userId, transactionId, reference, description, isOutgoing,
+  satoshis_delta,
+  CASE WHEN status = 'nosend' THEN TRUE ELSE FALSE END,
+  FALSE, FALSE, notify_json, created_at, updated_at
+FROM transactions;</code></pre>
+                </div>
+              </div>
+            </article>
+
+            <article class="phase">
+              <div class="phase-index">03</div>
+              <div class="phase-body">
+                <h4>Migrate known_txs into canonical transactions</h4>
+                <p>Create or update each transactions_new row with processing state, proof fields, broadcast counters, idempotency, and raw transaction data.</p>
+                <div class="fsm" aria-label="Processing mapping">
+                  <span class="state">sending -> sending</span>
+                  <span class="state">unmined -> sent</span>
+                  <span class="state good">completed -> proven</span>
+                  <span class="state warn">reorg -> reorging</span>
+                  <span class="state bad">invalidTx -> invalid</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="phase">
+              <div class="phase-index">04</div>
+              <div class="phase-body">
+                <h4>Migrate outputs</h4>
+                <p>Preserve the fast path by materializing user-specific output rows directly into outputs_new.</p>
+                <div class="code-block">
+                  <button class="copy-btn" data-copy>Copy</button>
+                  <pre><code>INSERT INTO outputs_new (
+  txid, vout, user_id, amount, locking_script, spendable,
+  basketId, label, description, is_coinbase, matures_at_height,
+  spent_by, created_at, updated_at
+)
+SELECT
+  o.txid, o.vout, u.userId, o.satoshis, o.lockingScript,
+  u.spendable, o.basketId, o.label, o.description,
+  o.is_coinbase, o.matures_at_height, o.spentBy,
+  o.created_at, o.updated_at
+FROM outputs o
+JOIN user_utxos u ON u.outputId = o.outputId;</code></pre>
+                </div>
+              </div>
+            </article>
+
+            <article class="phase">
+              <div class="phase-index">05</div>
+              <div class="phase-body">
+                <h4>Re-point foreign keys</h4>
+                <p>Update tx_labels_map so per-user transaction labels point to actionId. Update any other references that target the old per-user transaction record.</p>
+              </div>
+            </article>
+
+            <article class="phase">
+              <div class="phase-index">06</div>
+              <div class="phase-body">
+                <h4>Atomic cutover</h4>
+                <p>Rename old tables aside and promote the V7 tables inside one transaction or a brief maintenance window.</p>
+                <div class="code-block">
+                  <button class="copy-btn" data-copy>Copy</button>
+                  <pre><code>BEGIN;
+  RENAME TABLE transactions TO transactions_old;
+  RENAME TABLE transactions_new TO transactions;
+  RENAME TABLE outputs TO outputs_old;
+  RENAME TABLE outputs_new TO outputs;
+  RENAME TABLE user_utxos TO user_utxos_old;
+COMMIT;</code></pre>
+                </div>
+              </div>
+            </article>
+
+            <article class="phase">
+              <div class="phase-index">07</div>
+              <div class="phase-body">
+                <h4>Post-migration cleanup</h4>
+                <p>Drop known_txs, user_utxos_old, and transactions_old only after verification. Rebuild old indexes on the new tables and run the full conformance suite.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section searchable" id="spendability" data-title="Spendability">
+        <div class="section-inner">
+          <div class="section-head">
+            <h3>Spendability Derivation</h3>
+            <p>The boolean remains cached on outputs and is refreshed atomically whenever transaction state, spend state, script availability, coinbase maturity, or chain tip changes.</p>
+          </div>
+          <div class="query-card">
+            <h4>Cached spendable expression</h4>
+            <div class="code-block">
+              <button class="copy-btn" data-copy>Copy</button>
+              <pre><code>spendable = (
+  transactions.processing IN (
+    'sent', 'seen', 'seen_multi', 'unconfirmed', 'proven'
+  )
+)
+AND outputs.spent_by IS NULL
+AND outputs.locking_script IS NOT NULL
+AND (
+  NOT outputs.is_coinbase
+  OR outputs.matures_at_height &lt;= chain_tip.height
+)</code></pre>
+            </div>
+          </div>
+          <div class="fsm" aria-label="Processing states">
+            <span class="state">queued</span>
+            <span class="state">sending</span>
+            <span class="state good">sent</span>
+            <span class="state good">seen</span>
+            <span class="state good">seen_multi</span>
+            <span class="state good">unconfirmed</span>
+            <span class="state good">proven</span>
+            <span class="state warn">reorging</span>
+            <span class="state bad">invalid</span>
+            <span class="state bad">doubleSpend</span>
+            <span class="state">unfail</span>
+            <span class="state warn">frozen</span>
+            <span class="state warn">nosend</span>
+            <span class="state warn">nonfinal</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section searchable" id="tests" data-title="Conformance">
+        <div class="section-inner">
+          <div class="section-head">
+            <h3>Conformance Tests</h3>
+            <p>Use this checklist while implementing. Completion is stored locally in the browser for the developer using this page.</p>
+          </div>
+          <div class="two-col">
+            <div class="checklist" id="checklist">
+              <label class="check-item">
+                <input type="checkbox" data-check="existing-go-tests">
+                <span><strong>Existing Go tests</strong>All existing tests continue to pass after the migration.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" data-check="spendable-performance">
+                <span><strong>Spendable query performance</strong>Single-table spendable output query shows no regression.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" data-check="multi-user-dedup">
+                <span><strong>Multi-user transaction deduplication</strong>One transactions row supports multiple actions rows.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" data-check="shared-output">
+                <span><strong>Shared output duplication</strong>Two output rows can share txid+vout with different user_id values.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" data-check="reorg-handling">
+                <span><strong>Reorg handling</strong>Reorg logic works against the new canonical transactions table.</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" data-check="fsm-transitions">
+                <span><strong>Processing FSM</strong>Granular processing transitions are validated, including invalid, frozen, nosend, and nonfinal states.</span>
+              </label>
+            </div>
+            <div class="tests-grid">
+              <article class="test-card">
+                <span class="tag green">Invariant</span>
+                <h4>Canonical tx state</h4>
+                <p>Broadcast, proof, blockchain status, raw transaction, and provider status exist exactly once per txid.</p>
+              </article>
+              <article class="test-card">
+                <span class="tag">Invariant</span>
+                <h4>User scope</h4>
+                <p>Descriptions, labels, visibility, abort state, and notifications are scoped to actions.</p>
+              </article>
+              <article class="test-card">
+                <span class="tag amber">Risk</span>
+                <h4>Index parity</h4>
+                <p>Rebuild the indexes required by the old hot paths before declaring the cutover stable.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section searchable" id="rollout" data-title="Rollout">
+        <div class="section-inner">
+          <div class="section-head">
+            <h3>Rollout Recommendation</h3>
+            <p>Keep the release operationally conservative: stage with production-like data, verify query performance, then retain rollback tables for one release.</p>
+          </div>
+          <div class="checklist">
+            <label class="check-item">
+              <input type="checkbox" data-check="staging-copy">
+              <span><strong>1. Stage production data</strong>Run the migration on a staging copy before production execution.</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="hot-query-verify">
+              <span><strong>2. Verify hot query</strong>Measure spendable output lookup performance on realistic data.</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="deploy-v7-code">
+              <span><strong>3. Deploy V7 code</strong>Move writes to the new transactions, actions, and outputs tables.</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="rollback-window">
+              <span><strong>4. Keep rollback tables</strong>Retain old tables for one release as a rollback safety net.</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="drop-legacy">
+              <span><strong>5. Drop legacy tables</strong>Drop legacy tables after 30 days of stable operation.</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" data-check="audit-release">
+              <span><strong>6. Audit release evidence</strong>Record conformance results, migration timing, and rollback readiness.</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="section-inner">
+          Source: PROD_REQ_V7_GO.md. This page is self-contained: no external CSS, JavaScript, fonts, or network assets.
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const links = Array.from(document.querySelectorAll(".nav-list a"));
+      const sections = Array.from(document.querySelectorAll(".searchable"));
+      const search = document.getElementById("pageSearch");
+      const checks = Array.from(document.querySelectorAll("[data-check]"));
+      const progressBar = document.getElementById("progressBar");
+      const progressText = document.getElementById("progressText");
+      const storagePrefix = "prod-req-v7-go:";
+
+      function updateActiveLink() {
+        const fromTop = window.scrollY + 120;
+        let current = sections[0] && sections[0].id;
+
+        sections.forEach((section) => {
+          if (!section.classList.contains("hidden-by-search") && section.offsetTop <= fromTop) {
+            current = section.id;
+          }
+        });
+
+        links.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + current);
+        });
+      }
+
+      function updateProgress() {
+        const complete = checks.filter((check) => check.checked).length;
+        const total = checks.length;
+        const percent = total ? Math.round((complete / total) * 100) : 0;
+        progressBar.style.width = percent + "%";
+        progressText.textContent = complete + " of " + total + " items complete";
+      }
+
+      function loadChecks() {
+        checks.forEach((check) => {
+          check.checked = localStorage.getItem(storagePrefix + check.dataset.check) === "true";
+          check.addEventListener("change", () => {
+            localStorage.setItem(storagePrefix + check.dataset.check, String(check.checked));
+            updateProgress();
+          });
+        });
+        updateProgress();
+      }
+
+      function resetHighlights(node) {
+        node.querySelectorAll("mark").forEach((mark) => {
+          mark.replaceWith(document.createTextNode(mark.textContent));
+        });
+        node.normalize();
+      }
+
+      function highlightText(node, term) {
+        if (!term) {
+          return;
+        }
+
+        const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, {
+          acceptNode(textNode) {
+            const parent = textNode.parentElement;
+            if (!parent || parent.closest("script, style, pre, code")) {
+              return NodeFilter.FILTER_REJECT;
+            }
+            return textNode.nodeValue.toLowerCase().includes(term)
+              ? NodeFilter.FILTER_ACCEPT
+              : NodeFilter.FILTER_REJECT;
+          }
+        });
+
+        const matches = [];
+        while (walker.nextNode()) {
+          matches.push(walker.currentNode);
+        }
+
+        matches.forEach((textNode) => {
+          const text = textNode.nodeValue;
+          const lower = text.toLowerCase();
+          const index = lower.indexOf(term);
+          if (index === -1) {
+            return;
+          }
+
+          const range = document.createRange();
+          range.setStart(textNode, index);
+          range.setEnd(textNode, index + term.length);
+          const mark = document.createElement("mark");
+          range.surroundContents(mark);
+        });
+      }
+
+      function filterSections() {
+        const term = search.value.trim().toLowerCase();
+
+        sections.forEach((section) => {
+          resetHighlights(section);
+          const text = section.textContent.toLowerCase();
+          const title = (section.dataset.title || "").toLowerCase();
+          const show = !term || text.includes(term) || title.includes(term);
+          section.classList.toggle("hidden-by-search", !show);
+          if (show) {
+            highlightText(section, term);
+          }
+        });
+
+        updateActiveLink();
+      }
+
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const code = button.parentElement.querySelector("code").innerText;
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(code);
+          } else {
+            const helper = document.createElement("textarea");
+            helper.value = code;
+            helper.setAttribute("readonly", "");
+            helper.style.position = "fixed";
+            helper.style.left = "-9999px";
+            document.body.appendChild(helper);
+            helper.select();
+            document.execCommand("copy");
+            helper.remove();
+          }
+          const oldText = button.textContent;
+          button.textContent = "Copied";
+          window.setTimeout(() => {
+            button.textContent = oldText;
+          }, 1200);
+        });
+      });
+
+      search.addEventListener("input", filterSections);
+      window.addEventListener("scroll", updateActiveLink, { passive: true });
+      loadChecks();
+      updateActiveLink();
+    })();
+  </script>
+</body>
+</html>

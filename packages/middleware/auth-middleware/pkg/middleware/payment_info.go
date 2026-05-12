@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/payctx"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/payctx"
 )
 
 // PaymentInfo holds information about a processed payment stored in the request context

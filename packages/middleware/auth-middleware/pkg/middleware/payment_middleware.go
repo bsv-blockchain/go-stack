@@ -7,7 +7,7 @@ import (
 
 	"github.com/bsv-blockchain/go-sdk/wallet"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/payment"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/payment"
 )
 
 const (

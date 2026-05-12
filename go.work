@@ -1,11 +1,12 @@
 go 1.26.0
 
 use (
+	./conformance/runner
 	./infra/go-chaintracks
 	./infra/go-message-box-server
 	./infra/go-uhrp-storage-server
 	./packages/messaging/go-paymail
-	./packages/middleware/go-bsv-middleware
+	./packages/middleware/auth-middleware
 	./packages/network/go-broadcast
 	./packages/network/go-broadcast-client
 	./packages/overlays/go-overlay-discovery-services
@@ -13,10 +14,10 @@ use (
 	./packages/sdk/go-script-templates
 	./packages/sdk/go-sdk
 	./packages/sdk/go-subtree
-	./packages/wallet/go-402-pay
-	./packages/wallet/go-402-pay/echo
-	./packages/wallet/go-402-pay/fiber
-	./packages/wallet/go-402-pay/gin
+	./packages/middleware/go-402-pay
+	./packages/middleware/go-402-pay/echo
+	./packages/middleware/go-402-pay/fiber
+	./packages/middleware/go-402-pay/gin
 	./packages/wallet/go-wallet-toolbox
 	./packages/wallet/go-wallet-toolbox-examples
 	./packages/wallet/go-wallet-toolbox-examples/complex_wallet_examples/certifier_server_example

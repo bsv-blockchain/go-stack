@@ -8,6 +8,8 @@
 # Test output
 *.test
 *.out
+conformance/vendor/
+conformance/reports/
 
 # Go workspace sum (generated, not committed)
 go.work.sum

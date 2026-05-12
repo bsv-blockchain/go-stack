@@ -11,8 +11,8 @@ import (
 	"github.com/bsv-blockchain/go-sdk/auth/authpayload"
 	"github.com/go-softwarelab/common/pkg/slogx"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/authctx"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/logging"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/authctx"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/logging"
 )
 
 const maxToPeerWaitTime = 30000

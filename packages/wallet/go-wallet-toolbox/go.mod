@@ -3,7 +3,7 @@ module github.com/bsv-blockchain/go-wallet-toolbox
 go 1.26.0
 
 require (
-	github.com/bsv-blockchain/go-bsv-middleware v0.13.2
+	github.com/bsv-blockchain/auth-middleware v0.13.2
 	github.com/bsv-blockchain/go-chaintracks v1.2.3
 	github.com/bsv-blockchain/go-sdk v1.2.23
 	github.com/bsv-blockchain/go-teranode-p2p-client v0.2.2
@@ -82,7 +82,6 @@ require (
 	github.com/dgraph-io/badger/v4 v4.9.1 // indirect
 	github.com/dgraph-io/ristretto/v2 v2.4.0 // indirect
 	github.com/dgryski/go-metro v0.0.0-20250106013310-edb8663e5e33 // indirect
-	github.com/docker/go-connections v0.7.0 // indirect
 	github.com/dolthub/maphash v0.1.0 // indirect
 	github.com/dolthub/swiss v0.2.1 // indirect
 	github.com/dunglas/httpsfv v1.1.0 // indirect
@@ -287,3 +286,5 @@ require (
 )
 
 tool go.uber.org/mock/mockgen
+
+replace github.com/bsv-blockchain/auth-middleware => ../../middleware/auth-middleware

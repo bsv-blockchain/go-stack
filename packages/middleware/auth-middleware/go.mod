@@ -1,4 +1,4 @@
-module github.com/bsv-blockchain/go-bsv-middleware
+module github.com/bsv-blockchain/auth-middleware
 
 go 1.25.0
 

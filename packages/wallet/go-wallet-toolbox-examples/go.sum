@@ -109,8 +109,6 @@ github.com/bsv-blockchain/go-batcher v1.2.11 h1:jYoEfNukLGbmbtacVYBxt/crSEdMlhIL
 github.com/bsv-blockchain/go-batcher v1.2.11/go.mod h1:NhaO+yJ3eXmR+cavzaUsA2IL5/JQp6wO4OUvJ1JHISI=
 github.com/bsv-blockchain/go-bc v1.1.5 h1:G9hioz7yz6ARS5YHYJhA4c0xCU5EnRm6PsjDM8C6DTA=
 github.com/bsv-blockchain/go-bc v1.1.5/go.mod h1:g0ZjqK5pNMvgIQpeN0QXchAKEzl15ro3Fm0LG/8PFyI=
-github.com/bsv-blockchain/go-bsv-middleware v0.13.2 h1:mVGfa6SPIlmmvrol7cdN5+s5LdvUbm+ng486NWQJ+jY=
-github.com/bsv-blockchain/go-bsv-middleware v0.13.2/go.mod h1:bBL+0ww8HEOP3uKeTDCAF+N6rybccEePhYMqx2q72/4=
 github.com/bsv-blockchain/go-bt/v2 v2.6.2 h1:hwces7nj4RMcNpEJxRZSnNVuwvuUbME+oMvtGVzLky4=
 github.com/bsv-blockchain/go-bt/v2 v2.6.2/go.mod h1:yAUftVqYfcgYgxVEKtiA/0HXGD1az8MWD3hgnGT/0gM=
 github.com/bsv-blockchain/go-chaincfg v1.5.6 h1:fjTngPQLG0Z9H3U/c8YVJKvr63gy4oqjiflqQvvWggU=
@@ -131,8 +129,6 @@ github.com/bsv-blockchain/go-teranode-p2p-client v0.2.2 h1:1wzASMh/cDubg7KBIzfWu
 github.com/bsv-blockchain/go-teranode-p2p-client v0.2.2/go.mod h1:cc9cqtlxvlHNgyOwkKErGeyvbTNRChdPQmTvhbqTICk=
 github.com/bsv-blockchain/go-tx-map v1.3.4 h1:nwR4PdmAt2JJTYkqAlqxxxghYMT0ts2RpqzDq13ohsY=
 github.com/bsv-blockchain/go-tx-map v1.3.4/go.mod h1:AiIQRQWbCz9QWrziCFAi9Fu04EygPN1dPB+z7qEyFbg=
-github.com/bsv-blockchain/go-wallet-toolbox v0.183.1 h1:IbUn2hX+udAGm0b2PZoUCQ12lzwbPGwQStbdiftvrcs=
-github.com/bsv-blockchain/go-wallet-toolbox v0.183.1/go.mod h1:FWxUBHpm6u3zJYLvqLPlf3NZomkbt1YkPzqAtxxfqRg=
 github.com/bsv-blockchain/go-wire v1.2.2 h1:VVinxKKP4Lryw9t2zM0Td5ky+Jtvnk0y/U6u0T6zJLo=
 github.com/bsv-blockchain/go-wire v1.2.2/go.mod h1:pGA795vWr1kX1eJSJ0IZ09bkvUqSO2NQ10Tka0Lz/NU=
 github.com/bsv-blockchain/teranode v0.15.0-beta-1 h1:EPYG0Y59LC5cQhWYW1cO8FuA8eYabyFfqNBVu5b/uuU=

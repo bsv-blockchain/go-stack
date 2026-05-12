@@ -8,11 +8,11 @@ BSV Go monorepo — SDK, wallet toolbox, overlay services, messaging, and suppor
 
 ```
 packages/sdk/                     — Core SDK, transaction building, script templates
-packages/wallet/                  — Wallet toolbox, 402-pay
+packages/wallet/                  — Wallet toolbox
 packages/overlays/                — Overlay services, discovery
 packages/messaging/               — Paymail
 packages/network/                 — Broadcast, broadcast-client
-packages/middleware/              — BSV auth middleware
+packages/middleware/              — Auth middleware, 402-pay
 infra/        — Deployable services (Dockerfile + cmd/server)
 conformance/                      — Conformance runner (see PLAN_GO.md in mbga)
 ```
@@ -36,10 +36,6 @@ Libraries live in `packages/` (workspace modules). Runnable services live in `in
 | Module | Path |
 |--------|------|
 | [go-wallet-toolbox](packages/wallet/go-wallet-toolbox) | `github.com/bsv-blockchain/go-wallet-toolbox` |
-| [go-402-pay](packages/wallet/go-402-pay) | `github.com/bsv-blockchain/go-402-pay` |
-| [go-402-pay/echo](packages/wallet/go-402-pay/echo) | `github.com/bsv-blockchain/go-402-pay/echo` |
-| [go-402-pay/fiber](packages/wallet/go-402-pay/fiber) | `github.com/bsv-blockchain/go-402-pay/fiber` |
-| [go-402-pay/gin](packages/wallet/go-402-pay/gin) | `github.com/bsv-blockchain/go-402-pay/gin` |
 
 ### Overlays — `packages/overlays/`
 
@@ -65,7 +61,11 @@ Libraries live in `packages/` (workspace modules). Runnable services live in `in
 
 | Module | Path |
 |--------|------|
-| [go-bsv-middleware](packages/middleware/go-bsv-middleware) | `github.com/bsv-blockchain/go-bsv-middleware` |
+| [auth-middleware](packages/middleware/auth-middleware) | `github.com/bsv-blockchain/auth-middleware` |
+| [go-402-pay](packages/middleware/go-402-pay) | `github.com/bsv-blockchain/go-402-pay` |
+| [go-402-pay/echo](packages/middleware/go-402-pay/echo) | `github.com/bsv-blockchain/go-402-pay/echo` |
+| [go-402-pay/fiber](packages/middleware/go-402-pay/fiber) | `github.com/bsv-blockchain/go-402-pay/fiber` |
+| [go-402-pay/gin](packages/middleware/go-402-pay/gin) | `github.com/bsv-blockchain/go-402-pay/gin` |
 
 ---
 

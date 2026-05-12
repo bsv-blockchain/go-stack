@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/middleware"
+	"github.com/bsv-blockchain/auth-middleware/pkg/middleware"
 	"github.com/go-softwarelab/common/pkg/is"
 
 	"github.com/bsv-blockchain/go-wallet-toolbox/pkg/logging"

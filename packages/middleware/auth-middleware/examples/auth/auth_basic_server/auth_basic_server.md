@@ -16,8 +16,8 @@ This demonstrates where the Auth middleware fits in a real server, handling BRC-
 ## Code Walkthrough
 
 ### Components
-- Auth middleware: github.com/bsv-blockchain/go-bsv-middleware/pkg/middleware
-- Example wallet (for demo only): github.com/bsv-blockchain/go-bsv-middleware/examples/internal/example_wallet
+- Auth middleware: github.com/bsv-blockchain/auth-middleware/pkg/middleware
+- Example wallet (for demo only): github.com/bsv-blockchain/auth-middleware/examples/internal/example_wallet
 - CORS wrapper: a simple AllowAllCORSHandler placed before the Auth middleware - allowing browser clients to make authenticated requests.
 
 ### Configuration Parameters

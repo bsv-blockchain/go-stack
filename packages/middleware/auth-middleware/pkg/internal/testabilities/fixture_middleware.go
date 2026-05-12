@@ -8,8 +8,8 @@ import (
 	"github.com/go-softwarelab/common/pkg/slogx"
 	"github.com/go-softwarelab/common/pkg/to"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities/fixture"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/middleware"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities/fixture"
+	"github.com/bsv-blockchain/auth-middleware/pkg/middleware"
 )
 
 type MiddlewareFixtureOptions struct {

@@ -1,14 +1,14 @@
 <div align="center">
 
-# ⬅️➡️&nbsp;&nbsp;go-bsv-middleware
+# ⬅️➡️&nbsp;&nbsp;auth-middleware
 
 **Go middleware enabling secure authentication and seamless BSV payments.**
 
 <br/>
 
-<a href="https://github.com/bsv-blockchain/go-bsv-middleware/releases"><img src="https://img.shields.io/github/release-pre/bsv-blockchain/go-bsv-middleware?include_prereleases&style=flat-square&logo=github&color=black" alt="Release"></a>
-<a href="https://golang.org/"><img src="https://img.shields.io/github/go-mod/go-version/bsv-blockchain/go-bsv-middleware?style=flat-square&logo=go&color=00ADD8" alt="Go Version"></a>
-<a href="https://github.com/bsv-blockchain/go-bsv-middleware/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-OpenBSV-blue?style=flat-square" alt="License"></a>
+<a href="https://github.com/bsv-blockchain/auth-middleware/releases"><img src="https://img.shields.io/github/release-pre/bsv-blockchain/auth-middleware?include_prereleases&style=flat-square&logo=github&color=black" alt="Release"></a>
+<a href="https://golang.org/"><img src="https://img.shields.io/github/go-mod/go-version/bsv-blockchain/auth-middleware?style=flat-square&logo=go&color=00ADD8" alt="Go Version"></a>
+<a href="https://github.com/bsv-blockchain/auth-middleware/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-OpenBSV-blue?style=flat-square" alt="License"></a>
 
 <br/>
 
@@ -18,15 +18,15 @@
        <code>CI / CD</code> &nbsp;&nbsp;
     </td>
     <td align="left">
-       <a href="https://github.com/bsv-blockchain/go-bsv-middleware/actions"><img src="https://img.shields.io/github/actions/workflow/status/bsv-blockchain/go-bsv-middleware/fortress.yml?branch=main&label=build&logo=github&style=flat-square" alt="Build"></a>
-       <a href="https://github.com/bsv-blockchain/go-bsv-middleware/actions"><img src="https://img.shields.io/github/last-commit/bsv-blockchain/go-bsv-middleware?style=flat-square&logo=git&logoColor=white&label=last%20update" alt="Last Commit"></a>
+       <a href="https://github.com/bsv-blockchain/auth-middleware/actions"><img src="https://img.shields.io/github/actions/workflow/status/bsv-blockchain/auth-middleware/fortress.yml?branch=main&label=build&logo=github&style=flat-square" alt="Build"></a>
+       <a href="https://github.com/bsv-blockchain/auth-middleware/actions"><img src="https://img.shields.io/github/last-commit/bsv-blockchain/auth-middleware?style=flat-square&logo=git&logoColor=white&label=last%20update" alt="Last Commit"></a>
     </td>
     <td align="right">
        &nbsp;&nbsp;&nbsp;&nbsp; <code>Quality</code> &nbsp;&nbsp;
     </td>
     <td align="left">
-       <a href="https://goreportcard.com/report/github.com/bsv-blockchain/go-bsv-middleware"><img src="https://goreportcard.com/badge/github.com/bsv-blockchain/go-bsv-middleware?style=flat-square" alt="Go Report"></a>
-       <a href="https://codecov.io/gh/bsv-blockchain/go-bsv-middleware"><img src="https://codecov.io/gh/bsv-blockchain/go-bsv-middleware/branch/main/graph/badge.svg?style=flat-square" alt="Coverage"></a>
+       <a href="https://goreportcard.com/report/github.com/bsv-blockchain/auth-middleware"><img src="https://goreportcard.com/badge/github.com/bsv-blockchain/auth-middleware?style=flat-square" alt="Go Report"></a>
+       <a href="https://codecov.io/gh/bsv-blockchain/auth-middleware"><img src="https://codecov.io/gh/bsv-blockchain/auth-middleware/branch/main/graph/badge.svg?style=flat-square" alt="Coverage"></a>
     </td>
   </tr>
 
@@ -35,14 +35,14 @@
        <code>Security</code> &nbsp;&nbsp;
     </td>
     <td align="left">
-       <a href="https://scorecard.dev/viewer/?uri=github.com/bsv-blockchain/go-bsv-middleware"><img src="https://api.scorecard.dev/projects/github.com/bsv-blockchain/go-bsv-middleware/badge?style=flat-square" alt="Scorecard"></a>
+       <a href="https://scorecard.dev/viewer/?uri=github.com/bsv-blockchain/auth-middleware"><img src="https://api.scorecard.dev/projects/github.com/bsv-blockchain/auth-middleware/badge?style=flat-square" alt="Scorecard"></a>
        <a href=".github/SECURITY.md"><img src="https://img.shields.io/badge/policy-active-success?style=flat-square&logo=security&logoColor=white" alt="Security"></a>
     </td>
     <td align="right">
        &nbsp;&nbsp;&nbsp;&nbsp; <code>Community</code> &nbsp;&nbsp;
     </td>
     <td align="left">
-       <a href="https://github.com/bsv-blockchain/go-bsv-middleware/graphs/contributors"><img src="https://img.shields.io/github/contributors/bsv-blockchain/go-bsv-middleware?style=flat-square&color=orange" alt="Contributors"></a>
+       <a href="https://github.com/bsv-blockchain/auth-middleware/graphs/contributors"><img src="https://img.shields.io/github/contributors/bsv-blockchain/auth-middleware?style=flat-square&color=orange" alt="Contributors"></a>
        <a href="https://github.com/sponsors/bsv-blockchain"><img src="https://img.shields.io/badge/sponsor-BSV-181717.svg?logo=github&style=flat-square" alt="Sponsor"></a>
     </td>
   </tr>
@@ -98,23 +98,23 @@
 
 ## 📦 Installation
 
-**go-bsv-middleware** requires a [supported release of Go](https://golang.org/doc/devel/release.html#policy).
+**auth-middleware** requires a [supported release of Go](https://golang.org/doc/devel/release.html#policy).
 ```shell script
-go get -u github.com/bsv-blockchain/go-bsv-middleware
+go get -u github.com/bsv-blockchain/auth-middleware
 ```
 
 <br/>
 
 ## 📚 Documentation
 
-The `go-bsv-middleware` is based on the following BSV specifications:
+The `auth-middleware` is based on the following BSV specifications:
 
 - [BRC-103: Peer-to-Peer Mutual Authentication and Certificate Exchange Protocol](https://github.com/bitcoin-sv/BRCs/blob/master/peer-to-peer/0103.md)
 - [BRC-104: HTTP Transport for BRC-103 Mutual Authentication](https://github.com/bitcoin-sv/BRCs/blob/master/peer-to-peer/0104.md)
 
 <br>
 
-- **Reference** – Dive into the godocs at [pkg.go.dev/github.com/bsv-blockchain/go-bsv-middleware](https://pkg.go.dev/github.com/bsv-blockchain/go-bsv-middleware)
+- **Reference** – Dive into the godocs at [pkg.go.dev/github.com/bsv-blockchain/auth-middleware](https://pkg.go.dev/github.com/bsv-blockchain/auth-middleware)
 - **Usage Examples** – Browse practical patterns either the [examples directory](examples) or the example tests
 - **Test Suite** – Review both the unit tests and fuzz tests (powered by [`testify`](https://github.com/stretchr/testify))
 
@@ -213,7 +213,7 @@ This command ensures all dependencies are brought up to date in a single step, i
 
 ## 🧪 Examples & Tests
 
-All unit tests and [examples](examples) run via [GitHub Actions](https://github.com/bsv-blockchain/go-bsv-middleware/actions) and use [Go version 1.25.x](https://go.dev/doc/go1.25). View the [configuration file](.github/workflows/fortress.yml).
+All unit tests and [examples](examples) run via [GitHub Actions](https://github.com/bsv-blockchain/auth-middleware/actions) and use [Go version 1.25.x](https://go.dev/doc/go1.25). View the [configuration file](.github/workflows/fortress.yml).
 
 Run all tests (fast):
 
@@ -262,7 +262,7 @@ View the [contributing guidelines](.github/CONTRIBUTING.md) and please follow th
 All kinds of contributions are welcome :raised_hands:!
 The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon:.
 
-[![Stars](https://img.shields.io/github/stars/bsv-blockchain/go-bsv-middleware?label=Please%20like%20us&style=social&v=1)](https://github.com/bsv-blockchain/go-bsv-middleware/stargazers)
+[![Stars](https://img.shields.io/github/stars/bsv-blockchain/auth-middleware?label=Please%20like%20us&style=social&v=1)](https://github.com/bsv-blockchain/auth-middleware/stargazers)
 
 <br/>
 

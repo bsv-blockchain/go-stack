@@ -36,8 +36,8 @@ require (
 	github.com/aws/smithy-go v1.25.1 // indirect
 	github.com/benbjohnson/clock v1.3.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/bsv-blockchain/auth-middleware v0.13.2 // indirect
 	github.com/bsv-blockchain/go-batcher v1.2.11 // indirect
-	github.com/bsv-blockchain/go-bsv-middleware v0.13.2 // indirect
 	github.com/bsv-blockchain/go-bt/v2 v2.6.2 // indirect
 	github.com/bsv-blockchain/go-chaincfg v1.5.6 // indirect
 	github.com/bsv-blockchain/go-lockfree-queue v1.1.2 // indirect
@@ -283,3 +283,7 @@ require (
 	sigs.k8s.io/structured-merge-diff/v6 v6.4.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
+
+replace github.com/bsv-blockchain/auth-middleware => ../../middleware/auth-middleware
+
+replace github.com/bsv-blockchain/go-wallet-toolbox => ../go-wallet-toolbox

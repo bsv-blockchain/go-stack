@@ -11,8 +11,8 @@ import (
 	"github.com/bsv-blockchain/go-sdk/wallet"
 	"github.com/stretchr/testify/require"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/regressiontests/internal/typescript"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/testabilities/testusers"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/regressiontests/internal/typescript"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/testabilities/testusers"
 )
 
 // TestAuthFetchClientCallForDevelopmentPurposes this test is used for developing bridge between Go and Typescript

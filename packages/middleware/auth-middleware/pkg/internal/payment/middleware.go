@@ -16,8 +16,8 @@ import (
 	"github.com/go-softwarelab/common/pkg/slogx"
 	"github.com/go-softwarelab/common/pkg/to"
 
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/authctx"
-	"github.com/bsv-blockchain/go-bsv-middleware/pkg/internal/payctx"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/authctx"
+	"github.com/bsv-blockchain/auth-middleware/pkg/internal/payctx"
 )
 
 var (
