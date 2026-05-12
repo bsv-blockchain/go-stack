@@ -55,7 +55,6 @@ Libraries live in `packages/` (workspace modules). Runnable services live in `in
 | Module | Path |
 |--------|------|
 | [go-broadcast-client](packages/network/go-broadcast-client) | `github.com/bitcoin-sv/go-broadcast-client` |
-| [go-broadcast](packages/network/go-broadcast) | `github.com/mrz1836/go-broadcast` |
 
 ### Middleware — `packages/middleware/`
 
