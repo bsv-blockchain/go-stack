@@ -1,3 +1,6 @@
+> [!WARNING]
+> This monorepo is experimental, do not use in production
+
 # go-stack
 
 BSV Go monorepo — SDK, wallet toolbox, overlay services, messaging, and supporting infrastructure.
